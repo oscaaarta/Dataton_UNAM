@@ -443,3 +443,29 @@ piloto y fases · 8 evaluación → Cap. V `#evaluacion`. Pendiente: probarlo co
 - Escudos del pie: ya no usan `loading="lazy"` (reutilizan la imagen de la portada; Chrome no los cargaba en
   algunos recorridos programáticos).
 - No se probó en un iPhone físico ni con personas externas. No se repitió Lighthouse.
+
+### Menú rediseñado (2026-11-02, a petición del equipo: «se ve muy mal el menú»)
+- **Causa principal:** seguían activas las reglas `.toc a` del menú anterior de doce números (alto fijo de 36 px,
+  rejilla centrada, forma de píldora) y se aplicaban a todos los enlaces nuevos: la pregunta del capítulo se
+  encimaba con los apartados. Se **eliminaron** de `styles.css` y `extra.css`; el menú vive solo en `narrativa.css`.
+- Cada capítulo es un acordeón: encabezado «Capítulo N» + su pregunta (`.act-head`, lleva a la apertura) y sus
+  apartados. Escritorio: lista desplegable de 320 px. ≤1100 px: panel lateral (ancho completo en celular) sobre la
+  página atenuada (`body.menu-open::after`), capítulo actual ya desplegado y resaltado, botón con icono que cambia
+  a «Cerrar». La barra usa `backdrop-filter`, así que el panel fijo tiene altura explícita (`100dvh - 56px`).
+- El foco pasa al capítulo solo si el panel se abre con teclado (al tocar no aparece el marco de foco).
+- Pruebas: navegación 37/37 (escritorio con ratón y teclado; panel en 1024 y 390), táctil y «Bibliografía»
+  alcanzable en Chrome y WebKit (320, 375, 844), 0 errores de consola, laboratorio 200/200.
+
+### Menú roto en Vercel aunque localmente se vea bien (2026-11-02)
+- **Causa 1 (caché):** `vercel.json` permitía a los navegadores reutilizar CSS/JS 1 h + 1 día
+  (`stale-while-revalidate`) con nombres fijos. Tras publicar, el HTML nuevo (menú por capítulos) se combinaba con
+  el `styles.css` anterior, que aún traía las reglas `.toc a` del menú de doce números. **Corrección:** CSS, JS y
+  datos con `Cache-Control: public, max-age=0, must-revalidate` (se revalidan en cada visita con ETag) y
+  referencias versionadas en `index.html` (`?v=` + 8 caracteres del MD5 del archivo).
+  Si se edita un CSS/JS, conviene actualizar su `?v=`; aun sin hacerlo, la revalidación evita mezclar versiones.
+- **Causa 2 (subida incompleta):** el repositorio local no tenía remoto ni commits de estas sesiones; si a GitHub
+  se suben archivos sueltos y falta alguno (`styles.css`, `narrativa.css`, `llab.css`, `app.js`, la fuente), el
+  menú se rompe igual. Subir siempre el repositorio completo (commit + push).
+- Verificado: las 29 rutas referenciadas existen con mayúsculas/minúsculas exactas (Vercel distingue, Windows no).
+- Diagnóstico rápido en producción: abrir `https://<dominio>/assets/css/narrativa.css` (si da 404, no se subió) y
+  ver el código fuente de la página (debe contener `narrativa.css?v=`).

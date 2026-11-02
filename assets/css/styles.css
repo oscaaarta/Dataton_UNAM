@@ -78,14 +78,7 @@ button { font: inherit; color: inherit; }
 .brand svg { flex: none; }
 .brand small { font-weight: 500; color: var(--on-night-3); font-size: .8rem; }
 .toc { display: flex; gap: 2px; margin-left: auto; list-style: none; padding: 0; margin-top: 0; margin-bottom: 0; }
-.toc a {
-  display: grid; place-items: center; min-width: 36px; height: 36px; padding: 0 8px; border-radius: 18px;
-  font-family: var(--f-head); font-size: .8rem; font-weight: 600; color: var(--on-night-2); text-decoration: none;
-  transition: background .25s var(--ease), color .25s var(--ease);
-}
-.toc a:hover { color: var(--on-night); background: rgba(255,255,255,.06); }
-.toc a.active { background: var(--gold); color: var(--night); }
-.toc a .lbl { display: none; }
+/* los enlaces del menú por capítulos se estilizan en narrativa.css */
 .toc-btn { display: none; margin-left: auto; background: none; border: 1px solid var(--line-night); border-radius: 18px; height: 36px; padding: 0 14px; font-family: var(--f-head); font-weight: 600; font-size: .85rem; cursor: pointer; }
 .progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; transform-origin: 0 50%; transform: scaleX(0); background: linear-gradient(90deg, var(--sky), var(--gold)); }
 
@@ -473,7 +466,6 @@ footer.site .wrap { display: flex; flex-wrap: wrap; gap: var(--s4) var(--s7); ju
 
 /* ---------- responsive ---------- */
 @media (max-width: 1100px) {
-  .toc a { min-width: 32px; padding: 0 6px; }
   .map-layout { grid-template-columns: minmax(0,1fr); }
   .rank-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s5); }
   .explorer { grid-template-columns: minmax(0,1fr); }
@@ -482,9 +474,6 @@ footer.site .wrap { display: flex; flex-wrap: wrap; gap: var(--s4) var(--s7); ju
 }
 @media (max-width: 900px) {
   .toc { display: none; }
-  .toc.open { display: flex; position: fixed; top: 56px; left: 0; right: 0; flex-direction: column; background: var(--night); border-bottom: 1px solid var(--line-night); padding: 8px var(--gutter) 16px; }
-  .toc.open a { justify-content: flex-start; display: flex; gap: 12px; height: 44px; border-radius: 8px; }
-  .toc.open a .lbl { display: inline; font-weight: 500; color: var(--on-night-2); }
   .toc-btn { display: inline-flex; align-items: center; }
   .hero-grid, .codi-hero, .lens, .coef-layout, .axis-panel.on, .arch, .pilot, .ph-body, .demo { grid-template-columns: minmax(0, 1fr); }
   .grid-2 { grid-template-columns: minmax(0, 1fr); }

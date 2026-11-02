@@ -98,21 +98,31 @@
   /* =====================================================================
      NAV
      ===================================================================== */
-  /* Cinco capítulos, cada uno con sus apartados. Escritorio: cada capítulo abre su lista.
-     Celular y tableta (≤1100 px): «Capítulos» abre un panel con los cinco y sus apartados. */
+  /* Cinco capítulos. Cada capítulo es un acordeón: su pregunta (lleva a la apertura) y sus apartados.
+     Escritorio: lista desplegable bajo el capítulo. Celular y tableta (≤1100 px): «Capítulos» abre un
+     panel lateral sobre la página atenuada, con el capítulo actual ya desplegado. */
   const prog = $('.progress');
   const tocLinks = $$('.toc a'), actItems = $$('.act-item');
-  const tocBtn = $('.toc-btn'), toc = $('#toc');
+  const tocBtn = $('.toc-btn'), toc = $('#toc'), tocBtnT = $('.tb-t', tocBtn);
   const panelMode = () => matchMedia('(max-width: 1100px)').matches;
-  function closeSubs(except) { actItems.forEach(li => { if (li === except) return; li.classList.remove('open'); $('.act-btn', li).setAttribute('aria-expanded', 'false'); }); }
-  function closePanel() { toc.classList.remove('open'); tocBtn.setAttribute('aria-expanded', 'false'); }
-  tocBtn.addEventListener('click', () => { const o = toc.classList.toggle('open'); tocBtn.setAttribute('aria-expanded', o); });
+  function setSub(li, o) { li.classList.toggle('open', o); $('.act-btn', li).setAttribute('aria-expanded', o); }
+  function closeSubs(except) { actItems.forEach(li => { if (li !== except) setSub(li, false); }); }
+  function openPanel(byKeyboard) {
+    toc.classList.add('open'); document.body.classList.add('menu-open'); tocBtn.setAttribute('aria-expanded', 'true'); if (tocBtnT) tocBtnT.textContent = 'Cerrar';
+    const cur = $('.act-item.active') || actItems[0]; closeSubs(cur); setSub(cur, true);
+    // el foco solo se mueve si se abrió con teclado (al tocar, un marco de foco grande estorba)
+    requestAnimationFrame(() => { if (byKeyboard) $('.act-btn', cur).focus({ preventScroll: true }); cur.scrollIntoView({ block: 'nearest' }); });
+  }
+  function closePanel() { if (!toc.classList.contains('open')) return; toc.classList.remove('open'); document.body.classList.remove('menu-open'); tocBtn.setAttribute('aria-expanded', 'false'); if (tocBtnT) tocBtnT.textContent = 'Capítulos'; }
+  tocBtn.addEventListener('click', e => { toc.classList.contains('open') ? closePanel() : openPanel(e.detail === 0); });
+  addEventListener('resize', () => { if (!panelMode()) closePanel(); });
   actItems.forEach(li => {
     const b = $('.act-btn', li);
     b.addEventListener('click', () => {
-      if (panelMode()) { const t = document.getElementById('cap-' + li.dataset.act); closePanel(); if (t) { history.pushState && history.pushState(null, '', '#' + t.id); goTo(t); } return; }
-      const o = !li.classList.contains('open'); closeSubs(li); li.classList.toggle('open', o); b.setAttribute('aria-expanded', o);
-      if (o) { const f = $('a', li); f && f.focus({ preventScroll: true }); }
+      const o = !li.classList.contains('open');
+      if (!panelMode()) closeSubs(li); // en el panel pueden quedar varios capítulos abiertos
+      setSub(li, o);
+      if (o && !panelMode()) { const f = $('a', li); f && f.focus({ preventScroll: true }); }
     });
     li.addEventListener('keydown', e => {
       const links = $$('a', li), i = links.indexOf(document.activeElement);
@@ -121,7 +131,7 @@
       if (e.key === 'ArrowUp' && i > -1) { e.preventDefault(); links[(i - 1 + links.length) % links.length].focus(); }
     });
   });
-  document.addEventListener('click', e => { if (!e.target.closest('.act-item')) closeSubs(); if (!e.target.closest('.toc, .toc-btn')) closePanel(); });
+  document.addEventListener('click', e => { if (!panelMode() && !e.target.closest('.act-item')) closeSubs(); if (!e.target.closest('.toc, .toc-btn')) closePanel(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSubs(); if (toc.classList.contains('open')) { closePanel(); tocBtn.focus(); } } });
   tocLinks.forEach(a => a.addEventListener('click', () => { closeSubs(); closePanel(); }));
   const navTargets = tocLinks.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
