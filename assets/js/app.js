@@ -738,22 +738,13 @@
      SECCIÓN 9
      ===================================================================== */
   // ejes
-  $$('.axes-tabs button').forEach(b => b.addEventListener('click', () => {
-    $$('.axes-tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+  const axTabs = $$('.axes-tabs button');
+  axTabs.forEach((b, i) => b.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); const n = axTabs[(i + (e.key === 'ArrowRight' ? 1 : 2)) % 3]; n.click(); n.focus(); } }));
+  axTabs.forEach(b => b.addEventListener('click', () => {
+    axTabs.forEach(x => { x.setAttribute('aria-selected', x === b); x.tabIndex = x === b ? 0 : -1; });
     $$('.axis-panel').forEach(p => p.classList.toggle('on', p.dataset.p === b.dataset.ax));
     if (b.dataset.ax === '2') { ensureEC().then(() => setTimeout(bancaMap, 30)); setTimeout(() => bbMap.start(), 40); }
   }));
-  // recorrido ANTAD
-  (function journey() {
-    const J = $('#journey'), bs = $$('button', J), fill = $('.fill', J);
-    function set(i) {
-      bs.forEach((b, k) => { b.classList.toggle('done', k <= i); b.classList.toggle('cur', k === i); b.setAttribute('aria-current', k === i ? 'step' : 'false'); });
-      const a = bs[0].offsetTop + 20, z = bs[i].offsetTop + 20; fill.style.height = (z - a) + 'px'; fill.style.top = a + 'px';
-    }
-    bs.forEach((b, i) => b.addEventListener('click', () => set(i)));
-    new MutationObserver(() => set(bs.findIndex(b => b.classList.contains('cur')))).observe(J.closest('.axis-panel'), { attributes: true, attributeFilter: ['class'] });
-    set(0);
-  })();
   function bancaMap() {
     const el = $('#chBancaMap'); if (!el || !el.offsetWidth) return;
     const t = theme(true);
@@ -1081,6 +1072,12 @@
   if (location.hash.length > 1) {
     const el = document.getElementById(location.hash.slice(1));
     if (el) { if (location.hash === '#sucursales') openAxis('2'); setTimeout(() => goTo(el, false), 300); }
+  }
+
+  if ('IntersectionObserver' in window) {
+    const vio = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting || !e.target.offsetWidth) return; vio.unobserve(e.target);
+      if (e.target.id === 'bbMap') bbMap.start(); else ensureEC().then(() => setTimeout(bancaMap, 30)); }), { rootMargin: '300px 0px' });
+    ['#bbMap', '#chBancaMap'].forEach(id => { const el = $(id); if (el) vio.observe(el); });
   }
 
   /* cierre: líneas del lema */

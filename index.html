@@ -29,12 +29,14 @@
 <link rel="stylesheet" href="assets/css/styles.css">
 <link rel="stylesheet" href="assets/css/stories.css">
 <link rel="stylesheet" href="assets/css/extra.css">
+<link rel="stylesheet" href="assets/css/ejes.css">
+<link rel="stylesheet" href="assets/css/llab.css">
 </head>
 <body>
 <a class="skip" href="#s1">Saltar al contenido</a>
 
 <header class="topbar" role="banner">
-  <a class="brand" href="#top">
+  <a class="brand" href="#top" aria-label="Usa CoDi Datatón INEGI 2026, ir al inicio">
     <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="10" height="10" rx="2" fill="none" stroke="#D6AC55" stroke-width="2"/><rect x="15" y="1" width="10" height="10" rx="2" fill="none" stroke="#D6AC55" stroke-width="2"/><rect x="1" y="15" width="10" height="10" rx="2" fill="none" stroke="#D6AC55" stroke-width="2"/><rect x="16" y="16" width="4" height="4" fill="#62C8F5"/><rect x="21" y="21" width="4" height="4" fill="#62C8F5"/></svg>
     <span>Usa CoDi <small>Datatón INEGI 2026</small></span>
   </a>
@@ -65,7 +67,13 @@
   <canvas id="netCanvas" aria-hidden="true"></canvas>
   <div class="wrap hero-grid">
     <div>
-      <p class="kicker"><span>Estrategia de digitalización del comercio electrónico en México</span><span>UNAM · Facultad de Economía</span></p>
+      <div class="inst" role="group" aria-label="Universidad Nacional Autónoma de México, Facultad de Economía">
+        <img class="inst-unam" src="assets/images/escudo-unam.png" width="410" height="425" alt="Escudo de la Universidad Nacional Autónoma de México" decoding="async">
+        <span class="inst-rule" aria-hidden="true"></span>
+        <img class="inst-fe" src="assets/images/escudo-fe.png" width="320" height="401" alt="Escudo de la Facultad de Economía de la UNAM" decoding="async">
+        <span class="inst-txt" aria-hidden="true"><b>Universidad Nacional Autónoma de México</b><span>Facultad de Economía</span></span>
+      </div>
+      <p class="kicker"><span>Estrategia de digitalización del comercio electrónico en México</span></p>
       <h1 id="h-hero">De cada 100 pesos que produce México, <span class="gold">7</span> ya vienen del comercio electrónico.</h1>
       <p class="lead">Hace una década eran 3. El comercio en línea se volvió parte de la economía, pero no avanza igual en todo el país. Esta investigación explica por qué y propone cómo usar una infraestructura de pagos que México ya tiene.</p>
       <p class="hero-motto">Quien conoce confía, y quien confía, <b>compra. Usa CoDi.</b></p>
@@ -532,28 +540,40 @@
       </div>
     </div>
 
-    <span class="chapter-no" style="margin-top:var(--s7)">Escena 2 · Los determinantes del uso</span>
-    <div class="scene2">
-      <figure class="figure coef">
-        <h3 class="fig-title">Efectos marginales promedio sobre la probabilidad de usar CoDi</h3>
-        <p class="fig-sub">Puntos porcentuales (dy/dx), con intervalo de confianza al 95% donde se reporta. Selecciona una variable con el mouse, el teclado (flechas) o un toque.</p>
-        <div id="coefSvg"></div>
-        <figcaption class="fig-foot"><span><b>Fuente:</b> elaboración del equipo con datos de INEGI, ENDUTIH 2025.</span><span>Logit con diseño muestral (estratos, UPM y factor de expansión), errores linealizados. *** p&lt;0.01 · ** p&lt;0.05.</span></figcaption>
-      </figure>
-      <aside class="coef-side">
-        <div class="illu" id="coefIllu" aria-hidden="true"></div>
-        <div class="coef-detail2" id="coefDetail" aria-live="polite"></div>
-      </aside>
-    </div>
-    <div class="coef-tip" id="coefTip" hidden></div>
-
-    <div class="mag">
-      <div>
-        <h3>¿Qué tan grande es cada efecto?</h3>
-        <p class="muted">Compara cada efecto, en puntos porcentuales, con el uso promedio de CoDi (1.85%). Selecciona una variable en el gráfico para resaltarla.</p>
-        <p class="hint">No es una calculadora de probabilidades: se reportan efectos marginales promedio, no la ecuación completa (coeficientes e intercepto), así que aquí no se predice el uso de ninguna persona. Los efectos no se suman entre sí.</p>
+    <span class="chapter-no" style="margin-top:var(--s7)">Escena 2 · Construye el modelo</span>
+    <div class="llab" id="logitLab" aria-labelledby="llabTitle">
+      <div class="llab-head">
+        <h3 id="llabTitle">Arma el modelo variable por variable.</h3>
+        <p class="muted">Agrega o quita factores y mira cómo se conectan con el uso de CoDi. Cada efecto es el del modelo estimado con las cinco variables juntas: seleccionar no vuelve a estimar nada, solo muestra u oculta resultados.</p>
       </div>
-      <div id="magViz" aria-live="polite"></div>
+
+      <div class="llab-build">
+        <div class="llab-diagram" id="llabDiagram">
+          <ul class="llab-vars" id="llabVars" role="list" aria-label="Variables explicativas del modelo"></ul>
+          <svg class="llab-wires" id="llabWires" aria-hidden="true"></svg>
+          <div class="llab-y" id="llabY" aria-live="polite">
+            <svg class="llab-ring" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="tr"/><circle cx="60" cy="60" r="52" class="fg" id="llabRing" pathLength="100"/></svg>
+            <span class="llab-yk">Variable dependiente</span>
+            <b>Uso de CoDi</b>
+            <span class="llab-yn num" id="llabCount">0 de 5</span>
+          </div>
+        </div>
+        <div class="llab-ctl">
+          <button type="button" class="btn btn-gold" id="llabAll">Ver modelo completo</button>
+          <button type="button" class="btn btn-ghost" id="llabReset" disabled>Reiniciar</button>
+          <p class="llab-status" id="llabStatus" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <aside class="llab-card" id="llabCard" aria-live="polite"></aside>
+
+      <figure class="figure llab-plot">
+        <h3 class="fig-title">Efectos marginales promedio sobre la probabilidad de usar CoDi</h3>
+        <p class="fig-sub">Puntos porcentuales (dy/dx). Línea blanca: intervalo de confianza al 95% donde la investigación lo reporta. Toca una fila para leer su interpretación.</p>
+        <div id="llabPlot"></div>
+        <figcaption class="fig-foot"><span><b>Fuente:</b> elaboración del equipo con datos de INEGI, ENDUTIH 2025.</span><span>Logit con diseño muestral (estratos, UPM y factor de expansión), errores linealizados; n = 57,677. *** p&lt;0.01 · ** p&lt;0.05.</span></figcaption>
+      </figure>
+      <p class="hint llab-hint">Los efectos no se suman entre sí ni predicen el uso de una persona: la investigación reporta efectos marginales promedio, no la ecuación completa (coeficientes e intercepto). El ajuste (AUC 0.865, pseudo R² 0.183) corresponde siempre al modelo completo.</p>
     </div>
 
     <div class="method">
@@ -569,6 +589,49 @@
         <div class="step"><div class="step-card"><span class="eyebrow">Interpretación</span><h3>Confianza, conocimiento e inclusión financiera.</h3><p>La desconfianza orienta el eje de confianza; las habilidades digitales y la edad, el de conocimiento y acompañamiento; el smartphone y la banca móvil, el de inclusión financiera.</p><p class="src">Agrupación interpretativa del equipo a partir de los resultados del modelo.</p></div></div>
         <div class="step"><div class="step-card"><span class="eyebrow">Hacia la propuesta</span><h3>Una interpretación, no una relación causal demostrada.</h3><p>Los ejes responden a barreras identificadas en los datos. El piloto propuesto permitiría medir si la intervención cambia el uso de CoDi.</p></div></div>
       </div>
+    </div>
+
+    <div class="bridge-map" id="bridgeMap" aria-labelledby="bridgeTitle">
+      <div class="bm-head">
+        <span class="chapter-no">Del modelo a la propuesta</span>
+        <h3 id="bridgeTitle">Cada resultado orienta una línea de acción.</h3>
+        <p class="muted">Lectura de política pública de los efectos marginales: indica dónde intervenir, no demuestra que intervenir cause el uso de CoDi. Selecciona una conexión.</p>
+      </div>
+      <ol class="bm-rows" role="list">
+        <li class="bm-row" data-ax="0" style="--ac:var(--gold)">
+          <button type="button" class="bm-btn" aria-expanded="false" aria-controls="bmWhy0">
+            <span class="bm-f"><span class="bm-v neg num">−1.28 pp</span><span class="bm-n">Desconfianza en la seguridad de pagos o datos</span></span>
+            <span class="bm-line" aria-hidden="true"><i></i></span>
+            <span class="bm-ax"><span class="bm-k">Eje 1</span><b>Confianza</b><span class="bm-w">Banco de México · CONDUSEF</span></span>
+          </button>
+          <p class="bm-why" id="bmWhy0">Quien desconfía no distingue a CoDi de otros pagos digitales. Por eso el eje hace visible la seguridad: experiencia homologada, avisos, límites, sello y respaldo ante problemas.</p>
+        </li>
+        <li class="bm-row" data-ax="1" style="--ac:var(--sky)">
+          <button type="button" class="bm-btn" aria-expanded="false" aria-controls="bmWhy1">
+            <span class="bm-f"><span class="bm-v pos num">+0.34 pp</span><span class="bm-n">Cada habilidad digital adicional</span></span>
+            <span class="bm-line" aria-hidden="true"><i></i></span>
+            <span class="bm-ax"><span class="bm-k">Eje 2</span><b>Conocimiento</b><span class="bm-w">ANTAD y cadenas</span></span>
+          </button>
+          <p class="bm-why" id="bmWhy1">Es el determinante con mayor solidez estadística: entre dos personas con 10 habilidades de diferencia, el uso es 3.4 pp mayor. El eje enseña paso a paso donde la gente ya compra.</p>
+        </li>
+        <li class="bm-row" data-ax="2" style="--ac:#3FC1A0">
+          <button type="button" class="bm-btn" aria-expanded="false" aria-controls="bmWhy2">
+            <span class="bm-f"><span class="bm-v pos num">+2.12 pp</span><span class="bm-n">Usa banca móvil <small>(smartphone: +3.09 pp)</small></span></span>
+            <span class="bm-line" aria-hidden="true"><i></i></span>
+            <span class="bm-ax"><span class="bm-k">Eje 3</span><b>Inclusión financiera</b><span class="bm-w">Banco del Bienestar · Sec. del Bienestar</span></span>
+          </button>
+          <p class="bm-why" id="bmWhy2">La cadena se rompe en la app bancaria: 86.5% usa smartphone, pero solo 32.6% usa banca en línea o móvil. El eje acompaña la activación de la cuenta y de CoDi.</p>
+        </li>
+        <li class="bm-row bm-cross" data-ax="3" style="--ac:#A9BBD1">
+          <button type="button" class="bm-btn" aria-expanded="false" aria-controls="bmWhy3">
+            <span class="bm-f"><span class="bm-v neg num">−0.013 pp</span><span class="bm-n">Por cada año de edad</span></span>
+            <span class="bm-line dashed" aria-hidden="true"><i></i></span>
+            <span class="bm-ax"><span class="bm-k">Ejes 2 y 3</span><b>Acompañamiento diferenciado</b><span class="bm-w">Jóvenes como difusores · adultos mayores con guía</span></span>
+          </button>
+          <p class="bm-why" id="bmWhy3">El efecto anual es pequeño pero se acumula (≈ −0.4 pp entre personas con 30 años de diferencia). Sugiere estrategias distintas: difusión entre pares para jóvenes y experiencia simplificada con acompañamiento para personas mayores.</p>
+        </li>
+      </ol>
+      <p class="hint bm-note">Conexiones interpretativas del equipo a partir de asociaciones estimadas con la ENDUTIH 2025; no son relaciones causales demostradas.</p>
     </div>
   </div>
 </section>
@@ -586,96 +649,97 @@
     </div>
 
     <div class="story" data-scene="axes">
-      <div class="story-stage" role="img" aria-label="Ilustración: un escudo de confianza, un recorrido de aprendizaje y una sucursal bancaria con pines en el mapa, que terminan conectados como tres ejes."></div>
-      <div class="story-steps"><div class="step"><div class="step-card"><span class="eyebrow">Eje 1 · Confianza</span><h3>Protección y claridad en cada pago.</h3><p>Banco de México y CONDUSEF: experiencia homologada, límites de pago, avisos por operación, sello visible y respaldo ante problemas.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Eje 2 · Conocimiento</span><h3>Aprender paso a paso, donde ya se compra.</h3><p>ANTAD y sus cadenas: campaña, QR informativo, promotores y un primer pago acompañado.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Eje 3 · Inclusión financiera</span><h3>Llegar a donde la banca comercial no llega.</h3><p>Banco del Bienestar y Secretaría del Bienestar: activación asistida y voluntaria, con prioridad en las regiones menos incluidas.</p><p class="src">Los pines son ilustrativos; no representan sucursales específicas.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Una sola estrategia</span><h3>Tres ejes que se complementan.</h3><p>Ninguno puede hacerlo solo. Explora cada eje y sus acciones a continuación.</p></div></div></div>
+      <div class="story-stage" role="img" aria-label="Tres ilustraciones que aparecen y se conectan: un celular con una solicitud de pago protegida, una persona aprendiendo CoDi en una tienda y el mapa de México con la red del Banco del Bienestar por entidad."></div>
+      <div class="story-steps"><div class="step"><div class="step-card"><span class="eyebrow">Eje 1 · Confianza</span><h3>Un pago que se ve seguro.</h3><p>Banco de México y CONDUSEF: CoDi a dos toques, solicitud con comercio y monto, avisos, límites y respaldo cuando algo sale mal.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Eje 2 · Conocimiento</span><h3>Aprender donde ya se compra.</h3><p>ANTAD y sus cadenas: campaña, QR informativo, promotores y un primer pago acompañado.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Eje 3 · Inclusión financiera</span><h3>Una red presente en los 32 estados.</h3><p>Banco del Bienestar y Secretaría del Bienestar: activación asistida y voluntaria donde la banca comercial no llega.</p><p class="src">Círculos: registros del directorio de sucursales del Banco del Bienestar por entidad (1er trim. 2026), proporcionales a su número.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Una sola estrategia</span><h3>Tres ejes, un mismo objetivo.</h3><p>La confianza sostiene el conocimiento y la inclusión lo lleva a todo el país. Ninguno funciona solo: explora cada eje a continuación.</p></div></div></div>
     </div>
-    <div class="axes-tabs" role="tablist" aria-label="Ejes de la estrategia">
-      <button role="tab" aria-selected="true" data-ax="0" id="ax0"><span class="ax">Eje 1</span><b>Confianza</b><span class="who">Banco de México y CONDUSEF</span></button>
-      <button role="tab" aria-selected="false" data-ax="1" id="ax1"><span class="ax">Eje 2</span><b>Conocimiento</b><span class="who">ANTAD y cadenas asociadas</span></button>
-      <button role="tab" aria-selected="false" data-ax="2" id="ax2"><span class="ax">Eje 3</span><b>Inclusión financiera</b><span class="who">Banco del Bienestar y Secretaría del Bienestar</span></button>
-    </div>
+    <nav class="axes-tabs" role="tablist" aria-label="Ejes de la estrategia">
+      <button role="tab" aria-selected="true" data-ax="0" id="ax0" aria-controls="axp0"><span class="ax">Eje 1</span><b>Confianza</b><span class="who">Banco de México y CONDUSEF</span></button>
+      <button role="tab" aria-selected="false" data-ax="1" id="ax1" aria-controls="axp1"><span class="ax">Eje 2</span><b>Conocimiento</b><span class="who">ANTAD y cadenas asociadas</span></button>
+      <button role="tab" aria-selected="false" data-ax="2" id="ax2" aria-controls="axp2"><span class="ax">Eje 3</span><b>Inclusión financiera</b><span class="who">Banco del Bienestar y Secretaría del Bienestar</span></button>
+    </nav>
 
-    <div class="axis-panel on" role="tabpanel" aria-labelledby="ax0" data-p="0">
-      <div>
-        <span class="proposed">Propuesta, no implementado</span>
-        <h3 style="margin-top:var(--s4)">Una aplicación más simple y segura</h3>
-        <p class="muted">Hoy la opción CoDi está escondida en menús secundarios, el registro falla con frecuencia y cada banco ofrece una experiencia distinta. Banco de México, como operador de CoDi y SPEI, homologaría la experiencia en todas las apps (incluida la del Banco del Bienestar).</p>
-        <ul class="checks">
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>CoDi a no más de dos toques desde la pantalla principal, en el mismo lugar y con el mismo diseño en cualquier banco.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>Registro guiado que funcione a la primera, una sola vez.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>Solicitud de cobro con nombre del comercio y monto exacto; autorización con contraseña o PIN.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>Límite de pago fijado por el usuario y aviso por cada operación.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>Recordatorio de nunca compartir códigos ni pagar con un QR fuera del estándar CoDi.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>Sello visible otorgado por Banxico a comercios ANTAD que ofrezcan CoDi.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>CONDUSEF atiende quejas y promueve educación en seguridad digital: un respaldo institucional cuando algo sale mal.</span></li>
-        </ul>
-      </div>
-      <div>
-        <div class="mock" aria-label="Maqueta ilustrativa de una app bancaria con el estándar propuesto">
-          <div class="mock-h"><b>Mi banco</b><span style="font-size:.72rem;color:#52657C">Inicio</span></div>
-          <div class="mock-grid"><div class="codi">CoDi<br>Pagar</div><div>Transferir</div><div>Tarjetas</div><div>Más</div></div>
-          <div class="mock-row"><span>Límite diario CoDi</span><b class="num">$2,000</b></div>
-          <div class="mock-row"><span>Aviso por cada operación</span><span class="toggle" role="img" aria-label="activado"></span></div>
-          <div class="mock-row" style="font-size:.74rem;color:#52657C">Nunca compartas tus códigos. Paga solo con QR del estándar CoDi.</div>
-          <div class="seal"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="none" stroke="#B07C1E" stroke-width="2"/><path d="M11 17.5l4 4 8-9" fill="none" stroke="#B07C1E" stroke-width="2.4" stroke-linecap="round"/></svg><span><b>Paga con CoDi en línea</b><br>es rápido, seguro y sin comisiones</span></div>
+    <!-- ============ EJE 1 · CONFIANZA ============ -->
+    <div class="axis-panel ax-v2 on" role="tabpanel" id="axp0" aria-labelledby="ax0" data-p="0" style="--ac:var(--gold)">
+      <header class="ax-brief">
+        <div class="ax-mhead"><span class="ax-num">Eje 1</span><h3>Confianza: una app más simple y segura</h3></div>
+        <dl>
+          <div><dt>Problema</dt><dd>CoDi está escondido en menús secundarios, el registro falla y cada banco ofrece una experiencia distinta.</dd></div>
+          <div><dt>Propuesta</dt><dd>Un estándar común en todas las apps, incluida la del Banco del Bienestar, conforme a la Ley de Economía Digital.</dd></div>
+          <div><dt>Participan</dt><dd><span class="actor">Banco de México</span><span class="actor">CONDUSEF</span></dd></div>
+        </dl>
+      </header>
+      <div class="ax-stage trust-stage">
+        <div class="trust-phone-wrap">
+          <div class="phone tp-phone" role="group" aria-label="Maqueta de la app bancaria con el estándar propuesto">
+            <div class="screen" id="tpScreen" aria-live="polite"></div>
+          </div>
+          <div class="tp-nav"><button type="button" class="tp-prev" aria-label="Pantalla anterior">‹</button><span class="tp-count num" id="tpCount">1 / 6</span><button type="button" class="tp-next" aria-label="Pantalla siguiente">›</button></div>
         </div>
-        <p class="mock-cap">Maqueta ilustrativa del estándar propuesto. No corresponde a ninguna app existente.</p>
-      </div>
-    </div>
-
-    <div class="axis-panel" role="tabpanel" aria-labelledby="ax1" data-p="1">
-      <div>
-        <span class="proposed">Propuesta, no implementado</span>
-        <h3 style="margin-top:var(--s4)">Nadie usa lo que no conoce</h3>
-        <p class="muted">El desconocimiento del proceso es la tercera razón para no comprar en línea (18.3%). La ANTAD toma el rol protagónico porque en sus tiendas millones de consumidores ya compran todos los días. Recorre el camino de un consumidor:</p>
-        <div class="journey" id="journey">
-          <div class="fill"></div>
-          <button type="button" class="cur done"><span class="dot">1</span><span><b>Campaña</b><span>Redes sociales, anuncios y espectaculares con un solo mensaje: «Paga con CoDi en línea, más rápido y más seguro». Complementa la campaña de Banco de México.</span></span></button>
-          <button type="button"><span class="dot">2</span><span><b>QR informativo en el mostrador</b><span>Explica qué es CoDi y cómo pagar, en línea o en tienda. La página registra escaneos para medir alcance.</span></span></button>
-          <button type="button"><span class="dot">3</span><span><b>Promotores capacitados</b><span>Ofrecen la alternativa a quienes todavía prefieren comprar en persona.</span></span></button>
-          <button type="button"><span class="dot">4</span><span><b>Primer pago acompañado</b><span>Ocurre en un espacio que el consumidor ya conoce y prefiere.</span></span></button>
-          <button type="button"><span class="dot">5</span><span><b>CoDi en la pasarela digital</b><span>En lugar de tarjeta o transferencia, el cliente elige CoDi: se genera un QR con monto que autoriza desde su banco, sin capturar datos de tarjeta.</span></span></button>
-          <button type="button"><span class="dot">6</span><span><b>Incentivo de bienvenida</b><span>Para que probar no cueste nada, las tiendas asociadas pueden ofrecer incentivos al pagar con CoDi.</span></span></button>
+        <div class="trust-side">
+          <div class="tp-legend"><span class="tag-ex">Existe hoy en CoDi</span><span class="tag-pr">Mejora propuesta por el equipo</span></div>
+          <ol class="stepper tp-actions" id="tpActions" role="tablist" aria-label="Pantallas de la experiencia propuesta"></ol>
+          <div class="tp-explain" id="tpExplain" aria-live="polite"></div>
         </div>
       </div>
-      <div>
-        <h3 class="fig-title">ANTAD mide sus propios resultados</h3>
-        <ul class="checks">
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="#62C8F5" stroke-width="2"/></svg><span>Escaneos del QR informativo.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="#62C8F5" stroke-width="2"/></svg><span>Pagos con CoDi en su pasarela digital.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5" fill="none" stroke="#62C8F5" stroke-width="2"/></svg><span>Clientes en tienda que se interesaron por la alternativa.</span></li>
-        </ul>
-        <div class="insight"><p>CoDi ya tiene las cuentas; la ANTAD puede darle los usuarios que necesita para consolidarse.</p></div>
-        <p class="muted" style="font-size:var(--t-small)">Puedes probar el flujo de la pasarela en la <a href="#demo">simulación de pago con CoDi</a>.</p>
+      <div class="ax-roles">
+        <div><b>Banco de México</b><p>Opera CoDi y SPEI, convoca a los bancos al estándar común y otorga el sello «Paga con CoDi en línea, es rápido, seguro y sin comisiones» a los comercios de la ANTAD que lo ofrezcan.</p></div>
+        <div><b>CONDUSEF</b><p>Atiende quejas sobre pagos digitales y difunde educación en seguridad digital: un respaldo institucional cuando algo sale mal.</p></div>
       </div>
+      <details class="ax-more"><summary>Todas las medidas del eje</summary>
+        <ul class="checks">
+          <li><span class="mk">✓</span><span>CoDi a no más de dos toques desde la pantalla principal, en el mismo lugar y con el mismo diseño en cualquier banco.</span></li>
+          <li><span class="mk">✓</span><span>Registro guiado que funcione a la primera, una sola vez.</span></li>
+          <li><span class="mk">✓</span><span>Solicitud de cobro con nombre del comercio y monto exacto, al escanear un QR en tienda o elegir CoDi en la pasarela digital.</span></li>
+          <li><span class="mk">✓</span><span>Autorización con contraseña o PIN del banco y confirmación en segundos.</span></li>
+          <li><span class="mk">✓</span><span>Límite de pago fijado por el usuario y aviso por cada operación.</span></li>
+          <li><span class="mk">✓</span><span>Recordatorio de nunca compartir códigos ni pagar con un QR fuera del estándar CoDi.</span></li>
+          <li><span class="mk">✓</span><span>Sello visible para comercios de la ANTAD que ofrezcan CoDi en tienda y en línea.</span></li>
+        </ul>
+        <p class="hint">Maqueta ilustrativa del estándar propuesto: no corresponde a ninguna app existente y no realiza operaciones.</p>
+      </details>
     </div>
 
-    <div class="axis-panel" role="tabpanel" aria-labelledby="ax2" data-p="2">
-      <div>
-        <span class="proposed">Propuesta, no implementado</span>
-        <h3 style="margin-top:var(--s4)">Llegar a donde la banca comercial no llega</h3>
-        <p class="muted">Solo 32.6% de la población usa banca en línea o móvil y la barrera pesa más en zonas rurales, donde «no sabe cómo hacerlo» llega a 24.4%. El reto no es abrir una cuenta, sino enseñar a usar la que ya se tiene.</p>
-        <ul class="checks">
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>El Banco del Bienestar, la red bancaria más amplia del país (3,149 sucursales), como puerta de entrada.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>Promoción de cuentas de ahorro y procesos de apertura más ágiles.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>Activación asistida de CoDi en la app, con límites de pago y aviso por operación (con apoyo de Banxico, Eje 1).</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>En días de pago de pensiones y programas, los Servidores de la Nación acompañan a personas adultas mayores y clientes en general a activar CoDi.</span></li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#D6AC55" stroke-width="2" stroke-linecap="round"/></svg><span>Educación digital y financiera paso a paso, con prioridad en las regiones menos incluidas.</span></li>
-        </ul>
-      </div>
-      <div>
-        <div class="compare-box" style="border-color:rgba(214,172,85,.5)">
-          <h3 class="fig-title" style="color:var(--gold)">Siempre voluntaria</h3>
-          <p style="margin:0">La activación de CoDi será siempre voluntaria y nunca estará condicionada a la entrega de ningún apoyo social. Está abierta a cualquier persona que tenga, o pueda abrir, una cuenta en su sucursal más cercana.</p>
-        </div>
-        <figure class="figure" style="margin-top:var(--s5)">
-          <h3 class="fig-title">Dónde la app bancaria aún no llega</h3>
-          <p class="fig-sub">% de la población de 6 años y más que usa banca en línea o móvil, por entidad, 2025.</p>
-          <div class="chart short" id="chBancaMap" role="img" aria-label="Mapa del uso de banca en línea o móvil por entidad: de 49.6% en Ciudad de México a 16.6% en Chiapas."></div>
-          <figcaption class="fig-foot"><span><b>Fuente:</b> ENDUTIH 2025, INEGI.</span></figcaption>
+    <!-- ============ EJE 2 · CONOCIMIENTO ============ -->
+    <div class="axis-panel ax-v2" role="tabpanel" id="axp1" aria-labelledby="ax1" data-p="1" style="--ac:var(--sky)">
+      <header class="ax-brief">
+        <div class="ax-mhead"><span class="ax-num">Eje 2</span><h3>Conocimiento: nadie usa lo que no conoce</h3></div>
+        <dl>
+          <div><dt>Problema</dt><dd>No saber cómo comprar en línea es la tercera razón para no hacerlo (18.3%).</dd></div>
+          <div><dt>Propuesta</dt><dd>Enseñar CoDi donde millones ya compran: campaña, QR informativo, promotores, primer pago acompañado y CoDi en cada pasarela.</dd></div>
+          <div><dt>Participan</dt><dd><span class="actor">ANTAD</span><span class="actor">Cadenas asociadas</span></dd></div>
+        </dl>
+      </header>
+      <div class="ax-stage learn-stage">
+        <figure class="learn-fig">
+          <div class="learn-art" id="learnArt" role="img" aria-label="Ilustración del recorrido de una persona que aprende a usar CoDi"></div>
+          <div class="learn-meter" aria-hidden="true"><span>Desconoce CoDi</span><div class="lm-track"><i id="lmFill"></i></div><span>Lo usa con confianza</span></div>
         </figure>
+        <div class="learn-side">
+          <ol class="stepper" id="learnSteps" role="tablist" aria-label="Recorrido de aprendizaje"></ol>
+          <div class="step-explain" id="learnExplain" aria-live="polite"></div>
+          <div class="step-ctl"><button type="button" class="btn btn-ghost" id="learnPrev">Anterior</button><button type="button" class="btn btn-gold" id="learnNext">Siguiente paso</button></div>
+        </div>
       </div>
+      <div class="ax-roles">
+        <div><b>ANTAD mide sus propios resultados</b><p>Escaneos del QR informativo, pagos con CoDi en su pasarela digital y clientes en tienda que se interesaron por la alternativa.</p></div>
+        <div><b>CoDi ya tiene las cuentas</b><p>La ANTAD puede darle los usuarios que necesita para consolidarse. Prueba el flujo de pago en la <a href="#demo">simulación de pago con CoDi</a>.</p></div>
+      </div>
+    </div>
 
+    <!-- ============ EJE 3 · INCLUSIÓN FINANCIERA ============ -->
+    <div class="axis-panel ax-v2" role="tabpanel" id="axp2" aria-labelledby="ax2" data-p="2" style="--ac:#3FC1A0">
+      <header class="ax-brief">
+        <div class="ax-mhead"><span class="ax-num">Eje 3</span><h3>Inclusión financiera: llegar a donde la banca comercial no llega</h3></div>
+        <dl>
+          <div><dt>Problema</dt><dd>Solo 32.6% usa banca en línea o móvil; en zonas rurales «no sabe cómo hacerlo» llega a 24.4%.</dd></div>
+          <div><dt>Propuesta</dt><dd>Usar la red de sucursales para enseñar a usar la cuenta que ya se tiene y activar CoDi de forma asistida.</dd></div>
+          <div><dt>Participan</dt><dd><span class="actor">Banco del Bienestar</span><span class="actor">Secretaría del Bienestar</span></dd></div>
+        </dl>
+      </header>
+      <blockquote class="incl-msg">
+        <p>La infraestructura ya existe. El siguiente paso es darles a las personas de todo México las herramientas para aprovecharla.</p>
+        <footer>Tener una sucursal en el estado no equivale a acceso efectivo en cada localidad: la distancia, los horarios y la conectividad varían. El mapa muestra dónde está la red, no quién ya puede usarla.</footer>
+      </blockquote>
       <section class="bb-block" id="sucursales" aria-labelledby="bbTitle">
         <div class="bb-head">
           <div>
@@ -705,6 +769,31 @@
         <div class="bb-legend"><span><i class="dot-obs"></i>Ubicación registrada (coordenada con 4 o más decimales)</span><span><i class="dot-apx"></i>Ubicación aproximada (coordenada con 3 decimales o menos)</span><span><i class="dot-cl"></i>Grupo de sucursales: toca para acercar</span></div>
         <p class="fig-foot"><span><b>Fuente:</b> Banco del Bienestar, directorio de sucursales con coordenadas, primer trimestre de 2026; procesamiento del equipo. El total nacional reportado por la CNBV (2026) es de 3,149 sucursales; el directorio contiene 3,150 registros con coordenadas (uno con horario extendido). Sin duplicados exactos; 3 pares de registros comparten domicilio y se marcan como posible registro doble. Las coordenadas provienen del propio directorio y no fueron verificadas en campo.</span><span><b>Mapa base:</b> Esri World Dark Gray (Esri, HERE, Garmin, © OpenStreetMap contributors) u OpenStreetMap. Geometrías estatales: Natural Earth.</span></p>
       </section>
+
+      <div class="ax-stage learn-stage incl-stage">
+        <figure class="learn-fig">
+          <div class="learn-art" id="inclArt" role="img" aria-label="Ilustración del acompañamiento en una sucursal del Banco del Bienestar"></div>
+          <div class="learn-meter" aria-hidden="true"><span>Llega a la sucursal</span><div class="lm-track"><i id="imFill"></i></div><span>Usa pagos digitales</span></div>
+        </figure>
+        <div class="learn-side">
+          <h4 class="panel-title">Acompañamiento en sucursal</h4>
+          <ol class="stepper" id="inclSteps" role="tablist" aria-label="Recorrido de acompañamiento en sucursal"></ol>
+          <div class="step-explain" id="inclExplain" aria-live="polite"></div>
+          <div class="step-ctl"><button type="button" class="btn btn-ghost" id="inclPrev">Anterior</button><button type="button" class="btn btn-gold" id="inclNext">Siguiente paso</button></div>
+        </div>
+      </div>
+      <div class="incl-foot">
+        <div class="compare-box voluntary">
+          <h4 class="fig-title">Siempre voluntaria</h4>
+          <p>La activación de CoDi será siempre voluntaria y nunca estará condicionada a la entrega de ningún apoyo social. Está abierta a cualquier persona que tenga, o pueda abrir, una cuenta en su sucursal más cercana. Los Servidores de la Nación acompañan en días de pago de pensiones y programas, cuando más gente acude.</p>
+        </div>
+        <figure class="figure">
+          <h4 class="fig-title">Dónde la app bancaria aún no llega</h4>
+          <p class="fig-sub">% de la población de 6 años y más que usa banca en línea o móvil, por entidad, 2025.</p>
+          <div class="chart short" id="chBancaMap" role="img" aria-label="Mapa del uso de banca en línea o móvil por entidad: de 49.6% en Ciudad de México a 16.6% en Chiapas."></div>
+          <figcaption class="fig-foot"><span><b>Fuente:</b> ENDUTIH 2025, INEGI.</span></figcaption>
+        </figure>
+      </div>
     </div>
 
     <!-- Arquitectura -->
@@ -918,6 +1007,7 @@
 
 <footer class="site">
   <div class="wrap">
+    <div class="foot-inst" aria-hidden="true"><img src="assets/images/escudo-unam.png" width="410" height="425" alt="" loading="lazy" decoding="async"><img src="assets/images/escudo-fe.png" width="320" height="401" alt="" loading="lazy" decoding="async"></div>
     <div>
       <p class="foot-motto">Quien conoce confía, y quien confía, compra. Usa CoDi.</p>
       <span>Estrategia de digitalización del comercio electrónico en México · Universidad Nacional Autónoma de México, Facultad de Economía · Datatón INEGI 2026.</span>
@@ -932,6 +1022,7 @@
 <script src="assets/data/datos.js" defer></script>
 <script src="assets/js/app.js" defer></script>
 <script src="assets/js/stories.js" defer></script>
+<script src="assets/js/ejes.js" defer></script>
 <script src="assets/js/present.js" defer></script>
 </body>
 </html>

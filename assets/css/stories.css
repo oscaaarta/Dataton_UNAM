@@ -30,34 +30,6 @@
 .lab .model-strip div + div { border-left-color: var(--line-night); }
 .lab .model-strip .k { color: var(--on-night-2); }
 .lab .model-strip div:nth-child(n+3) { border-top-color: var(--line-night); }
-.scene2 { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s7); align-items: start; margin-top: var(--s6); }
-.scene2 .coef svg text { font-family: var(--f-body); }
-.scene2 .row { cursor: pointer; outline: none; }
-.scene2 .row:focus-visible rect { stroke: var(--sky); stroke-width: 2; }
-.coef-side { position: sticky; top: 80px; display: grid; gap: var(--s4); }
-.illu { position: relative; aspect-ratio: 4 / 3; border-radius: 22px; overflow: hidden; border: 1px solid var(--line-night); background: radial-gradient(100% 90% at 50% 20%, #17395F, #0A1B32 70%); }
-.illu .il { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transform: scale(.96) translateY(8px); transition: opacity .55s var(--ease), transform .55s var(--ease); }
-.illu .il.on { opacity: 1; transform: none; }
-.coef-detail2 { padding: var(--s5); border-radius: var(--r-l); background: rgba(10,29,53,.85); border: 1px solid var(--line-night); }
-.coef-detail2 .cd-k { font-family: var(--f-head); font-weight: 700; font-size: 1rem; line-height: 1.3; }
-.coef-detail2 .cd-me { font-family: var(--f-head); font-weight: 800; font-size: 3rem; letter-spacing: -0.03em; line-height: 1.05; font-variant-numeric: tabular-nums; }
-.coef-detail2 .cd-me small { font-size: 1rem; color: var(--on-night-2); }
-.coef-detail2 dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: var(--t-small); margin: var(--s3) 0; }
-.coef-detail2 dt { color: var(--on-night-3); }
-.coef-detail2 dd { margin: 0; font-weight: 600; }
-.coef-detail2 p { font-size: var(--t-small); color: var(--on-night-2); }
-.coef-detail2 .caution { background: rgba(214,172,85,.1); color: var(--on-night); border-color: rgba(214,172,85,.45); }
-.coef-tip { position: fixed; z-index: 60; max-width: 300px; pointer-events: none; padding: 10px 14px; border-radius: 10px; background: #0E2442; border: 1px solid rgba(169,187,209,.25); color: var(--on-night); font-size: var(--t-small); line-height: 1.45; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
-.mag { margin-top: var(--s8); display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s7); align-items: start; }
-.mag h3 { font-size: var(--t-h3); margin-bottom: var(--s3); }
-.mag-row { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr) 84px; gap: var(--s4); align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line-night); font-size: var(--t-small); opacity: .5; transition: opacity .3s var(--ease); }
-.mag-row.on, .mag-row.ref { opacity: 1; }
-.mag-row.ref .mag-t i { background: var(--gold); }
-.mag-t { height: 12px; border-radius: 6px; background: rgba(255,255,255,.06); overflow: hidden; }
-.mag-t i { display: block; height: 100%; border-radius: 6px; background: var(--sky); }
-.mag-t i.neg { background: #E9826F; }
-.mag-v { font-family: var(--f-head); font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
-.mag-note { margin-top: var(--s4); font-size: var(--t-small); color: var(--on-night-2); min-height: 3em; }
 .lab .method { color: var(--on-night-2); }
 .lab .method h4 { color: var(--on-night); }
 
@@ -76,13 +48,6 @@
   .step:first-child { min-height: 96svh; }
   .step-card { opacity: 1; padding: var(--s5); border-radius: var(--r-l); background: rgba(7,22,41,.92); border: 1px solid var(--line-night); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
   .paper .step-card { background: rgba(246,248,252,.95); border-color: var(--line-paper); }
-  .scene2, .mag { grid-template-columns: minmax(0, 1fr); }
-  .coef-side { position: static; }
-  .mag-row { grid-template-columns: minmax(0, 1fr) 76px; }
-  .mag-row .mag-t { grid-column: 1 / -1; grid-row: 2; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .illu .il { transition: none; }
 }
 
 /* ===== Modo presentación ===== */
@@ -124,5 +89,3 @@
 .arch .nd.sel text.in { stroke: none; }
 .arch .nd text.in { stroke: none; }
 @media (max-width: 768px) { #chGoods { height: 760px; } #chBar { height: 640px; } }
-/* textos del gráfico de efectos: halo del color de fondo para que el eje cero no los cruce */
-.scene2 .coef svg text { paint-order: stroke; stroke: #071629; stroke-width: 4px; stroke-linejoin: round; }

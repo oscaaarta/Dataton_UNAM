@@ -11,9 +11,9 @@
       f: 'Los compradores van de 7.2% de la población en Chiapas a 31.1% en Colima. Entre quienes no compran, 34.4% prefiere la tienda y 18.3% no sabe cómo; la desconfianza digital va de 3.4% (Tamaulipas) a 16.2% (Tlaxcala).' },
     { sel: '#s7 .facts', t: 'La oportunidad de CoDi',
       f: '20.6 millones de cuentas validadas, pero solo 2.7 millones de cuentas nuevas hicieron al menos un pago. 86.5% usa smartphone y solo 32.6% banca en línea o móvil.' },
-    { sel: '#s8 .scene2', t: 'Resultados del modelo logit',
+    { sel: '#logitLab', on: () => window.LLAB && window.LLAB.full(), t: 'Resultados del modelo logit',
       f: 'La desconfianza se asocia con −1.28 pp en la probabilidad de usar CoDi; smartphone (+3.09 pp), banca móvil (+2.12 pp) y cada habilidad digital (+0.34 pp), con mayor probabilidad. Asociaciones, no efectos causales.' },
-    { sel: '#s9 .axes-tabs', t: 'Tres ejes de la estrategia',
+    { sel: '#s9 .axes-tabs', alt: '#axp0', t: 'Tres ejes de la estrategia',
       f: 'Confianza (Banco de México y CONDUSEF), conocimiento (ANTAD) e inclusión financiera (Banco del Bienestar y Secretaría del Bienestar). Todo es propuesta, no implementado.' },
     { sel: '#s9 .pilot', t: 'Piloto en Nuevo León y escalamiento',
       f: 'Piloto propuesto de 0 a 2 años y tres fases de dos años, condicionadas a resultados verificables. Ocho años es el escenario base, no un calendario garantizado.' },
@@ -28,8 +28,9 @@
 
   function go(k) {
     i = Math.max(0, Math.min(STOPS.length - 1, k));
-    const s = STOPS[i], el = $(s.sel) || $(s.alt);
+    const s = STOPS[i], vis = e => e && e.offsetWidth > 0, el = vis($(s.sel)) ? $(s.sel) : $(s.alt);
     $$('.pm-focus').forEach(e => e.classList.remove('pm-focus'));
+    if (s.on) s.on();
     if (el) {
       el.classList.add('pm-focus');
       const y = el.getBoundingClientRect().top + scrollY - Math.max(72, (innerHeight - bar.offsetHeight - Math.min(el.offsetHeight, innerHeight * .7)) / 2);
@@ -41,12 +42,13 @@
     $('#pmDots').innerHTML = STOPS.map((_, k) => `<button type="button" aria-label="Parada ${k + 1}: ${STOPS[k].t}" aria-current="${k === i ? 'step' : 'false'}" data-k="${k}"></button>`).join('');
     $$('#pmDots button').forEach(b => b.addEventListener('click', () => go(+b.dataset.k)));
   }
-  function setMode(m, jump) {
-    mode = m; body.classList.toggle('mode-present', m === 'present');
+  function setMode(m, jump, initial) {
+    const changed = m !== mode || !initial; mode = m; body.classList.toggle('mode-present', m === 'present');
     $$('button', seg).forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
     bar.hidden = m !== 'present'; save(m);
     if (m === 'present') { if (jump) go(0); }
     else $$('.pm-focus').forEach(e => e.classList.remove('pm-focus'));
+    if (!changed) return;
     if (window.ScrollTrigger) setTimeout(() => ScrollTrigger.refresh(), 60);
     dispatchEvent(new Event('resize'));
   }
@@ -62,5 +64,5 @@
   });
   const q = new URLSearchParams(location.search).get('modo');
   const start = q === 'presentacion' ? 'present' : q === 'exploracion' ? 'explore' : (load() || 'explore');
-  setMode(start, start === 'present');
+  setMode(start, start === 'present', true);
 })();

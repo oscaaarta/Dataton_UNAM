@@ -335,7 +335,10 @@ window.DATA = (function () {
   ];
   const biblioCats = { inegi: 'Estadística oficial (INEGI)', banxico: 'Banco de México y CoDi', fin: 'Sistema financiero e inclusión', pol: 'Política pública y marco legal', acad: 'Literatura académica y conceptual', prensa: 'Prensa especializada' };
 
-  return { projection, biblio, biblioCats, codiRegion, vabcoel, region, buyerYears, buyers, buyersNational, penetration, profile, buyRate, goods, noBuy, problems,
+  // registros del directorio de sucursales del Banco del Bienestar por entidad (1er trim. 2026; ver sucursales-bienestar.js)
+  const bbByState = {"Ciudad de México":88, "México":279, "Guerrero":136, "Campeche":26, "Chihuahua":72, "Sonora":73, "San Luis Potosí":77, "Veracruz":292, "Colima":17, "Sinaloa":65, "Durango":47, "Yucatán":100, "Baja California Sur":10, "Tamaulipas":61, "Baja California":26, "Nuevo León":55, "Michoacán":174, "Oaxaca":287, "Hidalgo":135, "Puebla":261, "Querétaro":30, "Coahuila":35, "Chiapas":233, "Nayarit":34, "Tabasco":45, "Guanajuato":106, "Jalisco":152, "Zacatecas":74, "Tlaxcala":74, "Aguascalientes":17, "Morelos":45, "Quintana Roo":24};
+
+  return { bbByState, projection, biblio, biblioCats, codiRegion, vabcoel, region, buyerYears, buyers, buyersNational, penetration, profile, buyRate, goods, noBuy, problems,
     distrust, distrustRegion, distrustAgeSum, distrustAge, reasonsSex, reasonsRural, reasonsStrata, reasonsEdu,
     codiAltas, codiUse, payMethods, requisites, banca, codiState, branches, logit, phaseOf };
 })();

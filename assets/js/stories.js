@@ -123,6 +123,7 @@
      Cada escena: n pasos; svg(); build(tl, q, at). at(i) = momento en que
      inicia la transición hacia el paso i (el paso i queda completo en T(i)).
      ===================================================================== */
+  window.SVGKIT = { phone, rr, tx, person, shield, qr, waves, card, mxProject, K, HEAD, BODY };
   const SCENES = {};
 
   /* 01 · El comercio electrónico crece */
@@ -353,32 +354,40 @@
     }
   };
 
-  /* 08 · Los tres ejes */
+  /* 08 · Los tres ejes: tres ilustraciones que aparecen y se conectan en una sola estrategia */
   SCENES.axes = {
     svg() {
-      const M = mxProject(470, 150, 300, 230), south = ['Chiapas', 'Oaxaca', 'Guerrero', 'Veracruz', 'Puebla', 'Michoacán', 'Tabasco', 'Yucatán'];
-      const trust = `<g class="ax ax0">${shield(400, 260, 2.2)}
-        ${card(130, 150, 170, 60, '', tx(16, 26, 'Límite de pago', 12, K.on2, 600) + tx(16, 46, '$2,000', 16, K.on, 800, 'start', HEAD) + `<rect x="118" y="20" width="36" height="20" rx="10" fill="${K.gold}"/><circle cx="144" cy="30" r="7" fill="#071629"/>`)}
-        ${card(500, 160, 170, 60, '', `<path d="M24 22 q0 -8 8 -8 q8 0 8 8 v10 l4 4 h-24 l4 -4 z" fill="${K.sky}"/>` + tx(54, 30, 'Aviso por', 12, K.on2, 600) + tx(54, 46, 'cada operación', 12, K.on, 700))}
-        ${card(300, 420, 200, 56, '', `<circle cx="28" cy="28" r="14" fill="none" stroke="${K.gold}" stroke-width="2"/><path d="M21 28 l5 5 9-10" stroke="${K.gold}" stroke-width="2.5" fill="none"/>` + tx(52, 33, 'Sello CoDi en comercios', 13, K.on, 700))}</g>`;
-      const pathPts = [[150, 440], [240, 380], [330, 400], [420, 330], [510, 330], [600, 250]];
-      const know = `<g class="ax ax1"><path d="M${pathPts.map(p => p.join(' ')).join(' L')}" fill="none" stroke="${K.sky}" stroke-opacity=".5" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
-        ${pathPts.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="14" fill="${i === 5 ? K.gold : '#102D4F'}" stroke="${K.sky}" stroke-width="2"/>${tx(p[0], p[1] + 5, i + 1, 13, i === 5 ? '#071629' : K.on, 800, 'middle', HEAD)}`).join('')}
-        ${person(150, 410, 110, { hair: 'long', phone: true, cls: 'walker' })}
-        ${qr(540, 120, 90, 5)}<path d="M200 170 q60 -40 120 0 q60 -40 120 0 v90 q-60 -40 -120 0 q-60 -40 -120 0 z" fill="url(#gSky)" opacity=".85"/><path d="M320 170 v90" stroke="#071629" stroke-width="2" opacity=".5"/></g>`;
-      const incl = `<g class="ax ax2"><g transform="translate(110,190)"><path d="M0 70 L110 10 L220 70 Z" fill="url(#gGold)"/>${[30, 75, 120, 165].map(x => rr(x, 80, 24, 110, 4, '#2A5582')).join('')}${rr(-10, 190, 240, 22, 4, '#2A5582')}${rr(10, 70, 200, 12, 3, '#E8C27A')}</g>
-        ${Object.keys(M).map(n => `<path d="${M[n].d}" fill="${south.includes(n) ? '#1F6E8C' : '#12304F'}" stroke="#9BE0FF" stroke-opacity=".2" stroke-width=".6"/>`).join('')}
-        ${south.map(n => `<g class="pin" transform="translate(${M[n].c[0]},${M[n].c[1]})"><path d="M0 0 C -8 -10 -10 -16 -10 -20 A10 10 0 1 1 10 -20 C 10 -16 8 -10 0 0 Z" fill="${K.gold}"/><circle cy="-20" r="4" fill="#071629"/></g>`).join('')}</g>`;
-      const tri = `<g class="tri">${[[200, 'Confianza', K.gold], [400, 'Conocimiento', K.sky], [600, 'Inclusión financiera', K.teal]].map(t => `<circle cx="${t[0]}" cy="300" r="56" fill="#0E2442" stroke="${t[2]}" stroke-width="2"/>${tx(t[0], 306, t[1], 14, K.on, 800, 'middle', HEAD)}`).join('')}<path d="M256 300 H344 M456 300 H544" stroke="${K.gold}" stroke-width="2" stroke-dasharray="4 6"/></g>`;
-      return `<circle cx="400" cy="300" r="260" fill="url(#gGlowG)" opacity=".5"/>${trust}${know}${incl}${tri}`;
+      const col = [K.gold, K.sky, K.teal];
+      // Eje 1: celular con solicitud de cobro y escudo
+      const req = rr(8, 46, 104, 92, 10, '#fff', 'stroke="#DCE5F0"') + tx(18, 66, 'Solicitud CoDi', 9, '#52657C', 700) + tx(18, 88, 'Tienda ejemplo', 10, '#0D2137', 700) + tx(18, 112, '$849.00', 17, '#0D2137', 800, 'start', HEAD) + rr(18, 120, 60, 8, 4, K.gold)
+        + rr(8, 150, 104, 34, 17, '#102D4F') + tx(60, 172, 'Autorizar con NIP', 9, '#fff', 700, 'middle') + rr(8, 196, 104, 30, 8, '#E7F6EF') + tx(18, 215, '✓ Sin datos de tarjeta', 8.5, '#178F72', 700);
+      const trust = `<g class="ax ax0">${phone(92, 120, 120, 250, req)}${shield(232, 330, .82)}
+        <circle cx="232" cy="330" r="66" fill="none" stroke="${K.gold}" stroke-opacity=".35" stroke-dasharray="3 7"/>
+        <g class="bell">${card(26, 168, 66, 46, '', `<path d="M22 30 q0 -11 11 -11 q11 0 11 11 v6 l4 4 h-30 l4 -4 z" fill="${K.sky}"/><circle cx="33" cy="42" r="3" fill="${K.sky}"/>`)}</g></g>`;
+      // Eje 2: persona aprendiendo en una tienda (mostrador, QR informativo y promotor)
+      const know = `<g class="ax ax1"><rect x="300" y="330" width="210" height="62" rx="8" fill="url(#gCard)" stroke="#9BE0FF" stroke-opacity=".25"/><rect x="300" y="322" width="210" height="12" rx="4" fill="#2A5582"/>
+        <g transform="translate(438,232)"><rect x="-8" y="-8" width="72" height="96" rx="8" fill="#0E2442" stroke="${K.sky}" stroke-opacity=".5"/>${qr(4, 4, 48, 11)}${tx(28, 78, '¿Qué es CoDi?', 8.5, K.on, 700, 'middle')}</g>
+        ${person(352, 392, 150, { hair: 'long', phone: true, cls: 'learner' })}${person(478, 392, 132, { hair: 'short', fill: 'url(#gFigG)' })}
+        <g class="bubble"><rect x="282" y="180" width="128" height="40" rx="12" fill="#fff"/><path d="M330 220 l8 12 l6 -12 z" fill="#fff"/>${tx(346, 205, 'CoDi en 2 pasos', 11, '#0D2137', 800, 'middle', HEAD)}</g></g>`;
+      // Eje 3: red del Banco del Bienestar por entidad (datos del directorio)
+      const M = mxProject(548, 150, 236, 200), cnt = D.bbByState || {}, mx = Math.max(1, ...Object.values(cnt));
+      const incl = `<g class="ax ax2">${Object.keys(M).map(n => `<path d="${M[n].d}" fill="#12304F" stroke="#9BE0FF" stroke-opacity=".22" stroke-width=".6"/>`).join('')}
+        ${Object.keys(M).filter(n => cnt[n]).map(n => `<circle class="bb" cx="${M[n].c[0].toFixed(1)}" cy="${M[n].c[1].toFixed(1)}" r="${(2.2 + Math.sqrt(cnt[n] / mx) * 11).toFixed(1)}" fill="${K.teal}" fill-opacity=".55" stroke="${K.teal}" stroke-width="1"/>`).join('')}
+        <g transform="translate(560,320)"><path d="M0 30 L40 8 L80 30 Z" fill="url(#gGold)"/>${[8, 26, 44, 62].map(x => rr(x, 34, 10, 34, 2, '#2A5582')).join('')}${rr(-4, 68, 88, 8, 3, '#2A5582')}</g></g>`;
+      const lab = [[152, 'Confianza'], [405, 'Conocimiento'], [666, 'Inclusión financiera']].map((l, i) => `<g class="lab lab${i}">${tx(l[0], 440, l[1], 17, K.on, 800, 'middle', HEAD)}<rect x="${l[0] - 26}" y="450" width="52" height="3" rx="1.5" fill="${col[i]}"/>${tx(l[0], 474, ['Banco de México · CONDUSEF', 'ANTAD y cadenas', 'Banco del Bienestar · Sec. del Bienestar'][i], 11, K.on3, 600, 'middle')}</g>`).join('');
+      const link = `<g class="lk">${[[152, 492], [405, 492], [666, 492]].map((p, i) => `<path class="lp" d="M${p[0]} ${p[1]} Q ${(p[0] + 405) / 2} ${560} 405 548" fill="none" stroke="${col[i]}" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>`).join('')}
+        <path class="lp" d="M226 300 Q 262 270 296 300" fill="none" stroke="${K.gold}" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/><path class="lp" d="M516 300 Q 534 270 552 300" fill="none" stroke="${K.gold}" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+        <g class="core"><circle cx="405" cy="556" r="26" fill="#0E2442" stroke="${K.gold}" stroke-width="2"/>${tx(405, 561, 'CoDi', 13, K.gold, 800, 'middle', HEAD)}</g></g>`;
+      return `<circle cx="405" cy="300" r="270" fill="url(#gGlowG)" opacity=".35"/>${trust}${know}${incl}${lab}${link}`;
     },
     build(tl, q, at) {
-      G.set(q('.ax1, .ax2, .tri'), { opacity: 0 }); G.set(q('.ax0'), { opacity: 0, scale: .9, transformOrigin: '50% 50%' }); G.set(q('.pin'), { opacity: 0, y: -10 });
-      tl.to(q('.ax0'), { opacity: 1, scale: 1, duration: .45 }, .05);
-      tl.to(q('.ax0'), { opacity: 0, x: -60, duration: .3 }, at(1)).fromTo(q('.ax1'), { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: .35 }, at(1) + .15)
-        .fromTo(q('.walker'), { x: 0, y: 0 }, { x: 360, y: -84, duration: .4 }, at(1) + .35);
-      tl.to(q('.ax1'), { opacity: 0, x: -60, duration: .3 }, at(2)).fromTo(q('.ax2'), { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: .35 }, at(2) + .15).to(q('.pin'), { opacity: 1, y: 0, duration: .25, stagger: .03 }, at(2) + .3);
-      tl.to(q('.ax2'), { opacity: 0, duration: .3 }, at(3)).to(q('.tri'), { opacity: 1, duration: .35 }, at(3) + .15);
+      G.set(q('.ax, .lab'), { opacity: 0 }); G.set(q('.ax0'), { y: 20 }); G.set(q('.ax1'), { y: 20 }); G.set(q('.ax2'), { y: 20 });
+      G.set(q('.bb'), { scale: 0, transformOrigin: '50% 50%', transformBox: 'fill-box' }); G.set(q('.core'), { opacity: 0, scale: .5, transformOrigin: '50% 50%', transformBox: 'fill-box' });
+      G.set(q('.bubble'), { opacity: 0, y: 8 });
+      tl.to(q('.ax0, .lab0'), { opacity: 1, y: 0, duration: .45 }, .05);
+      tl.to(q('.ax0, .lab0'), { opacity: .4, duration: .3 }, at(1)).to(q('.ax1, .lab1'), { opacity: 1, y: 0, duration: .4 }, at(1) + .1).to(q('.bubble'), { opacity: 1, y: 0, duration: .25 }, at(1) + .4);
+      tl.to(q('.ax1, .lab1'), { opacity: .4, duration: .3 }, at(2)).to(q('.ax2, .lab2'), { opacity: 1, y: 0, duration: .4 }, at(2) + .1).to(q('.bb'), { scale: 1, duration: .3, stagger: .012 }, at(2) + .3);
+      tl.to(q('.ax, .lab'), { opacity: 1, duration: .3 }, at(3)).to(q('.lp'), { attr: { 'stroke-dashoffset': 0 }, duration: .45, stagger: .06 }, at(3) + .1).to(q('.core'), { opacity: 1, scale: 1, duration: .3 }, at(3) + .45);
     }
   };
 
@@ -450,7 +459,7 @@
   } else $$('.story[data-scene]').forEach(mount);
 
   /* =====================================================================
-     MODELO LOGIT · escena 2: gráfico de efectos marginales interactivo
+     MODELO LOGIT · ilustraciones por variable (usadas por el laboratorio)
      ===================================================================== */
   const ILLU = {
     0: `<circle cx="200" cy="150" r="120" fill="url(#gGlow)"/>${phone(140, 30, 120, 250, rr(8, 40, 96, 70, 8, '#fff', 'stroke="#DCE5F0"') + tx(16, 62, 'Solicitud de pago', 8, '#52657C', 600) + tx(16, 84, '$1,249.00', 12, '#0D2137', 800, 'start', HEAD) + rr(16, 92, 50, 8, 4, '#D6AC55'))}${shield(290, 170, 1.05)}<circle cx="290" cy="170" r="80" fill="none" stroke="${K.gold}" stroke-opacity=".4" stroke-dasharray="3 7"/>`,
@@ -459,93 +468,209 @@
     3: `<circle cx="200" cy="150" r="120" fill="url(#gGlow)"/>${phone(140, 30, 120, 250, rr(0, 0, 104, 54, 0, '#102D4F') + tx(10, 38, 'Mi banco', 9, '#fff', 800, 'start', HEAD) + rr(8, 64, 88, 52, 10, 'url(#gCard)') + tx(16, 86, 'Saldo', 8, '#A9BBD1', 600) + rr(16, 94, 50, 10, 5, '#D6AC55') + [0, 1, 2, 3].map(i => rr(8 + (i % 2) * 46, 126 + Math.floor(i / 2) * 46, 42, 38, 8, i === 0 ? '#102D4F' : '#fff', 'stroke="#DCE5F0"')).join('') + tx(29, 150, 'CoDi', 9, '#D6AC55', 800, 'middle', HEAD))}`,
     4: `<circle cx="200" cy="160" r="130" fill="url(#gGlow)"/>${person(110, 270, 150, { hair: 'long', phone: true })}${person(200, 270, 170, { hair: 'short', phone: true })}${person(290, 270, 160, { hair: 'gray' })}<line x1="60" x2="340" y1="274" y2="274" stroke="#9BE0FF" stroke-opacity=".25"/>`
   };
-  (function logitInteractive() {
-    const host = $('#coefSvg'); if (!host) return;
-    const L = D.logit, tip = $('#coefTip'), illu = $('#coefIllu');
-    let sel = 0;
-    illu.innerHTML = L.rows.map((r, i) => `<svg class="il" data-i="${i}" viewBox="0 0 400 300" aria-hidden="true">${ILLU[i]}</svg>`).join('');
-    const fmt = r => `${r.me > 0 ? '+' : '−'}${nf(Math.abs(r.me), r.me === -0.013 ? 3 : 2)}`;
-    function render() {
-      const W = Math.max(300, host.clientWidth || 620), mob = W < 560;
-      const left = mob ? 14 : 210, right = mob ? 16 : 28, rowH = mob ? 112 : 76, top = 40, H = top + rowH * L.rows.length + 40;
-      const xmin = -3, xmax = 6, x = v => left + (v - xmin) / (xmax - xmin) * (W - left - right);
-      let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="listbox" aria-label="Efectos marginales; usa flechas para cambiar de variable" tabindex="-1">`;
-      s += `<rect x="${x(xmin)}" y="${top - 18}" width="${x(0) - x(xmin)}" height="${H - top - 22}" fill="${K.red}" opacity=".05"/><rect x="${x(0)}" y="${top - 18}" width="${x(xmax) - x(0)}" height="${H - top - 22}" fill="${K.sky}" opacity=".05"/>`;
-      s += tx(x(0) - 8, top - 24, mob ? '← negativa' : '← asociación negativa', 12, K.red, 700, 'end') + tx(x(0) + 8, top - 24, mob ? 'positiva →' : 'asociación positiva →', 12, K.sky, 700);
-      for (let g = xmin; g <= xmax; g++) s += `<line x1="${x(g)}" x2="${x(g)}" y1="${top - 14}" y2="${H - 34}" stroke="${g === 0 ? K.on : 'rgba(169,187,209,.12)'}" stroke-width="${g === 0 ? 1.6 : 1}"/>` + tx(x(g), H - 14, (g > 0 ? '+' : '') + g, 12, K.on3, 600, 'middle');
-      L.rows.forEach((r, i) => {
-        const rowTop = top + rowH * i, cy = mob ? rowTop + 82 : rowTop + rowH / 2, col = r.me < 0 ? K.red : K.sky, on = i === sel;
-        const lx = mob ? 14 : left - 18, ly = mob ? rowTop + 24 : cy - 3;
-        s += `<g class="row${on ? ' on' : ''}" data-i="${i}" tabindex="${on ? 0 : -1}" role="option" aria-selected="${on}">`;
-        s += `<rect class="bg" x="0" y="${rowTop + 4}" width="${W}" height="${rowH - 8}" rx="12" fill="${on ? 'rgba(214,172,85,.1)' : 'transparent'}" stroke="${on ? 'rgba(214,172,85,.45)' : 'none'}"/>`;
-        s += tx(lx, ly, r.short, 15, on ? K.gold : K.on, 800, mob ? 'start' : 'end', HEAD, 'class="nm"') + tx(lx, ly + 18, r.unit, 12, K.on3, 500, mob ? 'start' : 'end');
-        if (r.lo != null) s += `<g class="ci"><line x1="${x(r.lo)}" x2="${x(r.hi)}" y1="${cy}" y2="${cy}" stroke="${K.on}" stroke-width="2"/><line x1="${x(r.lo)}" x2="${x(r.lo)}" y1="${cy - 7}" y2="${cy + 7}" stroke="${K.on}" stroke-width="2"/><line x1="${x(r.hi)}" x2="${x(r.hi)}" y1="${cy - 7}" y2="${cy + 7}" stroke="${K.on}" stroke-width="2"/></g>`;
-        else s += tx(x(r.me) + (r.me < 0 ? -14 : 14), cy + (mob ? 22 : 24), 'IC no reportado', 11, K.on3, 500, r.me < 0 ? 'end' : 'start', BODY, 'font-style="italic"');
-        s += `<line class="stem" x1="${x(0)}" x2="${x(r.me)}" y1="${cy}" y2="${cy}" stroke="${col}" stroke-width="${on ? 6 : 4}" stroke-linecap="round" opacity=".45"/>`;
-        s += `<circle class="dot" cx="${x(r.me)}" cy="${cy}" r="${on ? 11 : 8}" fill="${col}" stroke="${K.night}" stroke-width="3"/>`;
-        const vt = `${fmt(r)} ${r.sig}`;
-        s += mob ? tx(W - 10, ly, vt, 15, col, 800, 'end', HEAD) : tx(x(r.me) + (r.me < 0 ? -16 : 16), cy - 12, vt, 14, col, 800, r.me < 0 ? 'end' : 'start', HEAD);
-        s += `</g>`;
+  /* =====================================================================
+     MODELO LOGIT · escena 2: «Construye el modelo» (laboratorio interactivo)
+     Recupera la interactividad de «Digitalízate con CoDi.html» (variables que
+     se activan una a una, efecto por variable y lectura acumulada de las
+     continuas) con las cifras de la especificación final. IMPORTANTE: no se
+     re-estima nada. Los cinco efectos son siempre los del modelo completo
+     (svy: logit uso_codi desconfianza n_habilidades smartphone banca_movil
+     edad; margins, dydx(*)). Agregar o quitar solo muestra u oculta.
+     ===================================================================== */
+  (function logitLab() {
+    const root = $('#logitLab'); if (!root) return;
+    const L = D.logit, N = L.rows.length, MEAN = L.mean;
+    const VARS = [
+      { ic: '!', kind: 'bin', name: 'Desconfianza', sub: 'en la seguridad de pagos o datos', axis: 'Eje 1 · Confianza',
+        lead: 'Quien desconfía de la seguridad al comprar en línea, o ya tuvo un problema con sus pagos o datos, tiene una probabilidad 1.28 pp menor de usar CoDi.',
+        rel: 'Frente a un uso promedio de 1.85%, es una probabilidad cerca de 70% menor.' },
+      { ic: '14', kind: 'cont', name: 'Habilidades digitales', sub: 'número de habilidades (0 a 14)', axis: 'Eje 2 · Conocimiento',
+        lead: 'Es el determinante con mayor solidez estadística: cada habilidad digital adicional se asocia con +0.34 pp.',
+        acc: { min: 0, max: 14, def: 10, lbl: n => `${n} ${n === 1 ? 'habilidad' : 'habilidades'} de diferencia`, ref: 'La investigación lo ilustra con 10 habilidades: +3.4 pp, casi el doble del uso promedio.' } },
+      { ic: '<svg width="12" height="18" viewBox="0 0 12 18"><rect x="1" y="1" width="10" height="16" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="14" r="1.1" fill="currentColor"/></svg>', kind: 'bin', name: 'Teléfono inteligente', sub: 'lo usa (sí / no)', axis: 'Eje 3 · Inclusión financiera',
+        lead: 'Usar teléfono inteligente se asocia con +3.09 pp: por sí solo supera el uso promedio.',
+        rel: 'Es el efecto menos preciso del modelo (IC 95%: 0.6 a 5.6 pp): leerlo como dirección, no como magnitud exacta.' },
+      { ic: '$', kind: 'bin', name: 'Banca móvil', sub: 'la usa (sí / no)', axis: 'Eje 3 · Inclusión financiera',
+        lead: 'Usar banca móvil se asocia con +2.12 pp, más que el uso promedio.',
+        rel: 'Aquí se rompe la cadena: 86.5% usa smartphone, pero solo 32.6% usa banca en línea o móvil.' },
+      { ic: '+1', kind: 'cont', name: 'Edad', sub: 'años cumplidos', axis: 'Ejes 2 y 3 · Acompañamiento',
+        lead: 'Es el efecto más pequeño del modelo: −0.013 pp por cada año de edad.',
+        acc: { min: 0, max: 50, def: 30, lbl: n => `${n} ${n === 1 ? 'año' : 'años'} de diferencia`, ref: 'La investigación lo ilustra con 30 años: cerca de −0.4 pp, alrededor de una quinta parte del uso promedio.' } }
+    ];
+    const inc = new Set(); let cur = null, busy = false;
+    const acc = VARS.map(v => v.acc ? v.acc.def : 0);
+    const col = r => r.me < 0 ? K.red : K.sky;
+    const fmt = (v, d) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${nf(Math.abs(v), d)}`;
+    const fme = r => fmt(r.me, Math.abs(r.me) < .1 ? 3 : 2);
+    const varsEl = $('#llabVars'), wires = $('#llabWires'), diag = $('#llabDiagram'), yEl = $('#llabY'), card = $('#llabCard'), plot = $('#llabPlot');
+
+    /* ---------- nodos (botones de variables) ---------- */
+    varsEl.innerHTML = L.rows.map((r, i) => `<li><button type="button" class="llab-v" data-i="${i}" aria-pressed="false" style="--c:${col(r)}">
+      <span class="lv-ic" aria-hidden="true">${VARS[i].ic}</span>
+      <span class="lv-t"><b>${VARS[i].name}</b><small>${VARS[i].sub}</small></span>
+      <span class="lv-me num"><span class="lv-val">${fme(r)} pp <i>${r.sig}</i></span><span class="lv-add">Agregar</span></span>
+      <span class="lv-tg" aria-hidden="true"></span></button></li>`).join('');
+    const btns = $$('.llab-v', varsEl);
+    btns.forEach(b => b.addEventListener('click', () => toggle(+b.dataset.i)));
+
+    /* ---------- conexiones ---------- */
+    const NS = 'http://www.w3.org/2000/svg';
+    const paths = L.rows.map((r, i) => {
+      const g = document.createElementNS(NS, 'g');
+      g.innerHTML = `<path class="w-ghost"/><path class="w-live" pathLength="1" stroke="${col(r)}"/><circle class="w-pulse" r="4.5" fill="${col(r)}" opacity="0"><animateMotion dur="0.75s" begin="indefinite" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".4 0 .2 1"/></circle>`;
+      wires.appendChild(g); return g;
+    });
+    function layout() {
+      const d = diag.getBoundingClientRect(); if (!d.width) return;
+      const y = yEl.getBoundingClientRect(), ty = y.top - d.top + y.height / 2, tx0 = y.left - d.left + 2;
+      wires.setAttribute('viewBox', `0 0 ${d.width} ${d.height}`);
+      btns.forEach((b, i) => {
+        const r = b.getBoundingClientRect(), x1 = r.right - d.left, y1 = r.top - d.top + r.height / 2;
+        const x2 = tx0, y2 = ty + (i - (N - 1) / 2) * Math.min(12, y.height / 9), k = (x2 - x1) * .55;
+        const dd = `M${x1.toFixed(1)} ${y1.toFixed(1)} C${(x1 + k).toFixed(1)} ${y1.toFixed(1)} ${(x2 - k).toFixed(1)} ${y2.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+        $$('path', paths[i]).forEach(p => p.setAttribute('d', dd));
+        $('animateMotion', paths[i]).setAttribute('path', dd);
       });
-      host.innerHTML = s + '</svg>';
-      const rows = $$('.row', host);
-      rows.forEach(g => {
-        const i = +g.dataset.i;
-        g.addEventListener('click', () => select(i, true));
-        g.addEventListener('pointermove', e => { if (e.pointerType !== 'mouse') return; const r = L.rows[i]; tip.innerHTML = `<b>${r.short}</b> · ${fmt(r)} pp<br>${r.read.split('. ')[0]}.`; tip.style.left = (e.clientX + 16) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; tip.hidden = false; });
-        g.addEventListener('pointerleave', () => { tip.hidden = true; });
+    }
+    if ('ResizeObserver' in window) new ResizeObserver(() => { layout(); }).observe(diag); else addEventListener('resize', layout);
+
+    /* ---------- gráfico de efectos (filas fijas: no hay saltos de altura) ---------- */
+    let plotW = 0;
+    function geom() {
+      const W = Math.max(280, plot.clientWidth || 620), mob = W < 560;
+      const left = mob ? 14 : 200, right = mob ? 16 : 28, rowH = mob ? 104 : 70, top = 40, H = top + rowH * N + 40;
+      const x = v => left + (v + 3) / 9 * (W - left - right);
+      return { W, H, mob, left, rowH, top, x };
+    }
+    function drawPlot() {
+      const { W, H, mob, left, rowH, top, x } = geom(); plotW = W;
+      let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="group" aria-label="Efectos marginales de las variables agregadas">`;
+      s += `<rect x="${x(-3)}" y="${top - 18}" width="${x(0) - x(-3)}" height="${H - top - 22}" fill="${K.red}" opacity=".05"/><rect x="${x(0)}" y="${top - 18}" width="${x(6) - x(0)}" height="${H - top - 22}" fill="${K.sky}" opacity=".05"/>`;
+      s += tx(x(0) - 8, top - 24, mob ? '← negativa' : '← asociación negativa', 12, K.red, 700, 'end') + tx(x(0) + 8, top - 24, mob ? 'positiva →' : 'asociación positiva →', 12, K.sky, 700);
+      for (let g = -3; g <= 6; g++) s += `<line x1="${x(g)}" x2="${x(g)}" y1="${top - 14}" y2="${H - 34}" stroke="${g === 0 ? K.on : 'rgba(169,187,209,.12)'}" stroke-width="${g === 0 ? 1.6 : 1}"/>` + tx(x(g), H - 14, (g > 0 ? '+' : g < 0 ? '−' : '') + Math.abs(g), 12, K.on3, 600, 'middle');
+      L.rows.forEach((r, i) => {
+        const on = inc.has(i), sel = i === cur, rt = top + rowH * i, cy = mob ? rt + 76 : rt + rowH / 2, c = col(r);
+        const lx = mob ? 14 : left - 18, ly = mob ? rt + 24 : cy - 3, an = mob ? 'start' : 'end';
+        s += `<g class="lr${on ? ' on' : ''}${sel ? ' sel' : ''}" data-i="${i}" tabindex="0" role="button" aria-label="${VARS[i].name}: ${on ? `${fme(r)} puntos porcentuales; ver interpretación` : 'sin agregar; agregar al modelo'}">`;
+        s += `<rect class="bg" x="0" y="${rt + 4}" width="${W}" height="${rowH - 8}" rx="12" fill="${sel ? 'rgba(214,172,85,.1)' : 'transparent'}" stroke="${sel ? 'rgba(214,172,85,.45)' : 'none'}"/>`;
+        s += tx(lx, ly, VARS[i].name, 15, on ? (sel ? K.gold : K.on) : K.on3, 800, an, HEAD) + tx(lx, ly + 18, on ? L.rows[i].unit : 'Sin agregar · toca para incluir', 12, K.on3, 500, an);
+        if (on) {
+          if (r.lo != null) s += `<g class="ci"><line x1="${x(r.lo)}" x2="${x(r.hi)}" y1="${cy}" y2="${cy}" stroke="${K.on}" stroke-width="2"/><line x1="${x(r.lo)}" x2="${x(r.lo)}" y1="${cy - 7}" y2="${cy + 7}" stroke="${K.on}" stroke-width="2"/><line x1="${x(r.hi)}" x2="${x(r.hi)}" y1="${cy - 7}" y2="${cy + 7}" stroke="${K.on}" stroke-width="2"/></g>`;
+          else s += `<text class="ci" x="${x(r.me) + (r.me < 0 ? -14 : 14)}" y="${cy + 22}" font-size="11" fill="${K.on3}" text-anchor="${r.me < 0 ? 'end' : 'start'}" font-style="italic">IC no reportado</text>`;
+          s += `<line class="stem" x1="${x(0)}" x2="${x(r.me)}" y1="${cy}" y2="${cy}" stroke="${c}" stroke-width="${sel ? 6 : 4}" stroke-linecap="round" opacity=".5"/>`;
+          s += `<circle class="dot" cx="${x(r.me)}" cy="${cy}" r="${sel ? 11 : 8}" fill="${c}" stroke="${K.night}" stroke-width="3"/>`;
+          const vt = `${fme(r)} ${r.sig}`;
+          s += mob ? tx(W - 10, ly, vt, 15, c, 800, 'end', HEAD, 'class="vl"') : tx(x(r.me) + (r.me < 0 ? -16 : 16), cy - 12, vt, 14, c, 800, r.me < 0 ? 'end' : 'start', HEAD, 'class="vl"');
+        } else s += `<circle cx="${x(0)}" cy="${cy}" r="5" fill="none" stroke="${K.on3}" stroke-dasharray="2 3" opacity=".7"/>`;
+        s += '</g>';
+      });
+      plot.innerHTML = s + '</svg>';
+      $$('.lr', plot).forEach(g => {
+        const i = +g.dataset.i, act = () => inc.has(i) ? focus(i) : toggle(i);
+        g.addEventListener('click', act);
         g.addEventListener('keydown', e => {
-          if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); select((sel + 1) % L.rows.length, true); }
-          if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); select((sel + L.rows.length - 1) % L.rows.length, true); }
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(i, true); }
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); act(); }
+          if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); const n = $(`.lr[data-i="${(i + (e.key === 'ArrowDown' ? 1 : N - 1)) % N}"]`, plot); n && n.focus(); }
         });
       });
     }
-    function detail() {
-      const r = L.rows[sel], col = r.me < 0 ? K.red : K.sky;
-      $('#coefDetail').innerHTML = `<div class="cd-k">${r.k}</div><div class="cd-me" style="color:${col}">${fmt(r)}<small> pp</small></div>
-        <dl><dt>Unidad</dt><dd>${r.unit}</dd><dt>IC 95%</dt><dd>${r.ci || 'No reportado'}</dd><dt>Significancia</dt><dd>${r.sig === '***' ? 'p < 0.01' : 'p < 0.05'}</dd></dl>
-        <p>${r.read}</p><div class="caution">${r.caution}</div>`;
-      $$('.il', illu).forEach(s => s.classList.toggle('on', +s.dataset.i === sel));
+    function growRow(i) {
+      const g = $(`.lr[data-i="${i}"]`, plot); if (!g || !G || RM) return;
+      const st = $('.stem', g);
+      G.from(st, { attr: { x2: st.getAttribute('x1') }, duration: .8, ease: 'power3.out' });
+      G.from($('.dot', g), { scale: 0, transformOrigin: '50% 50%', duration: .5, delay: .3, ease: 'back.out(2)' });
+      G.from($$('.ci, .vl', g), { opacity: 0, duration: .4, delay: .45 });
     }
-    function paint() {
-      $$('.row', host).forEach(g => { const i = +g.dataset.i, on = i === sel;
-        g.classList.toggle('on', on); g.setAttribute('aria-selected', on); g.setAttribute('tabindex', on ? 0 : -1);
-        const bg = $('.bg', g); bg.setAttribute('fill', on ? 'rgba(214,172,85,.1)' : 'transparent'); bg.setAttribute('stroke', on ? 'rgba(214,172,85,.45)' : 'none');
-        $('.nm', g).setAttribute('fill', on ? K.gold : K.on); $('.stem', g).setAttribute('stroke-width', on ? 6 : 4); $('.dot', g).setAttribute('r', on ? 11 : 8); });
+
+    /* ---------- tarjeta de interpretación ---------- */
+    function drawCard() {
+      const chips = inc.size ? `<div class="lc-chips" role="group" aria-label="Variables en el modelo">${[...inc].sort().map(i => `<button type="button" data-i="${i}" aria-pressed="${i === cur}" style="--c:${col(L.rows[i])}">${VARS[i].name}</button>`).join('')}</div>` : '';
+      if (cur == null) {
+        card.innerHTML = `<span class="lc-k">Variable dependiente</span><h4>Uso de CoDi</h4>
+          <p>Vale 1 si la persona pagó con CoDi y 0 si no. En la muestra solo <b class="num">${nf(MEAN, 2)}%</b> lo ha usado: menos de 2 de cada 100.</p>
+          <ol class="lc-how"><li>Agrega un factor desde la izquierda.</li><li>Mira hacia dónde empuja: <span style="color:${K.sky}">derecha, más uso</span>; <span style="color:${K.red}">izquierda, menos</span>.</li><li>Lee qué significa y qué no.</li></ol>${chips}`;
+      } else {
+        const r = L.rows[cur], v = VARS[cur], c = col(r);
+        const n = v.acc ? acc[cur] : 1, eff = r.me * n, sc = 5;
+        const accUI = v.acc ? `<div class="lc-acc"><label for="llabAcc">${v.acc.lbl(n)}</label><input type="range" id="llabAcc" min="${v.acc.min}" max="${v.acc.max}" step="1" value="${n}" aria-valuetext="${v.acc.lbl(n)}"><p class="lc-ref">${v.acc.ref}</p></div>` : '';
+        const effLbl = v.acc ? `${v.acc.lbl(n)}` : 'Diferencia asociada';
+        card.innerHTML = `${chips}<svg class="lc-ill" viewBox="0 0 400 300" aria-hidden="true">${ILLU[cur]}</svg>
+          <span class="lc-k">${v.kind === 'bin' ? 'Variable binaria' : 'Variable continua'} · orienta ${v.axis}</span>
+          <h4>${r.k}</h4>
+          <div class="lc-me num" style="color:${c}">${fme(r)}<small> pp ${r.sig}</small></div>
+          <dl><dt>Unidad</dt><dd>${r.unit}</dd><dt>IC 95%</dt><dd>${r.ci || 'No reportado en la investigación'}</dd><dt>Significancia</dt><dd>${r.sig === '***' ? 'p < 0.01' : 'p < 0.05'}</dd></dl>
+          <p>${v.lead}</p>
+          <div class="lc-cmp" role="img" aria-label="Comparación con el uso promedio de ${nf(MEAN, 2)}%">
+            <div><span>Uso promedio</span><span class="t"><i style="width:${MEAN / sc * 100}%;background:${K.gold}"></i></span><b class="num">${nf(MEAN, 2)}%</b></div>
+            <div><span id="llabEffK">${effLbl}</span><span class="t"><i id="llabEffBar" style="width:${Math.min(100, Math.abs(eff) / sc * 100)}%;background:${c}"></i></span><b class="num" id="llabEffV" style="color:${c}">${fmt(eff, Math.abs(eff) < .1 ? 3 : 2)} pp</b></div>
+          </div>
+          ${accUI}
+          ${v.rel ? `<p class="lc-rel">${v.rel}</p>` : ''}
+          <p class="lc-caution">${r.caution}</p>`;
+        const sl = $('#llabAcc', card);
+        if (sl) sl.addEventListener('input', () => {
+          const k = +sl.value; acc[cur] = k; const e = r.me * k;
+          $('label', card.querySelector('.lc-acc')).textContent = v.acc.lbl(k); sl.setAttribute('aria-valuetext', v.acc.lbl(k));
+          $('#llabEffK').textContent = v.acc.lbl(k);
+          $('#llabEffBar').style.width = Math.min(100, Math.abs(e) / sc * 100) + '%';
+          $('#llabEffV').textContent = `${fmt(e, Math.abs(e) < .1 ? 3 : 2)} pp`;
+        });
+      }
+      $$('.lc-chips button', card).forEach(b => b.addEventListener('click', () => focus(+b.dataset.i)));
+      if (G && !RM) G.fromTo(card.children, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .35, stagger: .03, ease: 'power2.out', clearProps: 'all' });
     }
-    function select(i, focus) { sel = i; if ($('.row', host)) paint(); else render(); detail(); mag && mag(i); if (focus) { const g = $(`.row[data-i="${i}"]`, host); g && g.focus({ preventScroll: true }); } }
-    let mag = null;
-    // módulo editorial: comparación de magnitudes (pp) — no es predicción individual
-    (function magnitude() {
-      const box = $('#magViz'); if (!box) return;
-      const readings = [
-        { k: 'Desconfianza', v: -1.28, note: 'Frente al uso promedio de 1.85%, equivale a una probabilidad cerca de 70% menor.' },
-        { k: '1 habilidad digital adicional', v: 0.34, note: 'Efecto individual pequeño.' },
-        { k: '10 habilidades de diferencia', v: 3.4, note: 'Lectura acumulada (0.34 × 10): casi el doble del uso promedio. Supone que el efecto se acumula linealmente.' },
-        { k: 'Usa smartphone', v: 3.09, note: 'Supera el uso promedio; es el efecto menos preciso (IC 95%: 0.6 a 5.6 pp).' },
-        { k: 'Usa banca móvil', v: 2.12, note: 'Supera el uso promedio: contar con banca móvil más que duplica la probabilidad.' },
-        { k: '1 año más de edad', v: -0.013, note: 'El efecto más pequeño del modelo.' },
-        { k: '30 años de diferencia', v: -0.39, note: 'Lectura acumulada (−0.013 × 30 ≈ −0.4 pp): alrededor de una quinta parte del uso promedio.' }
-      ];
-      const map = { 0: [0], 1: [1, 2], 2: [3], 3: [4], 4: [5, 6] };
-      const max = 3.5;
-      box.innerHTML = `<div class="mag-row ref"><span class="mag-k">Uso promedio de CoDi en la muestra</span><span class="mag-t"><i style="width:${1.85 / max * 100}%"></i></span><span class="mag-v">1.85%</span></div>` +
-        readings.map((r, i) => `<div class="mag-row" data-i="${i}"><span class="mag-k">${r.k}</span><span class="mag-t"><i class="${r.v < 0 ? 'neg' : ''}" style="width:${Math.abs(r.v) / max * 100}%"></i></span><span class="mag-v">${r.v > 0 ? '+' : '−'}${nf(Math.abs(r.v), Math.abs(r.v) < .1 ? 3 : 2)} pp</span></div>`).join('') +
-        `<p class="mag-note" id="magNote"></p>`;
-      mag = (i) => { const on = map[i]; $$('.mag-row[data-i]', box).forEach(r => r.classList.toggle('on', on.includes(+r.dataset.i))); $('#magNote').textContent = on.map(j => readings[j].note).join(' '); };
-    })();
-    // entrada animada por variable
-    select(0, false); // el gráfico existe siempre; solo la entrada se anima al hacerse visible
-    function enter() {
-      if (!G || RM) return;
-      G.from($$('.stem', host), { attr: { x2: (i, el) => el.getAttribute('x1') }, duration: .9, stagger: .12, ease: 'power3.out' });
-      G.from($$('.dot', host), { scale: 0, transformOrigin: '50% 50%', duration: .5, stagger: .12, delay: .35, ease: 'back.out(2)' });
-      G.from($$('.ci', host), { opacity: 0, duration: .5, stagger: .12, delay: .5 });
+
+    /* ---------- estado ---------- */
+    function status() {
+      const k = inc.size;
+      $('#llabCount').textContent = `${k} de ${N}`;
+      $('#llabRing').style.strokeDashoffset = 100 - k / N * 100;
+      yEl.classList.toggle('full', k === N);
+      $('#llabReset').disabled = k === 0;
+      $('#llabAll').disabled = k === N;
+      const miss = L.rows.map((r, i) => i).filter(i => !inc.has(i)).map(i => VARS[i].name.toLowerCase());
+      $('#llabStatus').textContent = k === 0 ? 'Elige una variable para empezar.'
+        : k === N ? `Modelo completo: las cinco variables de la especificación final (n = ${L.n.toLocaleString('es-MX')}; AUC ${L.auc}; pseudo R² ${L.r2}).`
+        : `${k} de ${N} a la vista. Falta${miss.length > 1 ? 'n' : ''}: ${miss.join(', ')}.`;
+      btns.forEach((b, i) => { const on = inc.has(i); b.setAttribute('aria-pressed', on); b.classList.toggle('on', on); b.classList.toggle('sel', i === cur);
+        b.setAttribute('aria-label', `${VARS[i].name}: ${on ? `en el modelo, ${fme(L.rows[i])} puntos porcentuales. Pulsa para quitar` : 'pulsa para agregar al modelo'}`); });
+      paths.forEach((g, i) => $('.w-live', g).classList.toggle('on', inc.has(i)));
     }
-    const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); const r = host.getBoundingClientRect(); if (r.top > innerHeight * .2) enter(); } }, { rootMargin: '0px 0px -15% 0px' });
-    io.observe(host);
-    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (host.innerHTML) { render(); } }, 150); });
+    function pulse(i) {
+      if (RM || LOW) return;
+      const c = $('.w-pulse', paths[i]), m = $('animateMotion', paths[i]);
+      if (!m.beginElement) return;
+      c.setAttribute('opacity', 1); try { m.beginElement(); } catch (e) { /* SMIL no disponible */ }
+      setTimeout(() => { c.setAttribute('opacity', 0); yEl.classList.remove('hit'); void yEl.offsetWidth; yEl.classList.add('hit'); }, 760);
+    }
+    function add(i, quiet) { if (inc.has(i)) return; inc.add(i); if (!quiet) cur = i; status(); drawPlot(); growRow(i); pulse(i); if (!quiet) drawCard(); }
+    function remove(i) {
+      inc.delete(i); if (cur === i) cur = inc.size ? [...inc].pop() : null;
+      const g = $(`.lr[data-i="${i}"]`, plot), done = () => { status(); drawPlot(); drawCard(); };
+      if (g && G && !RM) { const st = $('.stem', g); G.to(st, { attr: { x2: st.getAttribute('x1') }, duration: .3, ease: 'power2.in' }); G.to($$('.dot, .ci, .vl', g), { opacity: 0, duration: .25, onComplete: done }); }
+      else done();
+    }
+    function toggle(i) { if (busy) return; inc.has(i) ? remove(i) : add(i); }
+    function focus(i) { cur = i; status(); drawPlot(); drawCard(); }
+    function full() {
+      if (busy) return;
+      const miss = L.rows.map((r, i) => i).filter(i => !inc.has(i));
+      if (!miss.length) return;
+      if (RM) { miss.forEach(i => inc.add(i)); cur = 0; status(); drawPlot(); drawCard(); return; }
+      busy = true; root.classList.add('busy');
+      miss.forEach((i, k) => setTimeout(() => {
+        add(i, true);
+        if (k === miss.length - 1) { busy = false; root.classList.remove('busy'); cur = cur == null || !inc.has(cur) ? 0 : cur; status(); drawPlot(); drawCard(); }
+      }, k * 260));
+    }
+    function reset() { if (busy) return; inc.clear(); cur = null; VARS.forEach((v, i) => { acc[i] = v.acc ? v.acc.def : 0; }); status(); drawPlot(); drawCard(); }
+    $('#llabAll').addEventListener('click', full);
+    $('#llabReset').addEventListener('click', reset);
+    window.LLAB = { full, reset };
+
+    status(); drawPlot(); drawCard(); layout();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { const W = Math.max(280, plot.clientWidth || 620); if (W !== plotW) drawPlot(); layout(); }, 150); });
   })();
 
   /* =====================================================================
