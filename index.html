@@ -21,16 +21,18 @@
 <meta name="twitter:title" content="Quien conoce confía, y quien confía, compra. Usa CoDi.">
 <meta name="twitter:description" content="Estrategia de digitalización del comercio electrónico en México · UNAM · Datatón INEGI 2026.">
 <meta name="twitter:image" content="assets/images/og-image.png">
-<link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="assets/images/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
-<link rel="preload" href="assets/fonts/montserrat.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="assets/images/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/images/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/sourceserif4.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/sourcesans3.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/styles.css">
 <link rel="stylesheet" href="assets/css/stories.css">
 <link rel="stylesheet" href="assets/css/extra.css">
 <link rel="stylesheet" href="assets/css/ejes.css">
 <link rel="stylesheet" href="assets/css/llab.css">
+<link rel="stylesheet" href="assets/css/narrativa.css">
 </head>
 <body>
 <a class="skip" href="#s1">Saltar al contenido</a>
@@ -41,21 +43,29 @@
     <span>Usa CoDi <small>Datatón INEGI 2026</small></span>
   </a>
   <div class="seg mode-seg" id="modeSeg" role="group" aria-label="Modo de navegación"><button type="button" data-mode="explore" aria-pressed="true" title="Exploración completa: nueve apartados">Explorar</button><button type="button" data-mode="present" aria-pressed="false" title="Presentación ejecutiva: ruta de 6 paradas">Presentar</button></div>
-  <button class="toc-btn" aria-expanded="false" aria-controls="toc">Secciones</button>
-  <nav aria-label="Secciones">
+  <button class="toc-btn" type="button" aria-expanded="false" aria-controls="toc">Capítulos</button>
+  <nav class="acts-nav" aria-label="Capítulos">
     <ol class="toc" id="toc">
-      <li><a href="#s1" title="Diagnóstico">1<span class="lbl">Diagnóstico</span></a></li>
-      <li><a href="#s2" title="Territorio">2<span class="lbl">Territorio</span></a></li>
-      <li><a href="#s3" title="¿Quiénes compran?">3<span class="lbl">¿Quiénes compran?</span></a></li>
-      <li><a href="#s4" title="¿Qué compran?">4<span class="lbl">¿Qué compran?</span></a></li>
-      <li><a href="#s5" title="Barreras">5<span class="lbl">Barreras</span></a></li>
-      <li><a href="#s6" title="¿A quién afectan?">6<span class="lbl">¿A quién afectan?</span></a></li>
-      <li><a href="#s7" title="CoDi">7<span class="lbl">CoDi</span></a></li>
-      <li><a href="#s8" title="Modelo logit">8<span class="lbl">Modelo logit</span></a></li>
-      <li><a href="#s9" title="Propuesta">9<span class="lbl">Propuesta</span></a></li>
-      <li><a href="#proyeccion" title="Proyección a 2030">P<span class="lbl">Proyección</span></a></li>
-      <li><a href="#conclusion" title="Conclusión">C<span class="lbl">Conclusión</span></a></li>
-      <li><a href="#fuentes" title="Bibliografía y fuentes">F<span class="lbl">Bibliografía</span></a></li>
+      <li class="act-item" data-act="1">
+        <button type="button" class="act-btn" aria-expanded="false" aria-controls="actSub1"><span class="an">I</span><span class="at">El problema</span></button>
+        <ul class="act-sub" id="actSub1"><li><a href="#cap-1">Inicio del capítulo</a></li><li><a href="#s1">Cuánto creció el comercio electrónico</a></li><li><a href="#s2">Dónde no llega</a></li></ul>
+      </li>
+      <li class="act-item" data-act="2">
+        <button type="button" class="act-btn" aria-expanded="false" aria-controls="actSub2"><span class="an">II</span><span class="at">Barreras</span></button>
+        <ul class="act-sub" id="actSub2"><li><a href="#cap-2">Inicio del capítulo</a></li><li><a href="#s3">Quién compra</a></li><li><a href="#s4">Qué compra</a></li><li><a href="#s5">Qué impide comprar</a></li><li><a href="#s6">A quién afectan más las barreras</a></li></ul>
+      </li>
+      <li class="act-item" data-act="3">
+        <button type="button" class="act-btn" aria-expanded="false" aria-controls="actSub3"><span class="an">III</span><span class="at">CoDi</span></button>
+        <ul class="act-sub" id="actSub3"><li><a href="#cap-3">Inicio del capítulo</a></li><li><a href="#s7">Qué es CoDi y por qué no despega</a></li><li><a href="#demo">Simulación de pago</a></li><li><a href="#s8">Modelo logit: qué se asocia con usarlo</a></li></ul>
+      </li>
+      <li class="act-item" data-act="4">
+        <button type="button" class="act-btn" aria-expanded="false" aria-controls="actSub4"><span class="an">IV</span><span class="at">La propuesta</span></button>
+        <ul class="act-sub" id="actSub4"><li><a href="#cap-4">Inicio del capítulo</a></li><li><a href="#propuesta-minuto">La propuesta en un minuto</a></li><li><a href="#ejes">Los tres ejes</a></li><li><a href="#sucursales" data-open-axis="2">Mapa del Banco del Bienestar</a></li><li><a href="#instituciones">Quién hace qué</a></li><li><a href="#piloto">Piloto en Nuevo León</a></li><li><a href="#fases">Fases de escalamiento</a></li></ul>
+      </li>
+      <li class="act-item" data-act="5">
+        <button type="button" class="act-btn" aria-expanded="false" aria-controls="actSub5"><span class="an">V</span><span class="at">Evaluación</span></button>
+        <ul class="act-sub" id="actSub5"><li><a href="#cap-5">Inicio del capítulo</a></li><li><a href="#evaluacion">Cómo se evalúa</a></li><li><a href="#proyeccion">Proyección a 2030</a></li><li><a href="#conclusion">Conclusión</a></li><li><a href="#fuentes">Bibliografía</a></li></ul>
+      </li>
     </ol>
   </nav>
   <div class="progress" aria-hidden="true"></div>
@@ -74,14 +84,19 @@
         <span class="inst-txt" aria-hidden="true"><b>Universidad Nacional Autónoma de México</b><span>Facultad de Economía</span></span>
       </div>
       <p class="kicker"><span>Estrategia de digitalización del comercio electrónico en México</span></p>
-      <h1 id="h-hero">De cada 100 pesos que produce México, <span class="gold">7</span> ya vienen del comercio electrónico.</h1>
-      <p class="lead">Hace una década eran 3. El comercio en línea se volvió parte de la economía, pero no avanza igual en todo el país. Esta investigación explica por qué y propone cómo usar una infraestructura de pagos que México ya tiene.</p>
+      <h1 id="h-hero">El comercio electrónico crece en México. <span class="gold">Pero no todos participan</span> de la misma manera.</h1>
+      <p class="lead">De cada 100 pesos que produce el país, 7 ya vienen del comercio electrónico; hace una década eran 3. Casi 9 de cada 10 personas usan un teléfono inteligente, pero saber cómo comprar, confiar en el pago y usar la banca móvil siguen marcando quién participa.</p>
+      <ol class="hero-plan" aria-label="La investigación en tres líneas">
+        <li><span>El problema</span><p>Un crecimiento desigual: compra en línea 7.2% de la población en Chiapas y 31.1% en Colima.</p></li>
+        <li><span>Lo que buscamos</span><p>Que más de 20.5 millones de cuentas CoDi ya validadas se conviertan en compradores digitales activos.</p></li>
+        <li><span>Nuestra propuesta</span><p>Impulsar CoDi, el cobro digital del Banco de México, con tres ejes: confianza, conocimiento e inclusión financiera.</p></li>
+      </ol>
       <p class="hero-motto">Quien conoce confía, y quien confía, <b>compra. Usa CoDi.</b></p>
       <div class="hero-cta">
-        <a class="btn btn-gold" href="#s1">Explorar la investigación</a>
-        <a class="btn btn-ghost" href="#s9">Ir a la propuesta</a>
+        <a class="btn btn-gold" href="#cap-1">Empezar por el problema</a>
+        <a class="btn btn-ghost" href="#propuesta-minuto">La propuesta en un minuto</a>
       </div>
-      <p class="team">López Trujillo Andrea, Santos Peralta Ady Arelí, Torres Aparicio Oscar Miguel y Vargas Avendaño Ulises. Tutor: Ávalos Domínguez Irving Javier.</p>
+      <p class="team">López Trujillo Andrea, Santos Peralta Ady Arelí, Torres Aparicio Oscar Miguel y Vargas Avendaño Ulises.</p>
     </div>
     <figure class="pesos" aria-labelledby="pesos-cap">
       <div class="pesos-head">
@@ -100,10 +115,23 @@
       <figcaption class="fig-foot"><span><b>Fuente:</b> INEGI, VABCOEL y SCNM, base 2018.</span><span>2023 revisado, 2024 preliminar.</span></figcaption>
     </figure>
   </div>
-  <div class="scroll-cue" aria-hidden="true">Desliza<i></i></div>
 </section>
 
-<section class="chapter" id="s1" aria-labelledby="h1t">
+
+<!-- ================= CAPÍTULO I ================= -->
+<section class="act-open tone-dark" id="cap-1" data-act="1" aria-labelledby="cap-1-t">
+  <div class="wrap">
+    <span class="act-num" aria-hidden="true">I</span>
+    <div class="act-text">
+      <p class="act-k">Capítulo I · El problema</p>
+      <h2 id="cap-1-t">¿México avanza al mismo ritmo en el comercio electrónico?</h2>
+      <p class="act-lead">El comercio electrónico pesa cada vez más en la economía. Primero medimos cuánto creció; después, dónde no llega.</p>
+    </div>
+    <ol class="act-map" aria-label="En este capítulo"><li><a href="#s1">Cuánto creció</a></li><li><a href="#s2">Dónde no llega</a></li></ol>
+  </div>
+</section>
+
+<section class="chapter tone-dark" id="s1" data-act="1" aria-labelledby="h1t">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">Diagnóstico general del comercio electrónico</div>
@@ -116,8 +144,8 @@
     </div>
     <div class="grid-2">
       <div class="col-5 rv">
-        <p class="lead">El INEGI mide el <strong>Valor Agregado Bruto del Comercio Electrónico</strong>: la riqueza que generan las compras y ventas por internet, una vez descontado lo que cuesta producirlas. Se mide igual que el resto de la economía, así que permite comparar su peso frente a otras actividades.</p>
-        <p>Pasó de alrededor de 650 mil millones de pesos en 2013 a cerca de 1.8 billones en 2024, a precios de 2018. Su participación en el PIB pasó de 3.02% a 7.07%.</p>
+        <p class="lead">Ya no es un nicho: su peso en la economía pasó de <strong>3.02% a 7.07% del PIB</strong> entre 2013 y 2024.</p>
+        <p>Como el VABCOEL se mide igual que el resto de la economía, puede compararse con el PIB. Crece más rápido que el total, incluso en los años malos.</p>
       </div>
       <figure class="figure col-7 rv">
         <h3 class="fig-title">VABCOEL, 2013–2024</h3>
@@ -150,16 +178,13 @@
       </figure>
     </div>
     <div class="insight rv"><p>El mostrador salió de la tienda y hoy vive en el bolsillo del cliente. Por eso las tiendas de autoservicio y departamentales, como las que agrupa la ANTAD, son actores clave para cualquier estrategia que busque ampliar el comercio electrónico.</p></div>
+    <a class="next-q rv" href="#s2"><span class="nq-k">Siguiente pregunta</span><span class="nq-q"><span class="nq-lead">El sector crece en el país.</span> ¿crece igual en todos los estados?</span><span class="nq-ar" aria-hidden="true">↓</span></a>
   </div>
 </section>
 
-<div class="bridge wrap rv" aria-hidden="false">
-  <p>Que el sector crezca a nivel nacional <span class="dim">no significa que lo haga igual en todo el territorio.</span></p>
-  <svg class="thread" viewBox="0 0 420 120" aria-hidden="true"><path d="M0 100 C 120 100, 160 20, 260 30 S 380 90, 420 20" fill="none" stroke="#D6AC55" stroke-width="2" stroke-dasharray="4 7"/><circle cx="420" cy="20" r="5" fill="#D6AC55"/></svg>
-</div>
 
 <!-- ================= SECCIÓN 2 ================= -->
-<section class="chapter deep" id="s2" aria-labelledby="h2t">
+<section class="chapter tone-dark" id="s2" data-act="1" aria-labelledby="h2t">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">El comercio electrónico no avanza al mismo ritmo en todo México</div>
@@ -199,11 +224,26 @@
       <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26" fill="none" stroke="#D6AC55" stroke-width="1.5"/><path d="M14 36 L24 26 L31 32 L42 18" fill="none" stroke="#D6AC55" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <p>El comercio electrónico crece en todo el país, pero no llega a todos por igual. Los estados del centro-sur y sur, con poblaciones grandes, son los que menos compran en línea.</p>
     </div>
+    <a class="next-q rv" href="#cap-2"><span class="nq-k">Siguiente pregunta</span><span class="nq-q"><span class="nq-lead">La conexión no explica toda la brecha.</span> ¿quiénes compran y qué detiene a los demás?</span><span class="nq-ar" aria-hidden="true">↓</span></a>
   </div>
 </section>
 
 <!-- ================= SECCIÓN 3 ================= -->
-<section class="chapter paper" id="s3" aria-labelledby="h3t">
+
+<!-- ================= CAPÍTULO II ================= -->
+<section class="act-open tone-light paper" id="cap-2" data-act="2" aria-labelledby="cap-2-t">
+  <div class="wrap">
+    <span class="act-num" aria-hidden="true">II</span>
+    <div class="act-text">
+      <p class="act-k">Capítulo II · Las personas y sus barreras</p>
+      <h2 id="cap-2-t">¿Quiénes compran en línea y qué detiene a los demás?</h2>
+      <p class="act-lead">Tener internet o un teléfono inteligente no garantiza comprar en línea. Vemos quién compra, qué compra y qué se lo impide a los demás.</p>
+    </div>
+    <ol class="act-map" aria-label="En este capítulo"><li><a href="#s3">Quién compra</a></li><li><a href="#s4">Qué compra</a></li><li><a href="#s5">Qué lo impide</a></li><li><a href="#s6">A quién afecta más</a></li></ol>
+  </div>
+</section>
+
+<section class="chapter tone-light paper" id="s3" data-act="2" aria-labelledby="h3t">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">¿Quiénes compran?</div>
@@ -245,13 +285,14 @@
         <figcaption class="fig-foot"><span><b>Fuente:</b> elaboración del equipo con microdatos ENDUTIH 2025, INEGI.</span><span><b>Universo:</b> usuarios de internet de 6 años y más (104.9 M).</span></figcaption>
       </figure>
     </div>
+    <a class="next-q rv" href="#s4"><span class="nq-k">Siguiente pregunta</span><span class="nq-q"><span class="nq-lead">Ya sabemos quién compra.</span> ¿qué compran?</span><span class="nq-ar" aria-hidden="true">↓</span></a>
   </div>
 </section>
 
 <!-- ================= SECCIÓN 4 ================= -->
-<section class="chapter paper" id="s4" aria-labelledby="h4t" style="padding-top:var(--s7)">
+<section class="chapter tone-light paper" id="s4" data-act="2" aria-labelledby="h4t">
   <div class="wrap">
-    <div class="chapter-head" style="border-top:1px solid var(--line-paper);padding-top:var(--s8)">
+    <div class="chapter-head">
       <div class="chapter-no">¿Qué tipo de bienes compran?</div>
       <h2 id="h4t">De la tecnología a lo cotidiano.</h2>
       <p class="question">¿Qué compran los mexicanos por internet y cómo ha cambiado esa demanda?</p>
@@ -282,11 +323,12 @@
       <div class="callout rv"><div class="v num">+15.4 pp</div><p>higiene personal y belleza: de 31.0% a 46.4%, ya es la tercera categoría más adquirida.</p></div>
       <div class="callout rv"><div class="v num">25.2 → 21.2%</div><p>aparatos electrónicos pierden peso; computadoras y tabletas pasan de 8.0% a 7.7%.</p></div>
     </div>
+    <a class="next-q rv" href="#s5"><span class="nq-k">Siguiente pregunta</span><span class="nq-q"><span class="nq-lead">Para millones, comprar en línea ya es cotidiano.</span> ¿qué detiene a quienes no lo hacen?</span><span class="nq-ar" aria-hidden="true">↓</span></a>
   </div>
 </section>
 
 <!-- ================= SECCIÓN 5 ================= -->
-<section class="chapter turn" id="s5" aria-labelledby="h5t">
+<section class="chapter tone-light paper" id="s5" data-act="2" aria-labelledby="h5t">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">Barreras de compra en línea</div>
@@ -321,11 +363,12 @@
       </div>
       <p class="muted" style="margin:0">El reto no es solo ofrecer un medio de pago seguro, sino una alternativa tan rápida y sencilla como pagar en el mostrador.</p>
     </div>
+    <a class="next-q rv" href="#s6"><span class="nq-k">Siguiente pregunta</span><span class="nq-q"><span class="nq-lead">Las barreras no pesan igual para todos.</span> ¿a quién afectan más?</span><span class="nq-ar" aria-hidden="true">↓</span></a>
   </div>
 </section>
 
 <!-- ================= SECCIÓN 6 ================= -->
-<section class="chapter" id="s6" aria-labelledby="h6t">
+<section class="chapter tone-light paper" id="s6" data-act="2" aria-labelledby="h6t">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">¿Cómo varían las barreras según la población?</div>
@@ -359,11 +402,26 @@
       <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="18" cy="28" r="10" fill="none" stroke="#62C8F5" stroke-width="2"/><circle cx="38" cy="28" r="10" fill="none" stroke="#D6AC55" stroke-width="2"/></svg>
       <p>El comercio electrónico ya no se frena por falta de teléfonos ni de internet. A unas personas les falta confianza en la seguridad de los medios de pago; a otras, aprender el proceso. Una política nacional requiere intervenciones diferenciadas.</p>
     </div>
+    <a class="next-q rv" href="#cap-3"><span class="nq-k">Siguiente pregunta</span><span class="nq-q"><span class="nq-lead">Si el problema es saber y confiar al pagar,</span> ¿existe ya una forma de pagar más simple y segura?</span><span class="nq-ar" aria-hidden="true">↓</span></a>
   </div>
 </section>
 
 <!-- ================= SECCIÓN 7 ================= -->
-<section class="chapter deep" id="s7" aria-labelledby="h7t">
+
+<!-- ================= CAPÍTULO III ================= -->
+<section class="act-open tone-dark" id="cap-3" data-act="3" aria-labelledby="cap-3-t">
+  <div class="wrap">
+    <span class="act-num" aria-hidden="true">III</span>
+    <div class="act-text">
+      <p class="act-k">Capítulo III · La oportunidad</p>
+      <h2 id="cap-3-t">La alternativa ya existe: se llama CoDi.</h2>
+      <p class="act-lead">CoDi permite pagar desde la app del banco sin compartir datos de tarjeta. Explicamos cómo funciona, qué resuelve y qué no, por qué casi no se usa y qué factores se asocian con usarlo.</p>
+    </div>
+    <ol class="act-map" aria-label="En este capítulo"><li><a href="#s7">Qué es CoDi</a></li><li><a href="#demo">Simulación de pago</a></li><li><a href="#s8">Qué se asocia con usarlo</a></li></ol>
+  </div>
+</section>
+
+<section class="chapter tone-dark" id="s7" data-act="3" aria-labelledby="h7t">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">CoDi como respuesta a las barreras del comercio electrónico</div>
@@ -385,6 +443,11 @@
         <div class="node"><b>SPEI</b><span>Banxico liquida la transferencia en tiempo real.</span></div>
         <div class="node"><b>Confirmación</b><span>Ambas partes reciben el aviso en segundos.</span></div>
       </div>
+    </div>
+
+    <div class="scope rv" aria-label="Qué resuelve CoDi y qué no">
+      <div class="scope-yes"><h3>Lo que CoDi atiende</h3><p>Las fricciones del pago: no se capturan datos de tarjeta, la solicitud muestra el comercio y el monto exactos, y el pago se confirma en segundos sin comisión.</p></div>
+      <div class="scope-no"><h3>Lo que CoDi no resuelve</h3><p>Las entregas, la logística o la calidad del producto. Entre quienes compraron en línea y tuvieron algún problema en 2025, 60.0% lo tuvo con la entrega (ENDUTIH 2025). CoDi es una parte de la solución, no toda.</p></div>
     </div>
 
     <h3 class="fig-title" style="margin-top:var(--s8)">Disponibilidad, registro y uso no son lo mismo</h3>
@@ -439,9 +502,9 @@
     <div class="demo" id="demo">
       <div>
         <h3 class="fig-title" style="font-size:var(--t-h3)">Así se vería pagar con CoDi en una tienda en línea</h3>
-        <p class="muted">Simulación conceptual del flujo descrito en la propuesta: elegir CoDi en la pasarela, generar un QR con monto, autorizar desde la app del banco con NIP y recibir la confirmación.</p>
+        <p class="muted">Simulación conceptual del flujo descrito en la propuesta: elegir CoDi al pagar, generar un QR con monto, autorizar desde la app del banco con NIP y recibir la confirmación.</p>
         <ol class="demo-steps" id="demoSteps">
-          <li class="on">Elegir CoDi en la pasarela de pago</li>
+          <li class="on">Elegir CoDi en la caja en línea</li>
           <li>Se genera un QR con el monto exacto</li>
           <li>Autorizar en la app del banco, sin datos de tarjeta</li>
           <li>Pago confirmado en segundos</li>
@@ -454,7 +517,7 @@
       <div class="phone-stage">
         <div class="phone" role="group" aria-label="Simulación de pago con CoDi">
           <div class="screen" id="screen">
-            <!-- 1 pasarela -->
+            <!-- 1 caja en línea -->
             <div class="scr on" data-s="0">
               <h4>Elige cómo pagar</h4>
               <div class="sm">Tienda ejemplo · Pedido #0001</div>
@@ -512,11 +575,12 @@
         </div>
       </div>
     </div>
+    <a class="next-q rv" href="#s8"><span class="nq-k">Siguiente pregunta</span><span class="nq-q"><span class="nq-lead">CoDi existe, pero casi no se usa.</span> ¿qué distingue a quienes sí lo usan?</span><span class="nq-ar" aria-hidden="true">↓</span></a>
   </div>
 </section>
 
 <!-- ================= SECCIÓN 8 ================= -->
-<section class="chapter lab" id="s8" aria-labelledby="h8t">
+<section class="chapter tone-dark lab" id="s8" data-act="3" aria-labelledby="h8t">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">Modelo logit: determinantes del uso de CoDi</div>
@@ -637,18 +701,38 @@
 </section>
 
 <!-- ================= SECCIÓN 9 ================= -->
-<section class="chapter proposal" id="s9" aria-labelledby="h9t">
+
+<!-- ================= CAPÍTULO IV ================= -->
+<section class="act-open tone-light paper" id="cap-4" data-act="4" aria-labelledby="cap-4-t">
+  <div class="wrap">
+    <span class="act-num" aria-hidden="true">IV</span>
+    <div class="act-text">
+      <p class="act-k">Capítulo IV · Nuestra propuesta</p>
+      <h2 id="cap-4-t">¿Qué proponemos hacer y cómo funcionaría?</h2>
+      <p class="act-lead">Una estrategia de tres ejes, coordinada entre seis instituciones, que se probaría primero en Nuevo León y crecería solo si da resultados.</p>
+    </div>
+    <ol class="act-map" aria-label="En este capítulo"><li><a href="#propuesta-minuto">En un minuto</a></li><li><a href="#ejes">Los tres ejes</a></li><li><a href="#instituciones">Quién hace qué</a></li><li><a href="#piloto">Piloto en Nuevo León</a></li><li><a href="#fases">Fases</a></li></ol>
+  </div>
+</section>
+
+<section class="chapter tone-light paper" id="s9" data-act="4" aria-labelledby="h9t">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">Propuesta</div>
       <h2 id="h9t" class="motto">Quien conoce confía, y quien confía, <em>compra. Usa CoDi.</em></h2>
     </div>
-    <div class="goal">
-      <div class="v num">20.5 M+</div>
-      <p>El objetivo: convertir más de 20.5 millones de cuentas validadas en compradores digitales activos. La ANTAD puede adelantarse a la Ley de Economía Digital para Pagos Digitales y Electrónicos y hacer de CoDi el medio de pago de confianza del comercio electrónico.</p>
+    <div class="minute" id="propuesta-minuto" aria-labelledby="minT">
+      <h3 id="minT" class="minute-t">La propuesta en un minuto</h3>
+      <dl class="minute-q">
+        <div><dt><span>1</span>¿Qué queremos lograr?</dt><dd>Que más de <b>20.5 millones de cuentas CoDi</b> ya validadas se conviertan en compradores digitales activos.</dd></div>
+        <div><dt><span>2</span>¿Cómo?</dt><dd>Con tres ejes que se refuerzan: <b>confianza</b> (Banco de México y CONDUSEF), <b>conocimiento</b> (ANTAD y sus cadenas) e <b>inclusión financiera</b> (Banco del Bienestar y Secretaría del Bienestar). El INEGI mide los resultados.</dd></div>
+        <div><dt><span>3</span>¿Dónde empezaríamos?</dt><dd>Con un <b>piloto de dos años en Nuevo León</b>; después, tres fases por grupos de estados.</dd></div>
+        <div><dt><span>4</span>¿Cómo sabríamos si funciona?</dt><dd>Al mes 18 de cada fase se revisan <b>tres indicadores</b>: primeros pagos con CoDi, uso de CoDi en las tiendas de la ANTAD y que los problemas de seguridad no aumenten. Si no se cumplen, la fase se extiende un año.</dd></div>
+      </dl>
+      <p class="minute-note">Todo lo que sigue es una <b>propuesta del equipo</b>: ninguna de estas medidas está implementada. La ANTAD puede adelantarse a la Ley de Economía Digital para Pagos Digitales y Electrónicos y hacer de CoDi el medio de pago de confianza del comercio electrónico.</p>
     </div>
 
-    <div class="story" data-scene="axes">
+    <div class="story" data-scene="axes" id="ejes">
       <div class="story-stage" role="img" aria-label="Tres ilustraciones que aparecen y se conectan: un celular con una solicitud de pago protegida, una persona aprendiendo CoDi en una tienda y el mapa de México con la red del Banco del Bienestar por entidad."></div>
       <div class="story-steps"><div class="step"><div class="step-card"><span class="eyebrow">Eje 1 · Confianza</span><h3>Un pago que se ve seguro.</h3><p>Banco de México y CONDUSEF: CoDi a dos toques, solicitud con comercio y monto, avisos, límites y respaldo cuando algo sale mal.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Eje 2 · Conocimiento</span><h3>Aprender donde ya se compra.</h3><p>ANTAD y sus cadenas: campaña, QR informativo, promotores y un primer pago acompañado.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Eje 3 · Inclusión financiera</span><h3>Una red presente en los 32 estados.</h3><p>Banco del Bienestar y Secretaría del Bienestar: activación asistida y voluntaria donde la banca comercial no llega.</p><p class="src">Círculos: registros del directorio de sucursales del Banco del Bienestar por entidad (1er trim. 2026), proporcionales a su número.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Una sola estrategia</span><h3>Tres ejes, un mismo objetivo.</h3><p>La confianza sostiene el conocimiento y la inclusión lo lleva a todo el país. Ninguno funciona solo: explora cada eje a continuación.</p></div></div></div>
     </div>
@@ -666,6 +750,7 @@
           <div><dt>Problema</dt><dd>CoDi está escondido en menús secundarios, el registro falla y cada banco ofrece una experiencia distinta.</dd></div>
           <div><dt>Propuesta</dt><dd>Un estándar común en todas las apps, incluida la del Banco del Bienestar, conforme a la Ley de Economía Digital.</dd></div>
           <div><dt>Participan</dt><dd><span class="actor">Banco de México</span><span class="actor">CONDUSEF</span></dd></div>
+          <div><dt>Resultado buscado</dt><dd>Que activar y usar CoDi sea simple y rápido, funcione sin molestias y transmita seguridad.</dd></div>
         </dl>
       </header>
       <div class="ax-stage trust-stage">
@@ -689,7 +774,7 @@
         <ul class="checks">
           <li><span class="mk">✓</span><span>CoDi a no más de dos toques desde la pantalla principal, en el mismo lugar y con el mismo diseño en cualquier banco.</span></li>
           <li><span class="mk">✓</span><span>Registro guiado que funcione a la primera, una sola vez.</span></li>
-          <li><span class="mk">✓</span><span>Solicitud de cobro con nombre del comercio y monto exacto, al escanear un QR en tienda o elegir CoDi en la pasarela digital.</span></li>
+          <li><span class="mk">✓</span><span>Solicitud de cobro con nombre del comercio y monto exacto, al escanear un QR en tienda o elegir CoDi al pagar en línea.</span></li>
           <li><span class="mk">✓</span><span>Autorización con contraseña o PIN del banco y confirmación en segundos.</span></li>
           <li><span class="mk">✓</span><span>Límite de pago fijado por el usuario y aviso por cada operación.</span></li>
           <li><span class="mk">✓</span><span>Recordatorio de nunca compartir códigos ni pagar con un QR fuera del estándar CoDi.</span></li>
@@ -705,8 +790,9 @@
         <div class="ax-mhead"><span class="ax-num">Eje 2</span><h3>Conocimiento: nadie usa lo que no conoce</h3></div>
         <dl>
           <div><dt>Problema</dt><dd>No saber cómo comprar en línea es la tercera razón para no hacerlo (18.3%).</dd></div>
-          <div><dt>Propuesta</dt><dd>Enseñar CoDi donde millones ya compran: campaña, QR informativo, promotores, primer pago acompañado y CoDi en cada pasarela.</dd></div>
+          <div><dt>Propuesta</dt><dd>Enseñar CoDi donde millones ya compran: campaña, QR informativo, promotores, primer pago acompañado y CoDi en el pago en línea de cada tienda.</dd></div>
           <div><dt>Participan</dt><dd><span class="actor">ANTAD</span><span class="actor">Cadenas asociadas</span></dd></div>
+          <div><dt>Resultado buscado</dt><dd>Que el primer pago ocurra, acompañado, en un espacio que el consumidor ya conoce.</dd></div>
         </dl>
       </header>
       <div class="ax-stage learn-stage">
@@ -721,7 +807,7 @@
         </div>
       </div>
       <div class="ax-roles">
-        <div><b>ANTAD mide sus propios resultados</b><p>Escaneos del QR informativo, pagos con CoDi en su pasarela digital y clientes en tienda que se interesaron por la alternativa.</p></div>
+        <div><b>ANTAD mide sus propios resultados</b><p>Escaneos del QR informativo, pagos con CoDi en su tienda en línea y clientes en tienda que se interesaron por la alternativa.</p></div>
         <div><b>CoDi ya tiene las cuentas</b><p>La ANTAD puede darle los usuarios que necesita para consolidarse. Prueba el flujo de pago en la <a href="#demo">simulación de pago con CoDi</a>.</p></div>
       </div>
     </div>
@@ -734,6 +820,7 @@
           <div><dt>Problema</dt><dd>Solo 32.6% usa banca en línea o móvil; en zonas rurales «no sabe cómo hacerlo» llega a 24.4%.</dd></div>
           <div><dt>Propuesta</dt><dd>Usar la red de sucursales para enseñar a usar la cuenta que ya se tiene y activar CoDi de forma asistida.</dd></div>
           <div><dt>Participan</dt><dd><span class="actor">Banco del Bienestar</span><span class="actor">Secretaría del Bienestar</span></dd></div>
+          <div><dt>Resultado buscado</dt><dd>Llegar a donde la banca comercial no llega, con activación siempre voluntaria.</dd></div>
         </dl>
       </header>
       <blockquote class="incl-msg">
@@ -797,7 +884,7 @@
     </div>
 
     <!-- Arquitectura -->
-    <div class="arch">
+    <div class="arch" id="instituciones">
       <div>
         <h3 class="fig-title" style="font-size:var(--t-h3)">Seis agentes, ninguno puede hacerlo solo</h3>
         <p class="fig-sub">Cada uno ya cuenta con canales e infraestructura propia y tiene un rol acotado. Selecciona un agente para ver su responsabilidad y con quién colabora.</p>
@@ -807,7 +894,7 @@
     </div>
 
     <!-- Piloto -->
-    <div class="story" data-scene="pilot">
+    <div class="story" data-scene="pilot" id="piloto">
       <div class="story-stage" role="img" aria-label="Mapa: Nuevo León destacado como piloto propuesto; después, con contorno punteado, las entidades contempladas en cada fase de la propuesta."></div>
       <div class="story-steps"><div class="step"><div class="step-card"><span class="eyebrow">Prueba piloto propuesta</span><h3>Nuevo León, años 0 a 2.</h3><p>Una entidad con condiciones de acceso casi completas, para atribuir los resultados al diseño de la intervención y no a la infraestructura.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Fase 1 · Réplica</span><h3>10 entidades donde 24% o más compra en línea.</h3><p>Contempladas en la propuesta, no participantes. Se incorporan si el piloto cumple los umbrales.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Fase 2 · Centro y Bajío</span><h3>14 entidades entre 15% y 24%.</h3><p>La fase de mayor volumen, con Estado de México y Jalisco. La intervención pasa de informar a convencer y capacitar.</p></div></div><div class="step"><div class="step-card"><span class="eyebrow">Fase 3 · Sur</span><h3>7 entidades con menos de 15%.</h3><p>Conducida por el Banco del Bienestar y la Secretaría del Bienestar. Ocho años es el escenario base, condicionado a resultados.</p><p class="src">Entidades asignadas con los umbrales de la estrategia aplicados a la proporción de población que compra en línea.</p></div></div></div>
     </div>
@@ -826,7 +913,7 @@
       <ol class="reasons">
         <li><div><b>Condiciones de acceso prácticamente completas</b><p>Dispositivo, conexión y hábito de compra ya están; el eslabón menos desarrollado, la banca móvil, es el mismo que en el promedio del país. Permite observar el efecto sin que la conectividad lo distorsione.</p></div></li>
         <li><div><b>Base de uso de CoDi superior al promedio</b><p>Cerca de 200 mil usuarios sobre 2.3 millones de personas que pagan por internet: suficiente para observar la conversión de cuentas en usuarios activos. Una base favorable, no una ventaja amplia.</p></div></li>
-        <li><div><b>Posibilidad de operar los tres ejes</b><p>Monterrey y sus 2.51 millones de compradores para el Eje 2 (ANTAD, pasarelas y promotores); los municipios de menor densidad del sur del estado para ensayar el Eje 3 con el Banco del Bienestar.</p></div></li>
+        <li><div><b>Posibilidad de operar los tres ejes</b><p>Monterrey y sus 2.51 millones de compradores para el Eje 2 (ANTAD, pago en línea y promotores); los municipios de menor densidad del sur del estado para ensayar el Eje 3 con el Banco del Bienestar.</p></div></li>
         <li><div><b>Identificación del efecto</b><p>La zona metropolitana de Monterrey no comparte mercado con otra entidad, lo que reduce el contagio hacia las entidades de comparación.</p></div></li>
       </ol>
     </div>
@@ -845,7 +932,7 @@
     </figure>
 
     <!-- Fases -->
-    <div class="phases">
+    <div class="phases" id="fases">
       <h3 class="fig-title" style="font-size:var(--t-h3)">Escalamiento progresivo, condicionado a resultados</h3>
       <p class="fig-sub">Las entidades se ordenan por la proporción de su población que compra en línea. Ocho años es el <b>escenario base</b>, no un calendario garantizado: si no se cumplen los umbrales, la fase en curso se extiende un año con ajustes.</p>
       <div class="ph-track" role="tablist" aria-label="Fases" id="phTrack"></div>
@@ -856,20 +943,54 @@
           <figcaption class="fig-foot"><span><b>Borde punteado:</b> entidades contempladas en la propuesta, no participantes.</span><span>Entidades asignadas aplicando los umbrales de la estrategia (≥24%, 15–24%, &lt;15%) a la proporción de la población de 6+ que compra en línea (ENDUTIH 2025).</span></figcaption>
         </figure>
       </div>
-      <h3 class="fig-title" style="margin-top:var(--s8)">Criterios para avanzar de fase</h3>
+    </div>
+    <a class="next-q rv" href="#cap-5"><span class="nq-k">Siguiente pregunta</span><span class="nq-q"><span class="nq-lead">Una propuesta necesita reglas para evaluarla:</span> ¿cómo sabríamos si funciona?</span><span class="nq-ar" aria-hidden="true">↓</span></a>
+  </div>
+</section>
+
+
+
+
+<!-- ================= CAPÍTULO V ================= -->
+<section class="act-open tone-dark" id="cap-5" data-act="5" aria-labelledby="cap-5-t">
+  <div class="wrap">
+    <span class="act-num" aria-hidden="true">V</span>
+    <div class="act-text">
+      <p class="act-k">Capítulo V · Qué esperamos y cómo lo evaluaremos</p>
+      <h2 id="cap-5-t">¿Cómo sabríamos si la estrategia funciona?</h2>
+      <p class="act-lead">Cada fase avanza solo si cumple metas medibles. Después, lo que podría crecer el sector hacia 2030 y lo que concluimos.</p>
+    </div>
+    <ol class="act-map" aria-label="En este capítulo"><li><a href="#evaluacion">Cómo se evalúa</a></li><li><a href="#proyeccion">Proyección a 2030</a></li><li><a href="#conclusion">Conclusión</a></li><li><a href="#fuentes">Bibliografía</a></li></ol>
+  </div>
+</section>
+
+<!-- ================= EVALUACIÓN ================= -->
+<section class="chapter tone-dark" id="evaluacion" data-act="5" aria-labelledby="hEval">
+  <div class="wrap">
+    <div class="chapter-head">
+      <div class="chapter-no">Evaluación</div>
+      <h2 id="hEval">La estrategia avanza solo si los resultados lo justifican.</h2>
+      <p class="question">¿Qué tendría que pasar para pasar de una fase a la siguiente?</p>
+    </div>
+    <div class="eval-how">
+      <div class="rv"><h3>Antes de empezar</h3><p>Con la ENDUTIH, el INEGI fija una línea base por entidad. Los umbrales se definen antes del inicio, de modo que la mejora exigida supere el error de medición.</p></div>
+      <div class="rv"><h3>Durante el piloto</h3><p>Se compara la adopción de CoDi en grupos de tratamiento frente a grupos de control, y se da seguimiento a la desconfianza y al desconocimiento del proceso de compra.</p></div>
+      <div class="rv"><h3>Al cerrar cada fase</h3><p>La decisión de avanzar se toma al mes 18. Si no se cumplen los umbrales, la siguiente fase no inicia y la actual se extiende un año con ajustes.</p></div>
+    </div>
+      <h3 class="fig-title" style="margin-top:var(--s7)">Criterios para avanzar de fase</h3>
       <p class="fig-sub">La decisión se toma al cierre del mes 18 de cada fase, dejando seis meses de preparación. Los umbrales se fijan antes del inicio con la línea base de cada entidad, de modo que la mejora requerida supere el error de medición.</p>
       <div class="gate">
         <div><span class="who">Banxico · mensual</span><b>Primer pago con CoDi</b><p>Cuentas que realizan su primer pago con CoDi.</p></div>
         <div><span class="who">ANTAD · mensual</span><b>Pasarelas y QR</b><p>Participación de CoDi en las pasarelas y escaneos del QR informativo.</p></div>
         <div><span class="who">INEGI · ENDUTIH</span><b>Seguridad sin retroceso</b><p>Compradores que reportan problemas con la seguridad del pago o de sus datos no deben superar la línea base (17.7% y 6.0% en 2025). Se evalúa por conjunto de entidades de la fase.</p></div>
       </div>
-    </div>
+    <p class="hint eval-note">Ocho años (dos de piloto y seis de escalamiento) son el escenario base, no un calendario garantizado.</p>
+    <a class="next-q rv" href="#proyeccion"><span class="nq-k">Siguiente pregunta</span><span class="nq-q"><span class="nq-lead">Si la estrategia avanza,</span> ¿hacia dónde podría ir el mercado?</span><span class="nq-ar" aria-hidden="true">↓</span></a>
   </div>
 </section>
 
-
 <!-- ================= PROYECCIÓN ================= -->
-<section class="chapter deep" id="proyeccion" aria-labelledby="hProj">
+<section class="chapter tone-dark" id="proyeccion" data-act="5" aria-labelledby="hProj">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">Proyección a 2030</div>
@@ -910,7 +1031,7 @@
     </div>
 
     <div class="method dark-method">
-      <div><h4>Escenario alto · Holt</h4><p>Suavizamiento exponencial doble de Holt sobre 2013–2024, con α = 0.8 y β = 0.2, valores que minimizan el error cuadrático medio. Prolonga el nivel y la tendencia más recientes.</p></div>
+      <div><h4>Escenario alto · Holt</h4><p>Suavizamiento exponencial de Holt con nivel y tendencia (también llamado doble), estimado sobre 2013–2024 con α = 0.8 y β = 0.2, valores que minimizan el error cuadrático medio. Prolonga el nivel y la tendencia más recientes.</p></div>
       <div><h4>Escenario bajo · tendencia lineal</h4><p>Recta de mínimos cuadrados estimada con 2020–2024. Su primer año proyectado (2025) queda por debajo de 2024 porque la recta no pasa por el último dato observado.</p></div>
       <div><h4>Escenario base · promedio</h4><p>Promedio simple de los escenarios alto y bajo en cada año. Es una referencia central, no el resultado de un modelo distinto.</p></div>
     </div>
@@ -937,7 +1058,7 @@
 </section>
 
 <!-- ================= CONCLUSIÓN ================= -->
-<section class="chapter paper" id="conclusion" aria-labelledby="hConc">
+<section class="chapter tone-dark" id="conclusion" data-act="5" aria-labelledby="hConc">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">Conclusión</div>
@@ -953,22 +1074,17 @@
 </section>
 
 <!-- ================= CIERRE ================= -->
-<section class="closing" aria-labelledby="hClose">
+<section class="closing" data-act="5" aria-labelledby="hClose">
   <svg id="closingArt" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
   <div class="wrap">
     <h2 id="hClose" class="closing-motto"><span>Quien conoce</span><span>confía,</span><span>y quien confía,</span><span class="g">compra.</span><span class="g">Usa CoDi.</span></h2>
     <p class="closing-lead rv">CoDi ofrece una herramienta para que el comercio minorista mexicano continúe su digitalización de una manera más accesible e incluyente: mediante el conocimiento, la confianza y la inclusión financiera.</p>
-    <div class="closing-cols">
-      <div class="rv"><h3 class="cl-h">Confianza</h3><p>Banco de México y CONDUSEF: una experiencia homologada, límites de pago, avisos por operación y un sello visible de seguridad.</p></div>
-      <div class="rv"><h3 class="cl-h">Conocimiento</h3><p>ANTAD y sus cadenas: campaña, QR informativo, promotores y CoDi en cada pasarela digital, donde millones ya compran.</p></div>
-      <div class="rv"><h3 class="cl-h">Inclusión financiera</h3><p>Banco del Bienestar y Secretaría del Bienestar: activación asistida y voluntaria en la red bancaria con mayor presencia territorial.</p></div>
-    </div>
-    <div class="hero-cta" style="margin-top:var(--s7)"><a class="btn btn-gold" href="#s9">Volver a la propuesta</a><a class="btn btn-ghost" href="#fuentes">Consultar las fuentes</a></div>
+    <div class="hero-cta" style="margin-top:var(--s7)"><a class="btn btn-gold" href="#propuesta-minuto">Volver a la propuesta</a><a class="btn btn-ghost" href="#fuentes">Consultar las fuentes</a></div>
   </div>
 </section>
 
 <!-- ================= BIBLIOGRAFÍA ================= -->
-<section class="chapter biblio" id="fuentes" aria-labelledby="hBib">
+<section class="chapter tone-dark biblio" id="fuentes" data-act="5" aria-labelledby="hBib">
   <div class="wrap">
     <div class="chapter-head">
       <div class="chapter-no">Bibliografía y fuentes</div>
@@ -1007,12 +1123,12 @@
 
 <footer class="site">
   <div class="wrap">
-    <div class="foot-inst" aria-hidden="true"><img src="assets/images/escudo-unam.png" width="410" height="425" alt="" loading="lazy" decoding="async"><img src="assets/images/escudo-fe.png" width="320" height="401" alt="" loading="lazy" decoding="async"></div>
+    <div class="foot-inst" aria-hidden="true"><img src="assets/images/escudo-unam.png" width="410" height="425" alt="" decoding="async"><img src="assets/images/escudo-fe.png" width="320" height="401" alt="" decoding="async"></div>
     <div>
       <p class="foot-motto">Quien conoce confía, y quien confía, compra. Usa CoDi.</p>
       <span>Estrategia de digitalización del comercio electrónico en México · Universidad Nacional Autónoma de México, Facultad de Economía · Datatón INEGI 2026.</span>
     </div>
-    <span>Equipo: López Trujillo Andrea, Santos Peralta Ady Arelí, Torres Aparicio Oscar Miguel y Vargas Avendaño Ulises. Tutor: Ávalos Domínguez Irving Javier. Fuentes: INEGI, Banco de México, CNBV y las referencias de la <a href="#fuentes">bibliografía</a>.</span>
+    <span>Equipo: López Trujillo Andrea, Santos Peralta Ady Arelí, Torres Aparicio Oscar Miguel y Vargas Avendaño Ulises. Fuentes: INEGI, Banco de México, CNBV y las referencias de la <a href="#fuentes">bibliografía</a>.</span>
   </div>
 </footer>
 
