@@ -13,7 +13,7 @@
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const conn = navigator.connection || {};
   const LOW = RM || conn.saveData || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.deviceMemory && navigator.deviceMemory <= 2);
-  const HEAD = "Montserrat, 'Segoe UI', sans-serif", BODY = "'Source Sans 3', 'Segoe UI', sans-serif";
+  const HEAD = "'Source Sans 3', 'Segoe UI', sans-serif", BODY = "'Source Sans 3', 'Segoe UI', sans-serif";
   const K = { night: '#071629', deep: '#102D4F', gold: '#D6AC55', sky: '#62C8F5', on: '#EAF0F8', on2: '#A9BBD1', on3: '#91A6BF', red: '#E9826F', teal: '#3FC1A0' };
   if (G && ST) G.registerPlugin(ST);
 
@@ -413,12 +413,15 @@
   /* =====================================================================
      MOTOR: monta escenas y las conecta al scroll (reversible, scrub)
      ===================================================================== */
+  const STACK = matchMedia('(max-width: 900px) and (orientation: portrait)');
   function mount(root) {
     const sc = SCENES[root.dataset.scene]; if (!sc) return;
     const stage = $('.story-stage', root), steps = $$('.step', root), n = steps.length;
     const holder = document.createElement('div'); holder.className = 'stage-art';
     holder.innerHTML = `<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">${sc.svg()}</svg>`;
     stage.appendChild(holder);
+    // banda opaca del mismo color que la sección (composición de celular)
+    const sec = root.closest('section'); if (sec) stage.style.setProperty('--stage-bg', getComputedStyle(sec).backgroundColor);
     const svg = $('svg', holder);
     if (!G) { root.classList.add('story-static'); return; }
     const q = G.utils.selector(svg), T0 = .7, at = i => T0 + i - .62;
@@ -427,7 +430,12 @@
     tl.to({}, { duration: Math.max(0, T0 + n - 1 - tl.duration()) }); // asegura la duración total
     const total = T0 + n - 1, prog = i => (T0 + i) / total;
     const mark = i => steps.forEach((s, k) => s.classList.toggle('is-active', k === i));
+    const cards = steps.map(s => $('.step-card', s));
+    let stackedOn = false;
     if (LOW) {
+      let fr = 0; const onS = () => { if (!fr) fr = requestAnimationFrame(() => { fr = 0; frame(); }); };
+      addEventListener('scroll', onS, { passive: true }); addEventListener('resize', onS);
+      if ('ResizeObserver' in window) new ResizeObserver(onS).observe(document.body);
       // modo discreto: cada paso salta a su estado sin desplazamiento animado
       const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const i = steps.indexOf(e.target); mark(i); RM ? tl.progress(prog(i)) : tl.tweenTo(T0 + i, { duration: .5 }); } }), { rootMargin: '-45% 0px -45% 0px' });
       steps.forEach(s => io.observe(s)); tl.progress(prog(0)); return;
@@ -437,13 +445,29 @@
     // y converge al estado correcto aunque el desplazamiento sea muy rápido.
     let active = false, raf = 0, lastT = -1;
     function target() {
-      const vc = innerHeight * .5, cs = steps.map(s => { const r = s.getBoundingClientRect(); return r.top + r.height / 2; });
+      // en celular vertical el texto se lee debajo de la ilustración fija: el centro es el del carril de lectura
+      const vc = STACK.matches ? (stage.getBoundingClientRect().bottom + innerHeight) / 2 : innerHeight * .5, cs = steps.map(s => { const r = s.getBoundingClientRect(); return r.top + r.height / 2; });
       if (vc <= cs[0]) return T0 * Math.max(0, Math.min(1, 1 - (cs[0] - vc) / (innerHeight * .55)));
       for (let i = 0; i < n - 1; i++) if (vc <= cs[i + 1]) return T0 + i + (vc - cs[i]) / (cs[i + 1] - cs[i]);
       return total;
     }
+    // celular vertical: la banda de la ilustración se marca como fija (cubre lo que pasa bajo la barra
+    // translúcida) y cada tarjeta se desvanece al deslizarse bajo la banda, para que no queden renglones sueltos
+    function frame() {
+      if (!STACK.matches) { if (stackedOn) { stackedOn = false; stage.classList.remove('stuck'); cards.forEach(c => c && (c.style.opacity = '')); } return; }
+      stackedOn = true;
+      const sr = stage.getBoundingClientRect(), bar = 56;
+      // tolerancia: en pantallas Retina la posición fija puede quedar en medio píxel
+      const stuck = sr.top <= bar + 3 && sr.bottom > bar; stage.classList.toggle('stuck', stuck);
+      cards.forEach(c => { if (!c) return; const r = c.getBoundingClientRect();
+        const zone = innerHeight - sr.bottom, cl = v => Math.max(0, Math.min(1, v));
+        // tarjeta que cabe en el carril: se desvanece al acercarse su borde superior a la banda (nunca queda partida);
+        // tarjeta más alta que el carril: se desvanece al final, para no ocultar lo que aún no se lee
+        const o = !stuck ? 1 : r.height <= zone * .9 ? cl((r.top - sr.bottom + 10) / 60) : (r.top < sr.bottom ? cl((r.bottom - sr.bottom) / 120) : 1);
+        c.style.opacity = o === 1 ? '' : o.toFixed(3); });
+    }
     function update() {
-      raf = 0; const T = target();
+      raf = 0; frame(); const T = target();
       if (Math.abs(T - lastT) < .001) return; lastT = T;
       mark(Math.max(0, Math.min(n - 1, Math.round(T - T0))));
       G.to(tl, { time: Math.min(T, tl.duration()), duration: .45, ease: 'power2.out', overwrite: true });
@@ -451,6 +475,8 @@
     const onScroll = () => { if (active && !raf) raf = requestAnimationFrame(update); };
     new IntersectionObserver(es => { active = es[0].isIntersecting; if (active) onScroll(); }, { rootMargin: '25% 0px 25% 0px' }).observe(root);
     addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll);
+    // si una gráfica diferida cambia la altura de la página, el contenido se desplaza sin evento de scroll
+    if ('ResizeObserver' in window) new ResizeObserver(onScroll).observe(document.body);
   }
   // montaje diferido: cada escena se construye al acercarse a la pantalla (reduce el trabajo inicial)
   if ('IntersectionObserver' in window) {

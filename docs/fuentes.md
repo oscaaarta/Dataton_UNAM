@@ -77,3 +77,10 @@ uniendo los cortes de línea del PDF. Observaciones:
 - La referencia «CoDi, Operaciones realizadas a través de CoDi (CF884)» apunta en el documento a
   `idCuadro=CF882`. Se respetó la URL del documento; conviene que el equipo la confirme.
 - «ENIF2024_RR.pdf» no tiene URL en el documento; se muestra «Sin enlace público».
+
+## Escudos institucionales
+
+- `assets/images/escudo-unam.png` y `assets/images/escudo-fe.png`: escudos de la UNAM y de la Facultad de
+  Economía, a partir de los archivos originales aportados por el equipo (`logo unam.png`,
+  `logo facultad de economia.png`). Solo se convirtió el fondo blanco de la UNAM a transparente (sin
+  alterar colores) y se eliminaron metadatos. Uso institucional del equipo participante.

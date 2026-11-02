@@ -32,8 +32,9 @@ No es un dashboard: es una experiencia editorial interactiva, científicamente r
 | `…\DATATON REAL\Mapa bancos\sucursalesbabien_1ertrim2026.csv` | Directorio de sucursales del Banco del Bienestar (fuente del mapa) |
 | Zip `Datatón INEGI - UNAM-…zip` | Contiene `BD_VABCOEL.xlsx` (serie exacta para la proyección), `perfilesENDUTIH.xlsx`, etc. |
 
-«Digitalízate con CoDi.html» (referencia histórica mencionada por el equipo) **no se encontró** en la
-carpeta durante la sesión del 2026-11-01.
+«Digitalízate con CoDi.html» (referencia histórica del equipo) está en la carpeta de trabajo desde la
+noche del 2026-11-01; su componente logit se integró en la Sección 8 (ver sección 16).
+Escudos originales: `…\DATATON REAL\logo unam.png` y `logo facultad de economia.png` (ver sección 16).
 
 ## 3. Arquitectura
 
@@ -41,10 +42,11 @@ Sitio estático, sin build, rutas relativas. Entrada: `index.html`.
 
 - `assets/css/styles.css` — sistema visual base (tokens en `:root`). `stories.css` — escenas de scroll.
   `extra.css` — todo lo añadido en la versión final (proyección, conclusión, bibliografía, sucursales,
-  CoDi por entidad, simulación, correcciones responsive).
+  CoDi por entidad, simulación, correcciones responsive). `llab.css` — laboratorio del modelo logit y
+  escudos institucionales.
 - `assets/js/app.js` — gráficas ECharts y controles de las secciones 1–9, CoDi por entidad, proyección,
   bibliografía, mapa de sucursales (Leaflet). `stories.js` — 11 escenas SVG + GSAP ligadas al scroll y el
-  gráfico de coeficientes del logit. `present.js` — modo «Presentar» (7 paradas).
+  laboratorio «Construye el modelo» del logit (`logitLab()`, expone `window.LLAB`). `present.js` — modo «Presentar» (7 paradas).
 - `assets/data/datos.js` — **todas** las cifras (`window.DATA`). `mx-geo.js` — GeoJSON de entidades
   (Natural Earth). `sucursales-bienestar.js` — 3,150 sucursales (generado desde el CSV).
 - `assets/vendor/` — `echarts.min.js` (build reducido 5.6.0: bar, line, scatter, map), GSAP 3.12.5,
@@ -84,7 +86,8 @@ Cierre visual (`.closing`) → **F Bibliografía** (`#fuentes`) → pie.
    `grep -n "Gráfica [0-9]\|documento\|Cuadro\|pp\. [0-9]" index.html assets/js/*.js`
    (solo debe aparecer el comentario interno de `stories.js`).
 4. Logit: asociación, no causalidad; no calcular probabilidades individuales (no hay coeficientes ni
-   intercepto); no dibujar curva ROC.
+   intercepto); no dibujar curva ROC; **no sumar efectos entre variables** ni re-estimar al seleccionar
+   variables en el laboratorio (solo muestra/oculta los efectos del modelo completo).
 5. Proyección: escenarios condicionados, no pronósticos; rotular «e» (estimado) y 2024 «P» (preliminar).
 6. Ilustraciones (escenas, maquetas, QR, pines del storytelling) se declaran como ilustrativas. La
    simulación CoDi **nunca** cobra ni se conecta a un banco; comercio y banco son ficticios. No usar
@@ -203,3 +206,240 @@ scratchpad temporal; recrearlos si hacen falta (ver sección 11 para qué cubrí
 - Prueba `navtest.mjs` (http y file://, 375/820/1440 + URL `#sucursales`): 25/25. Regresión: 104/104.
 - Limitación conocida: en `file://` Chrome bloquea las tipografías locales (se ven fuentes del sistema).
   Para ver el diseño exacto usar un servidor (`npx serve .`) o la URL de Vercel.
+
+## 15. Rediseño visual de los tres ejes (2026-11-01, noche)
+
+**Archivos nuevos:** `assets/js/ejes.js` (experiencias de los ejes y puente) y `assets/css/ejes.css`.
+**Modificados:** `index.html` (Sección 8: bloque `#bridgeMap`; Sección 9: escena `axes` y paneles
+`#axp0–#axp2`), `stories.js` (nueva `SCENES.axes`; expone `window.SVGKIT` con las primitivas de dibujo),
+`app.js` (se quitó el recorrido `#journey`; pestañas con flechas; mapas del Eje 3 se inician al aparecer),
+`present.js` (parada de ejes con destino alterno `#axp0`; el modo inicial ya no fuerza resize/refresh),
+`datos.js` (`bbByState`: registros del directorio por entidad, usados en la ilustración del Eje 3).
+Arquitectura, piloto, fases, criterios y el resto de secciones no cambiaron.
+
+- **Puente logit → ejes** (`#bridgeMap`, fin de la Sección 8): 4 filas factor → eje con interpretación
+  desplegable: desconfianza → Confianza; habilidades → Conocimiento; banca móvil (y smartphone) → Inclusión;
+  edad → acompañamiento diferenciado (Ejes 2 y 3, línea punteada). Nota explícita: interpretación, no causalidad.
+- **Escena de introducción** (`SCENES.axes`, 4 pasos de scroll): celular con solicitud CoDi + escudo; persona
+  aprendiendo en mostrador con QR y promotor; mapa con círculos proporcionales a `bbByState` (datos reales,
+  no pines decorativos); al final se conectan hacia un nodo «CoDi».
+- **Paneles** (`.axis-panel.ax-v2`): encabezado breve Problema / Propuesta / Participan (`.ax-brief`).
+  - Eje 1: maqueta de app con 6 pantallas; cada una etiquetada **Existe hoy** (solicitud de cobro,
+    autorización con NIP), **Existe + propuesta** (aviso de operación) o **Propuesta** (CoDi en el inicio,
+    límites, información de seguridad). Flechas, contador y deslizamiento con el dedo. Medidas completas en
+    `<details>`.
+  - Eje 2: escena SVG que se transforma en 6 pasos (campaña, QR informativo, promotor, app, primer pago con
+    incentivo, compra en línea) + medidor «Desconoce → Lo usa con confianza».
+  - Eje 3: mensaje «La infraestructura ya existe…» con la advertencia de que la red no equivale a acceso
+    efectivo; mapa de sucursales (sin cambios); recorrido de acompañamiento en 6 pasos (sucursal, orientación,
+    app, CoDi asistido, operación **simulada y voluntaria**, herramientas); recuadro «Siempre voluntaria» y
+    mapa de banca por entidad.
+- **Celular (≤768 px):** sin pestañas; los tres ejes en secuencia vertical; pasos como fila deslizable;
+  rótulos secundarios de las ilustraciones (`.lt`) ocultos (el texto está en la tarjeta de explicación).
+- **Rendimiento:** las experiencias se construyen al acercarse (`whenNear`, margen 150%).
+
+**Pruebas:** `func.mjs` 158/158 en 375, 820, 1180 y 1440 px (incluye puente, pantallas del Eje 1, pasos de
+los Ejes 2 y 3, mensaje del Eje 3, mapa y popup); deslizamiento táctil y desbordamiento en 320–1920 px:
+0 desbordes; navegación interna 25/25. Lighthouse móvil: Accesibilidad 100, Buenas prácticas 100, SEO 100.
+El rendimiento medido en esta sesión fue 48–66 por carga del equipo; en las mismas condiciones la versión
+previa al rediseño obtuvo 49–53 (diferencia atribuible ≈ +80 ms de TBT). Repetir en una máquina sin carga.
+
+**Nota:** este archivo se llamaba `CLAUDE.md`; fue renombrado a `DTN.md` fuera de la sesión. El puntero de la
+carpeta superior (`../CLAUDE.md`) todavía menciona `dataton-inegi-2026/CLAUDE.md`.
+
+## 16. Laboratorio del modelo logit y escudos institucionales (2026-11-01, noche)
+
+**Referencia usada:** `…\DATATON REAL\Digitalízate con CoDi.html`, sección «06 Modelo logit». Lo que
+realmente implementaba: tabla de efectos marginales (Cuadro 8.1) + «calculadora ilustrativa» con
+interruptores (smartphone, banca móvil, desconfianza) y deslizadores (habilidades 0–10, edad 0–50) que
+**sumaba** efectos marginales al uso promedio (1.85%). No re-estimaba nada. También mencionaba «mujer» y
+«educación superior», que **no** están en la especificación final; no se usaron.
+
+**Especificación final verificada** (`…\DATATON REAL\logitgod\logit_final.do` + texto del PDF final):
+`svy: logit uso_codi desconfianza_seguridad n_habilidades smartphone banca_movil edad_final`;
+`margins, dydx(*) vce(unconditional)`. `n_habilidades` = suma de p11_1_1…p11_1_14 (0 a 14).
+Las cifras ya estaban en `datos.js` (`logit`) y coinciden con el documento.
+
+**Ubicación:** Sección 8, «Escena 2 · Construye el modelo» (`#logitLab` en `index.html`; código
+`logitLab()` en `assets/js/stories.js`; estilos `assets/css/llab.css`). Sustituye al gráfico de
+coeficientes anterior (`#coefSvg`) y al módulo «¿Qué tan grande es cada efecto?» (`#magViz`); su
+contenido quedó integrado en la tarjeta de interpretación. Se eliminó su CSS muerto de `stories.css`.
+Escena 1, Escena 3, el puente a los ejes y la nota metodológica no cambiaron.
+
+- Diagrama: 5 variables (botones `aria-pressed`) → conexiones SVG animadas → nodo «Uso de CoDi» con anillo
+  de progreso (k de 5). Conexión punteada tenue = variable sin agregar.
+- Gráfico de efectos con 5 filas fijas (sin saltos de altura); la fila crece al agregar. IC 95% solo donde
+  la investigación lo reporta (desconfianza, smartphone); «IC no reportado» en las demás.
+- Tarjeta: unidad, IC, significancia, comparación con el uso promedio, lectura y advertencia. Para las
+  continuas, deslizador de **lectura acumulada lineal de esa sola variable** (habilidades 0–14, def. 10;
+  edad 0–50, def. 30), como la propia investigación (10 hab. = +3.4 pp; 30 años ≈ −0.4 pp).
+  **Decisión de rigor:** de la calculadora antigua se recuperaron los controles, pero **no** la suma de
+  efectos entre variables ni la «probabilidad estimada»: contradice la regla 4 y la instrucción del equipo
+  de no recalcular probabilidades al seleccionar variables.
+- «Ver modelo completo» agrega las faltantes en secuencia y termina en Desconfianza; «Reiniciar» vacía.
+  El modo Presentar (parada 4, ahora `#logitLab`) llama `window.LLAB.full()`.
+- Celular (≤600 px): botones compactos, nodo Y de 88 px, sin ilustración en la tarjeta; ≤1000 px una
+  columna (diagrama → tarjeta → gráfico). Movimiento reducido: sin pulsos ni transiciones.
+- **No se re-estimaron modelos parciales.** R 4.4.3 y los microdatos existen, pero replicar los errores
+  `svy` + `margins, vce(unconditional)` de Stata para 31 subespecificaciones requiere validación aparte.
+
+**Escudos:** originales aportados por el equipo en la carpeta de trabajo (`logo unam.png` 448×446,
+`logo facultad de economia.png` 321×401, 2026-11-01). Versiones web en `assets/images/escudo-unam.png`
+(410×425) y `escudo-fe.png` (320×401), generadas con un script Node sin dependencias:
+UNAM tenía fondo blanco opaco → «color a alfa» respecto a blanco (al recomponer sobre blanco el error
+máximo es 0: mismos píxeles, colores originales) y recorte de márgenes; FE ya tenía alfa → solo se
+quitaron ~180 KB de metadatos de Fireworks y márgenes. No se redibujó ni recoloreó nada.
+Portada: fila `.inst` sobre el título (64/60 px de alto; 46/43 px en celular) con los nombres de ambas
+instituciones; por eso se quitó «UNAM · Facultad de Economía» del `kicker`. Pie: `.foot-inst` (34 px).
+
+**Pruebas (Chrome 156 + playwright-core 1.49, servidor local):**
+- Laboratorio `test.mjs`: **200/200** en 320, 375, 430, 820, 1180, 1440 y 1920 px — estado inicial,
+  agregar las 5 una por una, valores exactos del gráfico (−1.28 **, +0.34 ***, +3.09 **, +2.12 ***,
+  −0.013 **), IC, foco por fila, quitar, deslizadores (14 hab. = +4.76 pp; 30 años = −0.39 pp), reiniciar,
+  modelo completo, modo Presentar, escudos cargados con proporción correcta y sin tocar el título, 0
+  botones encima del nodo Y, 0 etiquetas del gráfico encimadas, 0 elementos fuera de pantalla, consola limpia.
+- Recorrido completo `smoke.mjs` (320–1920 px, 9 tamaños): 0 errores de consola, 0 respuestas 404,
+  0 scroll horizontal; 12 secciones, lema «compra», 43 referencias, simulación, ejes, mapa y puente presentes.
+- No se repitió Lighthouse. No se probó en Safari/iOS real.
+
+**Pendientes nuevos:** que el equipo confirme los escudos como versiones oficiales vigentes; opcional:
+estimar modelos parciales en R/Stata y mostrarlos como «especificaciones alternativas» separadas del
+modelo final; Lighthouse tras el cambio (los escudos suman ≈180 KB en la portada).
+
+## 17. Celular (iPhone) y favicon UNAM (2026-11-01, noche)
+
+### Causas encontradas (y corrección)
+1. **Imagen y texto en la misma celda (causa principal).** En ≤900 px, `.story-stage` (sticky,
+   `height: calc(100svh-56px)`) y `.story-steps` compartían columna y fila: la ilustración quedaba fija y las
+   tarjetas de texto pasaban por encima con fondo semitransparente, en las 10 escenas `data-scene`.
+   → `stories.css`, `@media (max-width: 900px) and (orientation: portrait)`: composición propia en vertical.
+   Banda opaca fija arriba con la ilustración (`--art-h: min((100vw-32px)*.75, 40svh)`, a todo el ancho, color de
+   la sección en `--stage-bg`, borde nítido) y el texto en su propio carril debajo (pasos con altura = carril).
+2. **Barra superior translúcida.** El texto que subía bajo la barra (`rgba .92→.72`) se veía justo encima de la
+   ilustración. → con la banda fija (clase `.stuck`, puesta por JS) un `::before` cubre la franja bajo la barra.
+3. **Renglones sueltos bajo la banda.** → `frame()` en `mount()` (`stories.js`): una tarjeta que cabe en el
+   carril se desvanece cuando su borde superior llega a la banda (nunca queda partida); una más alta que el
+   carril (iPhone SE) se desvanece al final, para no ocultar lo no leído. Solo con la banda fija.
+4. **Retraso al regresar.** `.step-card` tenía `transition: opacity .5s` (efecto de escritorio): en celular las
+   tarjetas volvían invisibles y aparecían con medio segundo de retraso. → `transition: none` en vertical.
+5. **Última tarjeta tapada al entrar desde abajo.** Al subir, la banda sticky llega empujada al fondo de la escena
+   y cubría la última tarjeta. → `.story-steps { padding-bottom: calc(var(--art-h) + 36px) }`.
+6. **Estados viejos tras cargas diferidas.** Las gráficas diferidas cambian la altura sin evento de scroll.
+   → `ResizeObserver` sobre `body` vuelve a calcular escena, banda y tarjetas (también en modo `LOW`).
+7. **Motor de escenas.** En vertical mide el centro del carril de lectura, no el de la pantalla (`STACK`).
+8. **Áreas seguras.** Había `viewport-fit=cover` sin ningún `env(safe-area-*)`: en horizontal el notch tapaba
+   barra y márgenes. → `llab.css`: barra, `.wrap`, barra de presentación y pie con `max(…, env(…))`.
+9. **Menú «Secciones».** 12 entradas (≈552 px) sin límite: en iPhone SE y en horizontal las últimas
+   (Bibliografía) eran inalcanzables. → `max-height: calc(100svh-56px)`, desplazamiento interno,
+   `overscroll-behavior: contain`; en horizontal, dos columnas.
+10. **Objetivos táctiles.** Deslizadores de año de 16 px y logo de 22 px. → en `pointer: coarse`, rango de 40 px
+    (`touch-action: pan-y`) y logo de 44 px.
+11. **Rendimiento.** Safari dispara `resize` al mostrar u ocultar sus barras y el lienzo del hero se
+    rehacía cada vez (`app.js`). → solo si cambió su tamaño. Las escenas ya se montaban al acercarse y el
+    lienzo ya se pausaba fuera de pantalla. Horizontal ≤900 px conserva las dos columnas (no se apilan).
+    Movimiento reducido: la banda no es fija.
+
+Escritorio y tableta horizontal no cambian (todas las reglas nuevas están dentro de las consultas de celular
+o de `pointer: coarse`; `env()` vale 0 en escritorio).
+
+### Favicon
+`favicon.ico` (raíz; PNG 16 y 32 incrustados), `assets/images/favicon-16x16.png`, `favicon-32x32.png` y
+`apple-touch-icon.png` (180), generados de `escudo-unam.png` sin deformar, sobre fondo blanco. En 16 y 32 px se
+refuerza la opacidad de los trazos finos al reducir (sin cambiar colores): sin eso el escudo se veía como una
+mancha clara, casi invisible en pestañas oscuras. `<head>` actualizado. `favicon.svg` y `favicon-32.png`
+anteriores quedan en el repo sin uso; `icon-512.png` no se modificó (nada lo referencia).
+
+### Pruebas
+- **WebKit** (Playwright 1.49, build 2104 de Windows, `isMobile`, UA de iPhone): recorrido completo bajando
+  y subiendo en 320×568, 375×667, 390×844, 393×852, 430×932, 667×375 y 844×390. En las 7: **0 textos tapados**
+  (comprobación con `elementFromPoint` en la zona de lectura), **0 elementos fuera de pantalla, 0 scroll
+  horizontal, 0 errores de JS, 0 recursos 404**. Los únicos textos de baja opacidad son bloques `.rv` a mitad
+  de su aparición (0 al subir; ninguno atascado). Capturas de entrada, mitad, salida y regreso de las 10 escenas
+  en 375×667 y 844×390.
+- Chrome: objetivos táctiles < 32 px = 0 en 320, 375 y 844; menú alcanza «Bibliografía» y lleva a la sección.
+  Laboratorio logit 200/200. Recorrido completo en 9 tamaños (320–1920): 0 errores de consola, 0 404, 0 scroll horizontal; 12 secciones, lema, 43 referencias, simulación, ejes, mapa y puente presentes. (Los escudos del pie, con carga diferida, se verificaron aparte al llegar al pie en Chrome y WebKit: cargan.)
+- Scripts (scratchpad, recrear si hacen falta): `iphone.mjs` (auditoría), `sheet.mjs` (hojas de capturas),
+  `tap.mjs` (táctil + menú), `test.mjs`, `smoke.mjs`. La instalación de WebKit se colgó al descomprimir
+  (antivirus): se descomprimió a mano en `%LOCALAPPDATA%\ms-playwright\webkit-2104`.
+
+### Pendiente
+- **Probar en un iPhone real con Safari** (no hay simulador de iOS en Windows): barras dinámicas al desplazarse,
+  inercia del scroll y pesos tipográficos. El WebKit de Windows dibuja Montserrat delgada porque no aplica los
+  ejes de fuentes variables; la declaración `font-weight: 100 900` es correcta y iOS 11+ la soporta.
+- Favicon en Safari, Firefox y Edge reales (en Chrome y WebKit los archivos cargan con 200).
+- Lighthouse móvil tras estos cambios.
+
+## 18. Rediseño narrativo en cinco capítulos (2026-11-02)
+
+**Problema que resuelve** (comentario externo): «parece un repositorio de información con tablas dinámicas y
+KPIs juntos»; no se entendía la propuesta ni dónde terminaba cada parte.
+
+### Estructura (index.html)
+Portada → **I El problema** (`#cap-1`, s1, s2) → **II Las personas y sus barreras** (`#cap-2`, s3–s6) →
+**III La oportunidad: CoDi** (`#cap-3`, s7 + simulación, s8 logit) → **IV Nuestra propuesta** (`#cap-4`,
+`#propuesta-minuto`, ejes `#ejes`, mapa `#sucursales`, `#instituciones`, `#piloto`, `#fases`) →
+**V Qué esperamos y cómo lo evaluaremos** (`#cap-5`, `#evaluacion`, proyección, conclusión, cierre, bibliografía).
+- Cada bloque lleva `data-act="1…5"`. Aperturas `.act-open` (número romano, pregunta del capítulo, entrada y
+  mapa de apartados). Al final de cada apartado, `.next-q` «Siguiente pregunta» enlaza con el siguiente
+  (regla Pregunta → Evidencia → Interpretación → Siguiente pregunta).
+- **Portada:** titular «El comercio electrónico crece en México. Pero no todos participan de la misma manera.»
+  y tres líneas: El problema (Chiapas 7.2% / Colima 31.1%), Lo que buscamos (20.5 M de cuentas CoDi validadas →
+  compradores activos), Nuestra propuesta (tres ejes). El dato «7 de cada 100 pesos» pasó al párrafo.
+- **IV:** «La propuesta en un minuto» (¿qué?, ¿cómo?, ¿dónde empezaríamos?, ¿cómo sabríamos si funciona?) con
+  aviso «todo es propuesta, nada está implementado». Cada eje añade «Resultado buscado» (objetivos de la
+  investigación: Eje 1 y Eje 3 textuales; Eje 2 con su propia redacción del primer pago acompañado).
+- **III:** recuadro «Lo que CoDi atiende / no resuelve» (60.0% de quienes tuvieron problemas los tuvieron con la
+  entrega, ENDUTIH 2025, Gráfica 5.2 de la investigación).
+- **V:** nueva sección `#evaluacion` (línea base del INEGI, tratamiento frente a control, decisión al mes 18) con
+  los tres indicadores, **movidos** desde Fases (antes estaban dentro de la Sección 9).
+- Redundancias quitadas: párrafo de s1 que repetía la escena (definición y cifras del VABCOEL); puente suelto
+  s1→s2 (sustituido por `.next-q`); columnas del cierre que repetían por tercera vez los tres ejes.
+- Editorial: sin «Tutor: Ávalos…» en portada y pie (sigue en este archivo, §1); sin indicador «Desliza»;
+  «pasarela» solo como término técnico (rol de ANTAD) y en el nombre del indicador de la investigación; Holt
+  descrito como «suavizamiento exponencial de Holt con nivel y tendencia (también llamado doble)», igual que
+  la investigación. Cifras, fórmulas y resultados sin cambios.
+
+### Sistema visual (`assets/css/narrativa.css`, cargado al final)
+- **Fondos por capítulo:** I marino · II claro · III marino · IV claro · V marino (`.tone-dark`/`.tone-light`;
+  las claras también llevan `.paper`). En `.tone-light` se redefinen los tokens (`--on-night*`,
+  `--line-night`, `--gold: #7E5A14`, `--sky: #1F6FAE`), así los componentes existentes se adaptan solos.
+  Islas oscuras dentro de capítulos claros (`.bb-map`, popups, `.stage-art`) restauran los tokens oscuros.
+- **Gráficas:** `theme('idDelContenedor')` en `app.js` lee el fondo del capítulo (`.tone-light`). Barreras
+  (chBar, chExp), mapa de banca, CoDi por entidad y fases usan tema claro; sus escalas secuenciales se invierten
+  sobre papel (claro = bajo, saturado = alto) con los mismos tonos.
+- **Tipografía:** Source Serif 4 (titulares, `--f-display`, `assets/fonts/sourceserif4.woff2`, subconjunto
+  latino, Google Fonts/OFL) + Source Sans 3 (texto, interfaz, gráficas). **Montserrat retirada**
+  (`montserrat.woff2` queda en el repo sin uso). Radios reducidos (`--r-l` 12 px).
+- **Contraste:** auditoría propia (texto visible frente a su fondo efectivo): 0 textos bajo AA en 1440 y
+  390 px. Rellenos dorados con texto marino conservan el dorado de marca; acento del Eje 3 sobre papel #12735C.
+
+### Navegación
+Cinco capítulos con su lista de apartados (`.act-item`, `.act-btn`, `.act-sub`): clic abre la lista; Escape y
+clic fuera la cierran; flechas recorren los apartados; capítulo actual subrayado en dorado y
+`aria-current`. ≤1100 px: botón «Capítulos» abre un panel con los cinco y sus apartados (tocar el capítulo
+lleva a su apertura). Ya no hay doce números en la barra.
+
+### Evaluación heurística de comprensión (no es una prueba con usuarios)
+Recorrido como jurado sin formación económica; **no participaron personas externas**:
+1 problema central → portada y Cap. I · 2 desigualdad → apertura y cierre del Cap. II · 3 papel de CoDi →
+Cap. III y «Lo que CoDi atiende / no resuelve» · 4 logit → laboratorio y puente a los ejes · 5 propuesta →
+portada y «La propuesta en un minuto» · 6 cada institución → «Seis agentes» y roles por eje · 7 implementación →
+piloto y fases · 8 evaluación → Cap. V `#evaluacion`. Pendiente: probarlo con 3–5 personas ajenas al proyecto.
+
+### Pruebas (2026-11-02)
+- **WebKit** (iPhone, `isMobile`, ×2): 320×568, 375×667, 390×844, 393×852, 430×932, 667×375, 844×390, bajando y
+  subiendo: **0 textos tapados, 0 fuera de pantalla, 0 scroll horizontal, 0 errores JS, 0 404**; ningún texto
+  oculto al subir (solo apariciones `.rv` a mitad de animación al bajar).
+- Contraste AA (auditoría propia, texto visible vs. fondo efectivo): **0** fallas en 1440 y 390 px.
+- Navegación por capítulos: **23/23** (ratón, teclado, Escape, saltos, capítulo activo en los cinco, panel en 1024).
+- Laboratorio logit: **200/200** en 7 tamaños (incluye parada del modo Presentar). Táctil: 0 objetivos < 32 px;
+  el panel «Capítulos» llega a Bibliografía en 320, 375 y 844.
+- Recorrido completo en 9 tamaños (320–1920): 0 errores de consola, 0 404, 0 scroll horizontal; 5 capítulos,
+  5 aperturas, 9 transiciones, sin tutor ni «Desliza», 43 referencias, simulación, ejes y mapa presentes.
+- Regla de texto público (sin «Gráfica X», «documento», páginas): solo el comentario interno de `stories.js`.
+- **Bug encontrado y corregido durante las pruebas:** un comentario de una línea había anulado
+  `stage.classList.toggle('stuck', …)` en `stories.js`; la banda fija no recibía la clase (sin cubierta bajo la
+  barra translúcida). Corregido y verificado en WebKit.
+- Escudos del pie: ya no usan `loading="lazy"` (reutilizan la imagen de la portada; Chrome no los cargaba en
+  algunos recorridos programáticos).
+- No se probó en un iPhone físico ni con personas externas. No se repitió Lighthouse.

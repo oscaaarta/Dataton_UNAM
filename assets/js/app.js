@@ -20,11 +20,13 @@
     c1l: '#1F7FC4', c2l: '#B07C1E', c3l: '#7A5BD0', c4l: '#178F72', c5l: '#C24A36'
   };
   const FONT = "'Source Sans 3', 'Segoe UI', system-ui, sans-serif";
-  const HEAD = "'Montserrat', 'Segoe UI', system-ui, sans-serif";
+  const HEAD = "'Source Sans 3', 'Segoe UI', system-ui, sans-serif";
+  // theme(true|false) o theme('idDelContenedor'): con un id, el tema sigue al fondo del capítulo (claro u oscuro)
   function theme(dark) {
+    if (typeof dark === 'string') { const el = document.getElementById(dark); dark = !(el && el.closest('.tone-light')); }
     return dark
-      ? { text: C.onNight, text2: C.onNight2, axis: 'rgba(169,187,209,.35)', grid: 'rgba(169,187,209,.12)', tipBg: '#0E2442', tipBorder: 'rgba(169,187,209,.25)', bg: C.night }
-      : { text: C.ink, text2: C.ink2, axis: 'rgba(13,33,55,.3)', grid: 'rgba(13,33,55,.08)', tipBg: '#FFFFFF', tipBorder: 'rgba(13,33,55,.15)', bg: C.paper };
+      ? { dark: true, text: C.onNight, text2: C.onNight2, axis: 'rgba(169,187,209,.35)', grid: 'rgba(169,187,209,.12)', tipBg: '#0E2442', tipBorder: 'rgba(169,187,209,.25)', bg: C.night, edge: C.night, sky: C.sky, gold: C.gold }
+      : { dark: false, text: C.ink, text2: C.ink2, axis: 'rgba(13,33,55,.3)', grid: 'rgba(13,33,55,.08)', tipBg: '#FFFFFF', tipBorder: 'rgba(13,33,55,.15)', bg: C.paper, edge: '#FFFFFF', sky: C.c1l, gold: C.c2l };
   }
   function tip(t, extra) {
     return Object.assign({
@@ -96,17 +98,42 @@
   /* =====================================================================
      NAV
      ===================================================================== */
+  /* Cinco capítulos, cada uno con sus apartados. Escritorio: cada capítulo abre su lista.
+     Celular y tableta (≤1100 px): «Capítulos» abre un panel con los cinco y sus apartados. */
   const prog = $('.progress');
-  const tocLinks = $$('.toc a');
+  const tocLinks = $$('.toc a'), actItems = $$('.act-item');
   const tocBtn = $('.toc-btn'), toc = $('#toc');
+  const panelMode = () => matchMedia('(max-width: 1100px)').matches;
+  function closeSubs(except) { actItems.forEach(li => { if (li === except) return; li.classList.remove('open'); $('.act-btn', li).setAttribute('aria-expanded', 'false'); }); }
+  function closePanel() { toc.classList.remove('open'); tocBtn.setAttribute('aria-expanded', 'false'); }
   tocBtn.addEventListener('click', () => { const o = toc.classList.toggle('open'); tocBtn.setAttribute('aria-expanded', o); });
-  tocLinks.forEach(a => a.addEventListener('click', () => { toc.classList.remove('open'); tocBtn.setAttribute('aria-expanded', 'false'); }));
+  actItems.forEach(li => {
+    const b = $('.act-btn', li);
+    b.addEventListener('click', () => {
+      if (panelMode()) { const t = document.getElementById('cap-' + li.dataset.act); closePanel(); if (t) { history.pushState && history.pushState(null, '', '#' + t.id); goTo(t); } return; }
+      const o = !li.classList.contains('open'); closeSubs(li); li.classList.toggle('open', o); b.setAttribute('aria-expanded', o);
+      if (o) { const f = $('a', li); f && f.focus({ preventScroll: true }); }
+    });
+    li.addEventListener('keydown', e => {
+      const links = $$('a', li), i = links.indexOf(document.activeElement);
+      if (e.key === 'Escape') { closeSubs(); b.focus(); }
+      if (e.key === 'ArrowDown' && i > -1) { e.preventDefault(); links[(i + 1) % links.length].focus(); }
+      if (e.key === 'ArrowUp' && i > -1) { e.preventDefault(); links[(i - 1 + links.length) % links.length].focus(); }
+    });
+  });
+  document.addEventListener('click', e => { if (!e.target.closest('.act-item')) closeSubs(); if (!e.target.closest('.toc, .toc-btn')) closePanel(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSubs(); if (toc.classList.contains('open')) { closePanel(); tocBtn.focus(); } } });
+  tocLinks.forEach(a => a.addEventListener('click', () => { closeSubs(); closePanel(); }));
+  const navTargets = tocLinks.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
   function onScroll() {
     const h = doc.scrollHeight - innerHeight;
     prog.style.transform = 'scaleX(' + (h > 0 ? scrollY / h : 0) + ')';
-    let cur = null;
-    $$('section.chapter[id]').forEach(s => { if (s.getBoundingClientRect().top < innerHeight * .4) cur = s.id; });
-    tocLinks.forEach(a => { const on = a.getAttribute('href') === '#' + cur; a.classList.toggle('active', on); if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    // capítulo actual: el último bloque con data-act que ya pasó el 40% superior de la pantalla
+    let act = null, cur = null;
+    $$('main > [data-act]').forEach(s => { if (s.getBoundingClientRect().top < innerHeight * .4) act = s.dataset.act; });
+    navTargets.forEach(t => { if (t.offsetParent !== null && t.getBoundingClientRect().top < innerHeight * .4) cur = t.id; });
+    actItems.forEach(li => { const on = li.dataset.act === act; li.classList.toggle('active', on); const b = $('.act-btn', li); if (on) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    tocLinks.forEach(a => { const on = a.getAttribute('href') === '#' + cur; a.classList.toggle('active', on); if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });
   }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
@@ -169,7 +196,8 @@
     }
     let visible = true;
     layout(); requestAnimationFrame(frame);
-    addEventListener('resize', () => { layout(); if (RM) frame(performance.now()); });
+    // Safari iOS dispara «resize» al mostrar u ocultar sus barras; el lienzo solo se rehace si cambió de tamaño
+    addEventListener('resize', () => { if (cv.clientWidth === W && cv.clientHeight === H) return; layout(); if (RM) frame(performance.now()); });
     new IntersectionObserver(es => { const v = es[0].isIntersecting; if (v && !visible) { visible = true; requestAnimationFrame(frame); } visible = v; }).observe(cv);
   })();
 
@@ -437,14 +465,14 @@
     const texts = {
       no: `<div class="insight" style="margin-top:0"><p>La preferencia por comprar en persona (34.4%) crece; la falta de interés baja de 24.0% a 20.3%. Hay demanda potencial frenada por otras barreras.</p></div>
         <p><b style="color:var(--gold)">Conocimiento.</b> «No sabe cómo hacerlo» sube a 18.3% (+2.7 pp): no solo el manejo de plataformas, también las formas de pagar y la complejidad de registrar tarjetas, capturar códigos y validar cargos.</p>
-        <p><b style="color:#EE8B7B">Confianza.</b> La desconfianza en la seguridad de datos y tarjetas baja a 8.2%, pero sigue por encima de la desconfianza en la calidad (5.6%) o la falta de recursos (5.1%).</p>
+        <p><b class="hl-neg">Confianza.</b> La desconfianza en la seguridad de datos y tarjetas baja a 8.2%, pero sigue por encima de la desconfianza en la calidad (5.6%) o la falta de recursos (5.1%).</p>
         <p class="muted" style="font-size:var(--t-small)">Solo 3% no compra por carecer de tarjeta o banca en línea: el obstáculo de pago es la desconfianza y la complejidad, no la falta de instrumentos.</p>`,
       prob: `<div class="insight" style="margin-top:0"><p>Las entregas son el problema más frecuente (60.0%): la logística de última milla también es un reto del comercio electrónico.</p></div>
-        <p><b style="color:#EE8B7B">El repunte de 2025.</b> Los problemas con la seguridad del pago bajaron de 24.9% a 15.9% entre 2022 y 2024, pero repuntaron a 17.7% en 2025; los de datos personales, de 4.6% a 6.0%.</p>
+        <p><b class="hl-neg">El repunte de 2025.</b> Los problemas con la seguridad del pago bajaron de 24.9% a 15.9% entre 2022 y 2024, pero repuntaron a 17.7% en 2025; los de datos personales, de 4.6% a 6.0%.</p>
         <p class="muted" style="font-size:var(--t-small)">El riesgo percibido y la confianza intervienen en la aceptación del comercio electrónico (Pavlou, 2003). No todos los problemas son de pago: por eso la estrategia distingue logística, calidad y seguridad.</p>`
     };
     function draw() {
-      const t = theme(true), c = chart('chBar');
+      const t = theme('chBar'), c = chart('chBar');
       $('#barText').innerHTML = texts[v];
       if (v === 'no') {
         const R = D.noBuy.slice().reverse();
@@ -480,7 +508,7 @@
           xAxis: axisCat(t, P.years.map(String), { boundaryGap: false }),
           yAxis: axisVal(t, { max: 70, axisLabel: { color: t.text2, formatter: '{value}%' } }),
           series: P.rows.map((r, i) => ({ name: r.k, type: 'line', data: r.v, symbol: 'circle', symbolSize: 8,
-            lineStyle: { width: r.sec ? 3 : 2, color: cols[i] }, itemStyle: { color: cols[i], borderColor: C.night, borderWidth: 2 },
+            lineStyle: { width: r.sec ? 3 : 2, color: cols[i] }, itemStyle: { color: cols[i], borderColor: t.edge, borderWidth: 2 },
             endLabel: { show: !isMobile(), formatter: p => nf(p.value) + '%  ' + ({ 'Relacionado con la entrega': 'Entrega', 'Calidad del producto': 'Calidad', 'Estado del producto': 'Estado', 'Seguridad del pago': 'Seg. del pago', 'Seguridad de datos personales': 'Datos personales' })[r.k], color: t.text2, fontSize: 11 },
             label: { show: r.sec, position: r.k === 'Seguridad del pago' ? 'bottom' : 'top', color: cols[i], fontSize: 11, fontWeight: 600, formatter: p => nf(p.value) } }))
         }, anim), true);
@@ -544,7 +572,7 @@
       }, anim);
     }
     function draw() {
-      const t = theme(true), c = chart('chExp'), cfg = V[v], el = $('#chExp');
+      const t = theme('chExp'), c = chart('chExp'), cfg = V[v], el = $('#chExp');
       $('#expDenom').textContent = cfg.denom; $('#expTitle').textContent = cfg.title; $('#expSub').textContent = cfg.sub;
       $('#expFoot').innerHTML = cfg.foot; $('#expText').innerHTML = cfg.text; $('#expExtra').innerHTML = ''; $('#expLegend').innerHTML = '';
       el.style.height = '';
@@ -552,9 +580,9 @@
       if (v === 'ent') {
         opt = Object.assign({
           tooltip: tip(t, { trigger: 'item', formatter: p => `<b>${p.name}</b><br>Desconfianza digital: <b>${nf(p.value)}%</b><br><span style="color:${t.text2}">Región ${D.region[p.name]} · Nacional 9.7%</span><br><span style="color:${t.text2}">% de usuarios de internet 6+, 2025</span>` }),
-          visualMap: { min: 3, max: 17, orient: 'horizontal', left: 'center', bottom: 4, itemWidth: 10, itemHeight: 200, text: ['17%', '3%'], textStyle: { color: t.text2, fontSize: 11 }, inRange: { color: ['#1A2E48', '#5B5A55', '#B98A3A', '#F0C978'] } },
+          visualMap: { min: 3, max: 17, orient: 'horizontal', left: 'center', bottom: 4, itemWidth: 10, itemHeight: 200, text: ['17%', '3%'], textStyle: { color: t.text2, fontSize: 11 }, inRange: { color: t.dark ? ['#1A2E48', '#5B5A55', '#B98A3A', '#F0C978'] : ['#F4EAD6', '#E3C78E', '#B98A3A', '#7A5214'] } },
           series: [{ type: 'map', map: 'mx', aspectScale: .92, layoutCenter: ['50%', isMobile() ? '44%' : '45%'], layoutSize: isMobile() ? '100%' : '95%',
-            data: Object.keys(D.distrust).map(n => ({ name: n, value: D.distrust[n] })), itemStyle: { borderColor: C.night, borderWidth: .8 },
+            data: Object.keys(D.distrust).map(n => ({ name: n, value: D.distrust[n] })), itemStyle: { borderColor: t.edge, borderWidth: .8 },
             emphasis: { label: { show: false }, itemStyle: { areaColor: C.sky } }, select: { disabled: true } }]
         }, anim);
         el.style.height = isMobile() ? Math.round(Math.min(innerWidth * 1.05, 440)) + 'px' : '';
@@ -567,7 +595,7 @@
           xAxis: axisCat(t, R), yAxis: axisVal(t, { max: 14, axisLabel: { color: t.text2, formatter: '{value}%' } }),
           series: [{ type: 'bar', barWidth: '46%', data: R.map(r => ({ value: D.distrustRegion[r], itemStyle: { color: regCol[r] } })), itemStyle: { borderRadius: [4, 4, 0, 0] },
             label: { show: true, position: 'top', color: t.text, fontFamily: HEAD, fontWeight: 700, fontSize: 15, formatter: p => nf(p.value) + '%' },
-            markLine: { silent: true, symbol: 'none', lineStyle: { color: C.onNight2, type: 'dashed' }, label: { show: false }, data: [{ yAxis: 9.7 }] } }]
+            markLine: { silent: true, symbol: 'none', lineStyle: { color: t.text2, type: 'dashed' }, label: { show: false }, data: [{ yAxis: 9.7 }] } }]
         }, anim);
         el.style.height = '360px';
         const Q = D.requisites, idx = r => Q.groups.indexOf(r);
@@ -747,12 +775,12 @@
   }));
   function bancaMap() {
     const el = $('#chBancaMap'); if (!el || !el.offsetWidth) return;
-    const t = theme(true);
+    const t = theme('chBancaMap');
     chart('chBancaMap').setOption(Object.assign({
       tooltip: tip(t, { trigger: 'item', formatter: p => `<b>${p.name}</b><br>Usa banca en línea o móvil: <b>${nf(p.value)}%</b><br><span style="color:${t.text2}">% de la población de 6+, 2025</span>` }),
-      visualMap: { min: 15, max: 50, orient: 'horizontal', left: 'center', bottom: 0, itemWidth: 10, itemHeight: 180, text: ['50%', '15%'], textStyle: { color: t.text2, fontSize: 11 }, inRange: { color: ['#4A2E2A', '#8A5A2E', '#4FB6C9', '#CDEFFB'] } },
+      visualMap: { min: 15, max: 50, orient: 'horizontal', left: 'center', bottom: 0, itemWidth: 10, itemHeight: 180, text: ['50%', '15%'], textStyle: { color: t.text2, fontSize: 11 }, inRange: { color: t.dark ? ['#4A2E2A', '#8A5A2E', '#4FB6C9', '#CDEFFB'] : ['#A85A2A', '#E6C9A9', '#A9D6EC', '#1F6FAE'] } },
       series: [{ type: 'map', map: 'mx', aspectScale: .92, layoutCenter: ['50%', '42%'], layoutSize: '105%', data: Object.keys(D.banca).map(n => ({ name: n, value: D.banca[n] })),
-        itemStyle: { borderColor: C.night, borderWidth: .7 }, emphasis: { label: { show: false }, itemStyle: { areaColor: C.gold } }, select: { disabled: true } }]
+        itemStyle: { borderColor: t.edge, borderWidth: .7 }, emphasis: { label: { show: false }, itemStyle: { areaColor: C.gold } }, select: { disabled: true } }]
     }, anim));
     chart('chBancaMap').resize();
   }
@@ -770,7 +798,7 @@
         'Convierte la infraestructura existente en hábito: es donde millones ya compran todos los días.',
         'Campaña en redes, tiendas, sitios web y espectaculares; QR informativo en cada mostrador y promotores capacitados.',
         'Integra CoDi en la pasarela digital de cada tienda asociada.',
-        'Evalúa escaneos del QR, pagos con CoDi en pasarela y clientes interesados en tienda.'] },
+        'Evalúa escaneos del QR, pagos con CoDi en línea y clientes interesados en tienda.'] },
       { id: 'bb', n: 'Banco del Bienestar', s: '3,149 sucursales', x: 480, y: 420, ax: 'Eje 3 · Inclusión financiera', r: [
         'Amplía el alcance más allá de la población ya bancarizada gracias a su red de sucursales.',
         'Promueve cuentas de ahorro para que la liquidez no se retire de inmediato en efectivo.',
@@ -788,7 +816,7 @@
         'Mide el impacto del piloto comparando grupos de tratamiento y control.',
         'Monitorea si la desconfianza y la falta de habilidades disminuyen; informa las decisiones de escalamiento.'] }
     ];
-    const E = [['bx', 'an', 'Sello y estándar en pasarelas'], ['bx', 'bb', 'Estándar en la app y activación asistida'], ['bx', 'cf', 'Seguridad y respaldo al usuario'], ['an', 'in', 'Datos de QR y pasarelas'],
+    const E = [['bx', 'an', 'Sello y estándar en el pago en línea'], ['bx', 'bb', 'Estándar en la app y activación asistida'], ['bx', 'cf', 'Seguridad y respaldo al usuario'], ['an', 'in', 'Datos de QR y pasarelas'],
       ['bb', 'sb', 'Acompañamiento en sucursales'], ['bx', 'in', 'Cuentas validadas y primeros pagos'], ['in', 'sb', 'Focalización territorial'], ['in', 'bb', 'Línea base y evaluación'], ['cf', 'sb', 'Educación en seguridad digital'], ['in', 'cf', 'Indicador de seguridad (ENDUTIH)']];
     const byId = Object.fromEntries(N.map(n => [n.id, n]));
     let html = '';
@@ -819,8 +847,8 @@
     const PH = [
       { n: 'Piloto', y: 'Años 0–2', c: '#D6AC55', obj: 'Distinguir si los resultados obedecen al diseño de la intervención o a la infraestructura, en una entidad con condiciones de acceso casi completas.',
         bar: 'Baja adopción de banca móvil y de CoDi pese a buena conectividad.', act: 'Los tres ejes: Banxico y CONDUSEF; ANTAD en Monterrey; Banco del Bienestar en municipios del sur del estado.',
-        acc: 'Homologación de apps, pasarela y QR en tiendas ANTAD, activación asistida. Módulo de aprendizaje sin fines evaluativos en pocas sucursales de un estado del Sur.',
-        ind: 'Nuevas cuentas validadas y primeros pagos (Banxico); pagos en pasarela y escaneos (ANTAD); personas atendidas, tiempo de activación asistida, personal y repetición del pago.' },
+        acc: 'Homologación de apps, CoDi en la caja en línea y QR en tiendas ANTAD, activación asistida. Módulo de aprendizaje sin fines evaluativos en pocas sucursales de un estado del Sur.',
+        ind: 'Nuevas cuentas validadas y primeros pagos (Banxico); pagos con CoDi en tiendas en línea y escaneos (ANTAD); personas atendidas, tiempo de activación asistida, personal y repetición del pago.' },
       { n: 'Fase 1 · Réplica', y: 'Años 2–4', c: '#62C8F5', obj: 'Trasladar el modelo con ajustes mínimos a entidades que comparten las condiciones del piloto.',
         bar: 'Hábito de compra ya consolidado; incluye las cinco entidades con mayor uso de banca móvil.', act: 'ANTAD y sus cadenas como agente principal (Eje 2).',
         acc: 'Réplica del piloto. Estas entidades sirven como grupo de comparación durante el piloto, por lo que ingresan con línea base medida y apps ya homologadas. La Ciudad de México alcanza también municipios conurbados del Estado de México, cuyo efecto no podrá aislarse.',
@@ -843,12 +871,12 @@
         <dt>Barrera predominante</dt><dd>${p.bar}</dd><dt>Actores principales</dt><dd>${p.act}</dd><dt>Acciones</dt><dd>${p.acc}</dd><dt>Evaluación</dt><dd>${p.ind}</dd>
         <dt>Para avanzar</dt><dd>Cumplir los umbrales al mes 18. Si no se alcanzan, la siguiente fase no inicia y la actual se extiende un año con ajustes.</dd></dl>`;
       $$('button', track).forEach(b => b.setAttribute('aria-selected', +b.dataset.i === cur));
-      const t = theme(true);
+      const t = theme('chPhase');
       chart('chPhase') && chart('chPhase').setOption(Object.assign({
         tooltip: tip(t, { trigger: 'item', formatter: q => { const ph = D.phaseOf(q.name); return `<b>${q.name}</b><br>${PH[ph].n} (${PH[ph].y})<br><span style="color:${t.text2}">${nf(D.penetration[q.name])}% de la población 6+ compra en línea</span>`; } }),
         series: [{ type: 'map', map: 'mx', aspectScale: .92, layoutCenter: ['50%', '50%'], layoutSize: '100%', select: { disabled: true },
-          data: states.map(s => { const ph = D.phaseOf(s), on = ph === cur, hx = PH[ph].c; return { name: s, value: ph, itemStyle: on ? { areaColor: hx + '40', borderColor: hx, borderWidth: 1.6, borderType: 'dashed' } : { areaColor: 'rgba(169,187,209,.08)' } }; }),
-          itemStyle: { borderColor: C.night, borderWidth: .8 }, emphasis: { label: { show: false }, itemStyle: { areaColor: '#fff' } } }]
+          data: states.map(s => { const ph = D.phaseOf(s), on = ph === cur, hx = PH[ph].c; return { name: s, value: ph, itemStyle: on ? { areaColor: hx + '40', borderColor: hx, borderWidth: 1.6, borderType: 'dashed' } : { areaColor: t.dark ? 'rgba(169,187,209,.08)' : 'rgba(13,33,55,.05)' } }; }),
+          itemStyle: { borderColor: t.dark ? t.edge : 'rgba(13,33,55,.3)', borderWidth: .8 }, emphasis: { label: { show: false }, itemStyle: { areaColor: t.dark ? '#fff' : '#D6AC55' } } }]
       }, anim));
     }
     $$('button', track).forEach(b => b.addEventListener('click', () => { cur = +b.dataset.i; draw(); }));
@@ -867,13 +895,13 @@
     const li = (s, i) => `<li${s[0] === 'Nuevo León' ? ' class="hl"' : ''}><span class="i">${i}</span><span>${s[0]}</span><span class="val">${nf(s[1])}%</span></li>`;
     $('#codiRank').innerHTML = '<li class="rank-split">Más alto</li>' + sorted.slice(0, 5).map((s, i) => li(s, i + 1)).join('') + '<li class="rank-split">Más bajo</li>' + sorted.slice(-5).map((s, i) => li(s, 28 + i)).join('');
     onVisible(el, () => {
-      const t = theme(true);
+      const t = theme('chCodiState');
       chart('chCodiState').setOption(Object.assign({
         tooltip: tip(t, { trigger: 'item', formatter: p => `<b>${p.name}</b><br>Ha usado CoDi: <b>${nf(p.value)}%</b><br><span style="color:${t.text2}">% de quienes pagan por internet, 2025 · Nacional 6.1%</span>` + ((p.name === 'Chiapas' || p.name === 'Guerrero') ? `<br><span style="color:${C.gold}">Estimación con CV mayor a 30%</span>` : '') }),
-        visualMap: { min: 3, max: 13, orient: 'horizontal', left: 'center', bottom: 0, itemWidth: 10, itemHeight: 180, text: ['13%', '3%'], textStyle: { color: t.text2, fontSize: 11 }, inRange: { color: ['#163A5E', '#2A6E9E', '#62C8F5', '#E6F7FF'] } },
+        visualMap: { min: 3, max: 13, orient: 'horizontal', left: 'center', bottom: 0, itemWidth: 10, itemHeight: 180, text: ['13%', '3%'], textStyle: { color: t.text2, fontSize: 11 }, inRange: { color: t.dark ? ['#163A5E', '#2A6E9E', '#62C8F5', '#E6F7FF'] : ['#E3F1FA', '#9CCDEB', '#3A9BDC', '#1A5E92'] } },
         series: [{ type: 'map', map: 'mx', aspectScale: .92, layoutCenter: ['50%', '45%'], layoutSize: '100%', select: { disabled: true },
           data: Object.keys(D.codiState).map(n => ({ name: n, value: D.codiState[n], itemStyle: n === 'Nuevo León' ? { borderColor: C.gold, borderWidth: 2.2 } : undefined })),
-          itemStyle: { borderColor: C.night, borderWidth: .8 }, emphasis: { label: { show: false }, itemStyle: { areaColor: C.gold } } }]
+          itemStyle: { borderColor: t.edge, borderWidth: .8 }, emphasis: { label: { show: false }, itemStyle: { areaColor: C.gold } } }]
       }, anim), true);
     });
   })();

@@ -65,7 +65,7 @@
         d: 'En la pantalla principal de cualquier banco, en el mismo lugar y con el mismo diseño. Hoy suele estar escondido en menús secundarios y cada banco lo presenta distinto.',
         html: top('Mi banco', 'Inicio') + `<div class="tp-bal"><span>Cuenta de ahorro</span><b class="num">$4,820.50</b></div><div class="tp-grid"><div class="tp-codi"><b>CoDi</b><span>Pagar</span></div><div>Transferir</div><div>Tarjetas</div><div>Más</div></div><div class="tp-hint">1 toque: abrir CoDi · 2 toques: pagar</div>` },
       { k: 'Solicitud de cobro', tag: 'ex', t: 'El comercio y el monto, a la vista',
-        d: 'Al escanear el QR en tienda o elegir CoDi en la pasarela digital llega una solicitud con el nombre del comercio y el monto exacto. Así funciona CoDi hoy.',
+        d: 'Al escanear el QR en tienda o elegir CoDi al pagar en línea llega una solicitud con el nombre del comercio y el monto exacto. Así funciona CoDi hoy.',
         html: top('Solicitud CoDi', 'Pendiente') + `<div class="tp-req"><span>Comercio</span><b>Tienda ejemplo</b><span>Monto</span><b class="tp-amt num">$849.00</b><span>Concepto</span><b>Pedido 0001</b><span>Comisión</span><b>$0.00</b></div><div class="tp-btns"><span class="tp-b2">Rechazar</span><span class="tp-b1">Revisar y autorizar</span></div>` },
       { k: 'Autorización segura', tag: 'ex', t: 'Se autoriza con tu NIP, sin datos de tarjeta',
         d: 'El pago se confirma con el NIP o la contraseña del banco. No se captura ni se comparte el número de tarjeta, y el SPEI liquida en segundos.',
@@ -123,7 +123,7 @@
       { k: 'Promotor', t: '3 · Recibe orientación de un promotor', d: 'Promotores capacitados ofrecen la alternativa a quienes todavía prefieren comprar en persona y explican el proceso con más detalle.' },
       { k: 'En la app', t: '4 · Aprende a pagar desde su app bancaria', d: 'Encuentra CoDi en la app de su banco: escanea o recibe la solicitud de cobro y confirma con su NIP, sin capturar datos de tarjeta.' },
       { k: 'Primer pago', t: '5 · Hace su primer pago acompañado', d: 'El primer pago ocurre con acompañamiento, en un espacio que ya conoce y prefiere. Para que probar no cueste nada, las tiendas pueden ofrecer un incentivo de bienvenida.' },
-      { k: 'Compra en línea', t: '6 · Reconoce CoDi al comprar en línea', d: 'En la pasarela digital de la tienda elige CoDi en lugar de tarjeta o transferencia: se genera un QR con el monto que autoriza desde su banco.' }
+      { k: 'Compra en línea', t: '6 · Reconoce CoDi al comprar en línea', d: 'En la caja en línea de la tienda elige CoDi en lugar de tarjeta o transferencia: se genera un QR con el monto que autoriza desde su banco.' }
     ];
     stepper({ list: $('#learnSteps'), explain: $('#learnExplain'), prev: $('#learnPrev'), next: $('#learnNext'), fill: $('#lmFill'), steps, onChange: show });
   });

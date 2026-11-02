@@ -151,3 +151,19 @@
   .w-live, .llab-ring .fg, .lc-cmp .t i, .llab-v, .lv-tg, .lv-ic { transition: none; }
   .llab-y.hit { animation: none; }
 }
+
+/* ---------- Áreas seguras del iPhone (viewport-fit=cover) ----------
+   En horizontal, el notch ocupa los costados; en vertical, el indicador de inicio ocupa el borde inferior. */
+@supports (padding: max(0px)) {
+  .topbar { padding-left: max(var(--gutter), env(safe-area-inset-left)); padding-right: max(var(--gutter), env(safe-area-inset-right)); }
+  .wrap { padding-left: max(var(--gutter), env(safe-area-inset-left)); padding-right: max(var(--gutter), env(safe-area-inset-right)); }
+  .presenter { bottom: max(16px, calc(env(safe-area-inset-bottom) + 8px)); }
+  footer.site { padding-bottom: max(var(--s7), calc(env(safe-area-inset-bottom) + var(--s5))); }
+}
+@media (max-width: 900px) { @supports (padding: max(0px)) { .presenter { bottom: max(8px, env(safe-area-inset-bottom)); } } }
+
+/* Pantallas táctiles: área de toque suficiente (la pista visible del deslizador no cambia) */
+@media (pointer: coarse) {
+  input[type=range] { min-height: 40px; touch-action: pan-y; }
+  .brand { min-height: 44px; min-width: 44px; }
+}
