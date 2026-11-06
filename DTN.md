@@ -396,7 +396,7 @@ Portada → **I El problema** (`#cap-1`, s1, s2) → **II Las personas y sus bar
   s1→s2 (sustituido por `.next-q`); columnas del cierre que repetían por tercera vez los tres ejes.
 - Editorial: sin «Tutor: Ávalos…» en portada y pie (sigue en este archivo, §1); sin indicador «Desliza»;
   «pasarela» solo como término técnico (rol de ANTAD) y en el nombre del indicador de la investigación; Holt
-  descrito como «suavizamiento exponencial de Holt con nivel y tendencia (también llamado doble)», igual que
+  descrito como «suavizamiento exponencial simple de Holt» (cambio pedido por el equipo, 2026-11-06), igual que
   la investigación. Cifras, fórmulas y resultados sin cambios.
 
 ### Sistema visual (`assets/css/narrativa.css`, cargado al final)
@@ -469,3 +469,39 @@ piloto y fases · 8 evaluación → Cap. V `#evaluacion`. Pendiente: probarlo co
 - Verificado: las 29 rutas referenciadas existen con mayúsculas/minúsculas exactas (Vercel distingue, Windows no).
 - Diagnóstico rápido en producción: abrir `https://<dominio>/assets/css/narrativa.css` (si da 404, no se subió) y
   ver el código fuente de la página (debe contener `narrativa.css?v=`).
+
+## 19. Correcciones del 2026-11-06: simulador CoDi, Holt y contraste del Eje 3
+
+- **Simulador CoDi (celular):** `.illus` («Imagen con fines ilustrativos») era `position:absolute` al fondo de
+  `.scr` y, en pantallas de ≤400 px con el recuadro de CoDi abierto, quedaba encima del botón «Continuar» y
+  bloqueaba los toques. Ahora es un elemento del flujo (`flex:none`, `pointer-events:none`) y `.scr` hace scroll
+  interno (`overflow-y:auto`, `overscroll-behavior:contain`). Aplica también a la maqueta del Eje 1 (`.tp-scr`).
+- **Proyección:** el texto del escenario alto dice «Suavizamiento exponencial simple de Holt» (pedido del equipo).
+  Pendiente de revisar: el texto conserva β = 0.2 y «tendencia», propios del Holt doble, que es lo que generan
+  las cifras publicadas.
+- **Contraste del Eje 3 (`.incl-msg`, «La infraestructura ya existe…»):** error real. En el capítulo claro (`#s9`)
+  los tokens `--on-night*` pasan a marino, pero la caja conserva el fondo `--night-2` (#0A1D35): texto
+  #0D2137 sobre #0A1D35 = 1.0:1. Corregido añadiendo `.tone-light .incl-msg` a las «islas oscuras» de
+  `narrativa.css` (recupera los tokens claros).
+- **Verificación con estilos computados en Chrome** (Chrome headless por CDP, 137 elementos con texto del panel
+  `#axp2`, fondo compuesto por ancestros y peor caso con las paradas del degradado; 1440×900, 390×844 y 360×740):
+  0 elementos por debajo de AA. Caja: título #EAF0F8 sobre #0A1D35 = 14.77:1 (peor caso 11.46:1); pie
+  #A9BBD1 = 8.64:1 (peor caso 6.7:1). Mínimos: 4.5:1 texto normal, 3:1 texto grande.
+- **Falsos positivos documentados (no se ocultan):** el análisis estático de `impeccable detect index.html`
+  sigue reportando 2 `low-contrast` en `blockquote.incl-msg` (#0D2137 y #435770 sobre #0A1D35). Son los valores
+  previos a la corrección: el análisis estático no resuelve variables CSS redefinidas en un descendiente de
+  `.tone-light`. El análisis en navegador (`impeccable detect --viewport 390x844 file:///…/index.html`) ya no
+  los reporta. **Decisión del equipo: no añadir ignores** para `low-contrast` ni excepciones por archivo; si estos
+  dos avisos cambian de valor o aparecen otros, revisarlos como posibles errores reales.
+- **Otros avisos estáticos que se dejan visibles (revisados, no son errores):** `cramped-padding` en separadores
+  de 1 px (`border-top`/`border-left` en listas, `.ax-roles`, `.ax-brief`, `.model-strip`) y en secciones de ancho
+  completo cuyo margen lo da `.wrap`; `tight-leading` 1.22 solo en los titulares `.nq-q` («Siguiente pregunta»).
+  Por decisión del equipo tampoco se ocultan.
+- **Simulador CoDi, solución final (reemplaza el scroll interno descrito arriba para `#demo`):** las cuatro
+  `.scr` de `#screen` se apilan en una sola celda de grid (`grid-area: 1/1`, `position: relative`), así el
+  teléfono toma la altura de la pantalla más larga; `height` fijo pasó a `min-height` (610 px escritorio,
+  560 px en ≤400 px), por lo que en escritorio se ve igual mientras el contenido quepa. En ≤400 px: teléfono
+  `width: min(272px, 100%)`, `.demo` con padding de 16 px y `.bank-top` con márgenes iguales al padding.
+  Botones de pago y opciones de CoDi ≥44 px en táctil. Verificado en Chrome (CDP) en 320, 375, 390 y 430 px
+  vertical, 568–932 px horizontal y 1280/1440 escritorio, recorriendo las 4 pantallas: 0 superposiciones,
+  0 recortes, 0 toques bloqueados, sin desplazamiento horizontal.

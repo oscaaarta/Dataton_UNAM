@@ -211,7 +211,7 @@ section.chapter[data-act] + section.chapter[data-act] > .wrap > .chapter-head { 
 .conc-steps h3 { color: var(--on-night); }
 .conc-steps p { color: var(--on-night-2); }
 /* islas oscuras dentro de capítulos claros (mapa base oscuro, maquetas): conservan los tokens oscuros */
-.tone-light .bb-map, .tone-light .leaflet-popup, .tone-light .stage-art {
+.tone-light .bb-map, .tone-light .leaflet-popup, .tone-light .stage-art, .tone-light .incl-msg {
   --on-night: #EAF0F8; --on-night-2: #A9BBD1; --on-night-3: #91A6BF; --line-night: rgba(169, 187, 209, .16);
   --gold: #D6AC55; --gold-soft: rgba(214, 172, 85, .14); --sky: #62C8F5;
 }

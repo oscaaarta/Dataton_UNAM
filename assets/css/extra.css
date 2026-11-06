@@ -116,6 +116,7 @@
 .bib-search { display: flex; align-items: center; gap: 10px; padding: 0 16px; min-height: 52px; border-radius: 999px; border: 1px solid var(--line-night); background: rgba(255,255,255,.04); max-width: 620px; color: var(--on-night-2); }
 .bib-search:focus-within { border-color: var(--gold); }
 .bib-search input { flex: 1; min-width: 0; background: none; border: 0; color: var(--on-night); font: inherit; font-size: 1rem; min-height: 48px; outline: none; }
+.bib-search input::placeholder { color: var(--on-night-3); opacity: 1; }
 .bib-cats { display: flex; flex-wrap: wrap; gap: 6px; }
 .bib-cats button { border: 1px solid var(--line-night); background: none; border-radius: 999px; padding: 8px 14px; min-height: 40px; font-family: var(--f-head); font-weight: 600; font-size: .8rem; color: var(--on-night-2); cursor: pointer; }
 .bib-cats button span { color: var(--on-night-3); font-weight: 500; margin-left: 4px; }
