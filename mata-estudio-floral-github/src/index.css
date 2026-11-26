@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+@theme {
+  --color-rosa: #F4C7CF;
+  --color-olivo: #6B7A3A;
+  --color-borgona: #7A1F3D;
+  --color-crema: #F7F1E6;
+  --color-tinta: #3A2A2A;
+
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background-color: var(--color-crema);
+    color: var(--color-tinta);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    color: var(--color-borgona);
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-borgona);
+    outline-offset: 3px;
+  }
+  input, select, textarea {
+    font-size: 16px;
+  }
+  button {
+    cursor: pointer;
+  }
+}
+
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.8rem 1.6rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  transition: background-color 200ms, color 200ms, transform 150ms, border-color 200ms;
+  &:active { transform: scale(0.98); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+@utility btn-primary {
+  background-color: var(--color-borgona);
+  color: var(--color-crema);
+  &:hover { background-color: color-mix(in oklab, var(--color-borgona) 88%, black); }
+}
+
+@utility btn-secondary {
+  background-color: var(--color-olivo);
+  color: var(--color-crema);
+  &:hover { background-color: color-mix(in oklab, var(--color-olivo) 88%, black); }
+}
+
+@utility btn-outline {
+  border: 1px solid color-mix(in oklab, var(--color-borgona) 40%, transparent);
+  color: var(--color-borgona);
+  &:hover { background-color: var(--color-borgona); color: var(--color-crema); }
+}
+
+@utility container-x {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding-inline: 1rem;
+  @media (width >= 40rem) { padding-inline: 1.5rem; }
+  @media (width >= 64rem) { padding-inline: 2rem; }
+}
+
+@utility eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--color-olivo);
+}
+
+@utility field-label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-tinta);
+}
+
+@utility field {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in oklab, var(--color-tinta) 15%, transparent);
+  background-color: rgb(255 255 255 / 0.7);
+  padding: 0.75rem 1rem;
+  color: var(--color-tinta);
+  transition: border-color 150ms, box-shadow 150ms;
+  &::placeholder { color: color-mix(in oklab, var(--color-tinta) 40%, transparent); }
+  &:focus {
+    outline: none;
+    border-color: var(--color-borgona);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-borgona) 18%, transparent);
+  }
+  &[aria-invalid="true"] { border-color: var(--color-borgona); }
+}
+
+@utility field-error {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--color-borgona);
+}
+
+@utility card {
+  border-radius: 1rem;
+  background-color: rgb(255 255 255 / 0.6);
+  box-shadow: 0 1px 2px rgb(58 42 42 / 0.04), 0 8px 24px -12px rgb(58 42 42 / 0.12);
+  outline: 1px solid rgb(58 42 42 / 0.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
