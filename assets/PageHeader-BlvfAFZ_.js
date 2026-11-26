@@ -1,1 +1,0 @@
-import{j as e,K as n}from"./index-CaNAwBQX.js";function i({eyebrow:s,title:a,subtitle:t}){return e.jsx("div",{className:"container-x pt-12 sm:pt-16",children:e.jsx(n,{as:"h1",eyebrow:s,title:a,subtitle:t})})}export{i as P};
